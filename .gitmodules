@@ -1,0 +1,6 @@
+[submodule "content/docs/advanced-course"]
+	path = content/docs/advanced-course
+	url = https://github.com/JoinSheets/JoinSheetsRoast.git
+[submodule "static/demo"]
+	path = static/demo
+	url = https://github.com/JoinSheets/JoinSheets.git
