@@ -1,0 +1,11 @@
+baseURL = "https://joinsheets.github.io/"
+title = "JoinSheets"
+theme = "compose"
+enableRobotsTXT = true
+defaultContentLanguage = "en"
+
+[pagination]
+pagerSize = 10
+
+[outputs]
+home = ["HTML", "RSS"]

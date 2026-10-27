@@ -1,0 +1,14 @@
+[[main]]
+name = "Демо"
+weight = 1
+url = "/demo/"
+
+[[main]]
+name = "Документация"
+weight = 2
+url = "/ru/docs/"
+
+[[main]]
+name = "GitHub"
+weight = 3
+url = "https://github.com/JoinSheets/JoinSheets"

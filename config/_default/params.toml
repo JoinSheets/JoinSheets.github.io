@@ -1,0 +1,13 @@
+# Single doc tree under content/docs/ -- each subsection (quick-start, user-guide,
+# cookbook, developers, advanced-course) is its own sidebar nav inside it.
+docSections = ["docs"]
+
+uniqueHomePage = true   # homepage is a custom landing page, not a doc list
+
+repo = "https://github.com/JoinSheets/JoinSheets.github.io"
+
+enableDarkMode = false
+defaultLightingMode = "auto"
+
+[search]
+on = false   # turned off for the stub phase -- not enough content yet to search
