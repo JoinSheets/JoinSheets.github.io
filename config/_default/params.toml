@@ -9,5 +9,7 @@ repo = "https://github.com/JoinSheets/JoinSheets.github.io"
 enableDarkMode = false
 defaultLightingMode = "auto"
 
+customCSS = ["/css/custom.css"]   # justified body text -- see static/css/custom.css
+
 [search]
 on = false   # turned off for the stub phase -- not enough content yet to search

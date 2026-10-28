@@ -1,0 +1,6 @@
+/* User override, loaded via site.Params.customCSS (see params.toml) --
+   survives theme updates, same mechanism as Congo's assets/css/custom.css. */
+
+.content {
+  text-align: justify;
+}
