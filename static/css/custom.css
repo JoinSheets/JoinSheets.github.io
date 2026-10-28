@@ -4,3 +4,15 @@
 .content {
   text-align: justify;
 }
+
+/* Language switcher (layouts/_partials/nav.html -- Compose has no built-in
+   one). A couple of short links side by side; the current language is
+   de-emphasized rather than hidden, so it's clear which one is active. */
+.nav_lang {
+  display: flex;
+  gap: .5rem;
+}
+.nav_lang a.active {
+  opacity: .6;
+  pointer-events: none;
+}
