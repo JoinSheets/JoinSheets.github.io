@@ -9,5 +9,5 @@ weight = 1
 {{< button "./quick-start/" "Быстрый старт" >}}
 {{< button "./user-guide/" "Руководство пользователя" >}}
 {{< button "./cookbook/" "Книга рецептов" >}}
-{{< button "./developers/" "Документация разработчикам" >}}
-{{< button "./advanced-course/" "Продвинутый курс (только на русском)" >}}
+{{< button "./developers/" "Документация проекта" >}}
+{{< button "./advanced-course/" "Учебный курс: Прожарка JS-проекта с помощью Rust" >}}
