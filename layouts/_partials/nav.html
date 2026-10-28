@@ -52,7 +52,7 @@
 			</a>
 		</li>
 		{{- end }}
-		{{- if site.IsMultiLingual }}
+		{{- if hugo.IsMultilingual }}
 		<li class="nav-item nav_lang">
 			{{- range .AllTranslations.ByLanguage }}
 			<a class="nav-link{{ if eq .Language.Lang $.Language.Lang }} active{{ end }}" href="{{ .Permalink }}">{{ .Language.LanguageName }}</a>
