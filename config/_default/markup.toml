@@ -4,3 +4,12 @@
 
 [highlight]
   style = "monokai"
+
+# The sidebar nav (layouts/_partials/sidebar.html, in the theme) renders
+# .TableOfContents under each page's own link -- without a limit it goes down
+# to H3 by default, and the theme gives H2/H3 entries the same visual weight,
+# so a chapter's own subsections end up looking like sibling nav items.
+# Capping at H2 keeps the sidebar to "sections", not every subheading.
+[tableOfContents]
+  startLevel = 2
+  endLevel = 2
