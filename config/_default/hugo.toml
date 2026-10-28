@@ -4,6 +4,10 @@ theme = "compose"
 enableRobotsTXT = true
 defaultContentLanguage = "en"
 
+# Every content/docs/* section is a submodule with its own GitHub-facing
+# README(.ru).md -- don't publish those as site pages alongside _index.md.
+ignoreFiles = ['[Rr][Ee][Aa][Dd][Mm][Ee](\.ru)?\.md$']
+
 [pagination]
 pagerSize = 10
 
