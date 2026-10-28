@@ -51,7 +51,32 @@ UMD, дописывающий себя в &lt;code>window.DS_APP&lt;/code> в б
 smoke-тест (&lt;code>tests/smoke/dom-smoke.js&lt;/code>) реально прогоняет последовательность
 &lt;code>&amp;lt;script&amp;gt;&lt;/code>-бутстрапа на минимальном самодельном DOM-стабе — ловит ошибки
 склейки, которые юнит-тесты не видят (забытый экспорт, неправильный порядок
-скриптов).&lt;/p></description></item><item><title>Объединение двух источников</title><link>https://joinsheets.github.io/ru/docs/cookbook/join-two-sources/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/cookbook/join-two-sources/</guid><description>&lt;p>&lt;strong>Задача:&lt;/strong> есть выгрузка CRM (клиенты) и выгрузка ERP (цены и остатки),
+скриптов).&lt;/p></description></item><item><title>Глава 1 — Загрузка приложения без сборщика и пакетного менеджера</title><link>https://joinsheets.github.io/ru/docs/advanced-course/01-bootstrap-without-bundler/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/advanced-course/01-bootstrap-without-bundler/</guid><description>&lt;p>Файлы главы: &lt;code>index.html&lt;/code>, &lt;code>main.js&lt;/code> (целиком) и немного &lt;code>effects.js&lt;/code>.&lt;/p>
+&lt;h2 id="1-теория" class=link_owner>
+ 1. Теория
+ &lt;a href="#1-%d1%82%d0%b5%d0%be%d1%80%d0%b8%d1%8f" class="link icon">
+ &lt;svg>
+ &lt;use xlink:href="#anchor-link">&lt;/use>
+ &lt;/svg>
+ &lt;/a>
+&lt;/h2>
+&lt;h3 id="модульность-и-область-видимости-в-javascript" class=link_owner>
+ Модульность и область видимости в JavaScript
+ &lt;a href="#%d0%bc%d0%be%d0%b4%d1%83%d0%bb%d1%8c%d0%bd%d0%be%d1%81%d1%82%d1%8c-%d0%b8-%d0%be%d0%b1%d0%bb%d0%b0%d1%81%d1%82%d1%8c-%d0%b2%d0%b8%d0%b4%d0%b8%d0%bc%d0%be%d1%81%d1%82%d0%b8-%d0%b2-javascript" class="link icon">
+ &lt;svg>
+ &lt;use xlink:href="#anchor-link">&lt;/use>
+ &lt;/svg>
+ &lt;/a>
+&lt;/h3>
+&lt;p>Любой язык, рассчитанный на программы из нескольких файлов, должен решить
+одну и ту же задачу: как эти файлы будут ссылаться друг на друга и что из
+написанного в одном файле остаётся его внутренним делом, а что станет
+частью интерфейса, которым пользуются остальные. Решение этой задачи
+называют модульностью. В JavaScript история этого решения делится на «до» и
+«после» 2015 года, и прежде чем разобрать, как организована модульность на проекте,
+стоит зафиксировать, как она устроена в современном JS — без этого
+эталона будет непонятно, в чем проект следует канону, от чего отступает, и какими
+причинами это вызвано.&lt;/p></description></item><item><title>Объединение двух источников</title><link>https://joinsheets.github.io/ru/docs/cookbook/join-two-sources/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/cookbook/join-two-sources/</guid><description>&lt;p>&lt;strong>Задача:&lt;/strong> есть выгрузка CRM (клиенты) и выгрузка ERP (цены и остатки),
 нужна одна таблица с обеими.&lt;/p>
 &lt;ol>
 &lt;li>На экране &lt;strong>Data&lt;/strong> отметь оба источника.&lt;/li>
@@ -86,7 +111,34 @@ smoke-тест (&lt;code>tests/smoke/dom-smoke.js&lt;/code>) реально пр
 &lt;/h2>
 &lt;p>То, что идёт после &lt;code>SELECT&lt;/code>: какие столбцы будут в результате и как они
 считаются — поле как есть, переименованное/типизированное поле, разрешение
-коллизии между несколькими входами по весам, либо формула.&lt;/p></description></item><item><title>Как внести вклад</title><link>https://joinsheets.github.io/ru/docs/developers/contributing/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/developers/contributing/</guid><description>&lt;ul>
+коллизии между несколькими входами по весам, либо формула.&lt;/p></description></item><item><title>Глава 2 — DOM руками</title><link>https://joinsheets.github.io/ru/docs/advanced-course/02-dom-by-hand/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/advanced-course/02-dom-by-hand/</guid><description>&lt;p>Код: &lt;code>util.js&lt;/code> целиком (84 строки). Основной объект изучения — &lt;code>el()&lt;/code> (строки 50-69)
+и &lt;code>clear()&lt;/code> (71).&lt;/p>
+&lt;h2 id="1-теория" class=link_owner>
+ 1. Теория
+ &lt;a href="#1-%d1%82%d0%b5%d0%be%d1%80%d0%b8%d1%8f" class="link icon">
+ &lt;svg>
+ &lt;use xlink:href="#anchor-link">&lt;/use>
+ &lt;/svg>
+ &lt;/a>
+&lt;/h2>
+&lt;h3 id="документ-как-дерево" class=link_owner>
+ Документ как дерево
+ &lt;a href="#%d0%b4%d0%be%d0%ba%d1%83%d0%bc%d0%b5%d0%bd%d1%82-%d0%ba%d0%b0%d0%ba-%d0%b4%d0%b5%d1%80%d0%b5%d0%b2%d0%be" class="link icon">
+ &lt;svg>
+ &lt;use xlink:href="#anchor-link">&lt;/use>
+ &lt;/svg>
+ &lt;/a>
+&lt;/h3>
+&lt;p>Браузер хранит открытую страницу не как текст, а как дерево объектов — Document
+Object Model, DOM. Корень дерева — объект &lt;code>document&lt;/code>; его потомки — узлы разных
+типов: элементы (&lt;code>&amp;lt;div&amp;gt;&lt;/code>, &lt;code>&amp;lt;span&amp;gt;&lt;/code>, &lt;code>&amp;lt;td&amp;gt;&lt;/code>, &amp;hellip;), текстовые узлы (содержимое между
+тегами) и несколько более редких видов (комментарии, инструкции обработки). У
+каждого узла есть &lt;code>parentNode&lt;/code>, список &lt;code>childNodes&lt;/code>, и числовое поле &lt;code>nodeType&lt;/code>,
+по которому эти виды различаются программно: 1 — элемент (&lt;code>Node.ELEMENT_NODE&lt;/code>),
+3 — текст (&lt;code>Node.TEXT_NODE&lt;/code>), 8 — комментарий (&lt;code>Node.COMMENT_NODE&lt;/code>), 9 — сам
+документ (&lt;code>Node.DOCUMENT_NODE&lt;/code>). HTML-разметка, которую парсит браузер, — это один из способов описать
+такое дерево текстом; но дерево существует и тогда, когда ни один символ HTML
+не отображается, — именно с ним работает JavaScript через DOM API.&lt;/p></description></item><item><title>Как внести вклад</title><link>https://joinsheets.github.io/ru/docs/developers/contributing/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/developers/contributing/</guid><description>&lt;ul>
 &lt;li>&lt;code>main&lt;/code> всегда чистый и готов к релизу — без артефактов, нужных только для
 разработки. Повседневная работа — в &lt;code>develop&lt;/code>; крупные изменения и фиксы
 багов — в отдельных ветках от &lt;code>develop&lt;/code>.&lt;/li>
@@ -96,4 +148,234 @@ Release с тем же архивом, приложенным как asset.&lt;/
 pull request в &lt;code>develop&lt;/code>.&lt;/li>
 &lt;/ul>
 &lt;p>&lt;em>(Эта страница со временем вырастет в полноценное руководство для
-контрибьюторов.)&lt;/em>&lt;/p></description></item></channel></rss>
+контрибьюторов.)&lt;/em>&lt;/p></description></item><item><title>Глава 3 — Состояние и редьюсер</title><link>https://joinsheets.github.io/ru/docs/advanced-course/03-state-and-reducer/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/advanced-course/03-state-and-reducer/</guid><description>&lt;p>Код: &lt;code>store.js&lt;/code> — &lt;code>createStore&lt;/code> (55-66), &lt;code>initialState&lt;/code> (176-209), доменные
+редьюсеры (224-612) и их композиция в &lt;code>reducer()&lt;/code> (614-668). Не нужно разбирать
+каждый &lt;code>case&lt;/code> — структура важнее содержимого конкретных веток.&lt;/p>
+&lt;h2 id="1-теория" class=link_owner>
+ 1. Теория
+ &lt;a href="#1-%d1%82%d0%b5%d0%be%d1%80%d0%b8%d1%8f" class="link icon">
+ &lt;svg>
+ &lt;use xlink:href="#anchor-link">&lt;/use>
+ &lt;/svg>
+ &lt;/a>
+&lt;/h2>
+&lt;h3 id="проблема-которую-решает-единый-источник-истины" class=link_owner>
+ Проблема, которую решает единый источник истины
+ &lt;a href="#%d0%bf%d1%80%d0%be%d0%b1%d0%bb%d0%b5%d0%bc%d0%b0-%d0%ba%d0%be%d1%82%d0%be%d1%80%d1%83%d1%8e-%d1%80%d0%b5%d1%88%d0%b0%d0%b5%d1%82-%d0%b5%d0%b4%d0%b8%d0%bd%d1%8b%d0%b9-%d0%b8%d1%81%d1%82%d0%be%d1%87%d0%bd%d0%b8%d0%ba-%d0%b8%d1%81%d1%82%d0%b8%d0%bd%d1%8b" class="link icon">
+ &lt;svg>
+ &lt;use xlink:href="#anchor-link">&lt;/use>
+ &lt;/svg>
+ &lt;/a>
+&lt;/h3>
+&lt;p>Любое приложение с интерфейсом сложнее пары статичных экранов сталкивается с
+одним и тем же вопросом: где хранится состояние (что выбрано, что открыто,
+что введено) и кто имеет право его менять. В приложениях, написанных без
+особой дисциплины, ответ обычно размазан по всему коду — состояние лежит в
+десятках независимых переменных, DOM-атрибутов и замыканий, и любой
+обработчик события может поменять любую его часть напрямую. Это работает, пока
+взаимодействий немного; но по мере роста приложения отладка превращается в
+расследование: баг воспроизводится, но чтобы понять, что именно и где
+изменило состояние, приходится ставить точки останова во всех
+местах, которые теоретически могли на него повлиять.&lt;/p></description></item><item><title>Глава 4 — Тестирование в JS, часть 1: принципы</title><link>https://joinsheets.github.io/ru/docs/advanced-course/04-testing-principles/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/advanced-course/04-testing-principles/</guid><description>&lt;p>Код: &lt;code>tests/preset.test.js&lt;/code> (первые ~90 строк — нормализация пресета + один
+тест редьюсера), &lt;code>store.js&lt;/code> как объект тестирования (уже разобран в главе 3).&lt;/p>
+&lt;h2 id="1-теория" class=link_owner>
+ 1. Теория
+ &lt;a href="#1-%d1%82%d0%b5%d0%be%d1%80%d0%b8%d1%8f" class="link icon">
+ &lt;svg>
+ &lt;use xlink:href="#anchor-link">&lt;/use>
+ &lt;/svg>
+ &lt;/a>
+&lt;/h2>
+&lt;h3 id="зачем-нужны-автоматические-тесты" class=link_owner>
+ Зачем нужны автоматические тесты
+ &lt;a href="#%d0%b7%d0%b0%d1%87%d0%b5%d0%bc-%d0%bd%d1%83%d0%b6%d0%bd%d1%8b-%d0%b0%d0%b2%d1%82%d0%be%d0%bc%d0%b0%d1%82%d0%b8%d1%87%d0%b5%d1%81%d0%ba%d0%b8%d0%b5-%d1%82%d0%b5%d1%81%d1%82%d1%8b" class="link icon">
+ &lt;svg>
+ &lt;use xlink:href="#anchor-link">&lt;/use>
+ &lt;/svg>
+ &lt;/a>
+&lt;/h3>
+&lt;p>Пока программа маленькая, её поведение можно проверить вручную:
+запустить, кликнуть, посмотреть на результат. По мере роста это перестаёт
+работать — число возможных сочетаний состояния растёт быстрее, чем способность
+удержать их все в голове, а любое изменение в одном месте способно незаметно
+сломать поведение в другом, никак с ним на первый взгляд не связанном.
+Автоматический тест — это зафиксированная, повторяемая проверка одного такого
+сочетания: написанная один раз, она выполняется за миллисекунды сколько угодно
+раз подряд и сообщает о регрессии в момент, когда её внёс сам разработчик, а
+не когда её случайно обнаружит пользователь.&lt;/p></description></item><item><title>Глава 5 — Тестирование в JS, часть 2: смоук-тесты и fake-DOM</title><link>https://joinsheets.github.io/ru/docs/advanced-course/05-smoke-tests-fake-dom/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/advanced-course/05-smoke-tests-fake-dom/</guid><description>&lt;p>Код: &lt;code>tests/smoke/dom-smoke.js&lt;/code> целиком (253 строки).&lt;/p>
+&lt;h2 id="1-теория" class=link_owner>
+ 1. Теория
+ &lt;a href="#1-%d1%82%d0%b5%d0%be%d1%80%d0%b8%d1%8f" class="link icon">
+ &lt;svg>
+ &lt;use xlink:href="#anchor-link">&lt;/use>
+ &lt;/svg>
+ &lt;/a>
+&lt;/h2>
+&lt;h3 id="зазор-между-юнит-тестами-и-настоящим-браузером" class=link_owner>
+ Зазор между юнит-тестами и настоящим браузером
+ &lt;a href="#%d0%b7%d0%b0%d0%b7%d0%be%d1%80-%d0%bc%d0%b5%d0%b6%d0%b4%d1%83-%d1%8e%d0%bd%d0%b8%d1%82-%d1%82%d0%b5%d1%81%d1%82%d0%b0%d0%bc%d0%b8-%d0%b8-%d0%bd%d0%b0%d1%81%d1%82%d0%be%d1%8f%d1%89%d0%b8%d0%bc-%d0%b1%d1%80%d0%b0%d1%83%d0%b7%d0%b5%d1%80%d0%be%d0%bc" class="link icon">
+ &lt;svg>
+ &lt;use xlink:href="#anchor-link">&lt;/use>
+ &lt;/svg>
+ &lt;/a>
+&lt;/h3>
+&lt;p>Предыдущая глава установила, почему чистые функции — самый дёшевый объект
+автоматической проверки, и почему &lt;code>store.js&lt;/code>&amp;rsquo;s редьюсеры тестируются без
+единого обращения к браузеру. Но у этой дешевизны есть цена: юнит-тест
+импортирует функцию напрямую через &lt;code>require()&lt;/code>, минуя &lt;code>index.html&lt;/code> и порядок
+его &lt;code>&amp;lt;script&amp;gt;&lt;/code>-тегов целиком, — а значит, он физически не способен заметить
+целый класс ошибок, которые живут именно на границе между файлами, а не внутри
+одного из них. Забытый экспорт нужной функции в объект &lt;code>api&lt;/code>, перепутанный
+порядок подключения файлов (глава 1), сломанная ленивая ссылка на
+&lt;code>window.DS_APP&lt;/code> (например, если &lt;code>main.js&lt;/code> попытается прочитать
+&lt;code>App.viewBuild&lt;/code>, а &lt;code>view-build.js&lt;/code> на самом деле не подключился) — ни один из
+этих багов не воспроизводится при прямом &lt;code>require()&lt;/code>, потому что все файлы в
+такой схеме доступны всегда, независимо от того, в каком порядке их
+действительно загрузит браузер.&lt;/p></description></item><item><title>Глава 6 — Рендер без Virtual DOM</title><link>https://joinsheets.github.io/ru/docs/advanced-course/06-render-without-vdom/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/advanced-course/06-render-without-vdom/</guid><description>&lt;p>Код: &lt;code>main.js::render()&lt;/code> (строки 193-277) + &lt;code>store.subscribe(render)&lt;/code> (279).&lt;/p>
+&lt;h2 id="1-теория" class=link_owner>
+ 1. Теория
+ &lt;a href="#1-%d1%82%d0%b5%d0%be%d1%80%d0%b8%d1%8f" class="link icon">
+ &lt;svg>
+ &lt;use xlink:href="#anchor-link">&lt;/use>
+ &lt;/svg>
+ &lt;/a>
+&lt;/h2>
+&lt;h3 id="цена-обновления-dom-и-два-ответа-на-неё" class=link_owner>
+ Цена обновления DOM и два ответа на неё
+ &lt;a href="#%d1%86%d0%b5%d0%bd%d0%b0-%d0%be%d0%b1%d0%bd%d0%be%d0%b2%d0%bb%d0%b5%d0%bd%d0%b8%d1%8f-dom-%d0%b8-%d0%b4%d0%b2%d0%b0-%d0%be%d1%82%d0%b2%d0%b5%d1%82%d0%b0-%d0%bd%d0%b0-%d0%bd%d0%b5%d1%91" class="link icon">
+ &lt;svg>
+ &lt;use xlink:href="#anchor-link">&lt;/use>
+ &lt;/svg>
+ &lt;/a>
+&lt;/h3>
+&lt;p>Операции, которые по-настоящему меняют отображённую страницу — вставка или
+удаление узла, изменение атрибута, способного повлиять на геометрию, — не
+бесплатны: за ними следует раскладка (layout) и перерисовка (paint), и обе
+эти стадии стоят заметно дороже, чем выполнение обычного JS-кода, который к
+ним привёл. Любой нетривиальный интерфейс, где состояние меняется часто,
+вынужден так или иначе отвечать на один и тот же вопрос: как минимизировать
+число таких дорогих операций, если сам факт «что-то изменилось» известен
+только на уровне «изменилось какое-то состояние», а не на уровне «вот эти
+три конкретных DOM-узла».&lt;/p></description></item><item><title>Глава 7 — Замыкания и модульные синглтоны</title><link>https://joinsheets.github.io/ru/docs/advanced-course/07-closures-and-singletons/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/advanced-course/07-closures-and-singletons/</guid><description>&lt;p>Код: &lt;code>view-table.js&lt;/code>, строки 289-331 (модуль-уровневые переменные +
+&lt;code>attachDocCloseListener&lt;/code>) и строки 337-338, 685-689 (где они используются и
+обновляются).&lt;/p>
+&lt;h2 id="1-теория" class=link_owner>
+ 1. Теория
+ &lt;a href="#1-%d1%82%d0%b5%d0%be%d1%80%d0%b8%d1%8f" class="link icon">
+ &lt;svg>
+ &lt;use xlink:href="#anchor-link">&lt;/use>
+ &lt;/svg>
+ &lt;/a>
+&lt;/h2>
+&lt;h3 id="замыкание-определение-и-минимальный-пример" class=link_owner>
+ Замыкание: определение и минимальный пример
+ &lt;a href="#%d0%b7%d0%b0%d0%bc%d1%8b%d0%ba%d0%b0%d0%bd%d0%b8%d0%b5-%d0%be%d0%bf%d1%80%d0%b5%d0%b4%d0%b5%d0%bb%d0%b5%d0%bd%d0%b8%d0%b5-%d0%b8-%d0%bc%d0%b8%d0%bd%d0%b8%d0%bc%d0%b0%d0%bb%d1%8c%d0%bd%d1%8b%d0%b9-%d0%bf%d1%80%d0%b8%d0%bc%d0%b5%d1%80" class="link icon">
+ &lt;svg>
+ &lt;use xlink:href="#anchor-link">&lt;/use>
+ &lt;/svg>
+ &lt;/a>
+&lt;/h3>
+&lt;p>Глава 1 уже вводила общее определение: замыкание — это функция вместе с
+захваченной ею областью видимости, той, в которой она была создана (на
+примере IIFE и инкапсуляции в &lt;code>ds-webui&lt;/code>). Здесь стоит закрепить это
+определение отдельным, предельно изолированным примером, прежде чем
+переходить к более тонкому эффекту, который понадобится для разбора кода
+ниже:&lt;/p></description></item><item><title>Глава 8 — Делегирование событий и работа с DOM-событиями</title><link>https://joinsheets.github.io/ru/docs/advanced-course/08-event-delegation/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/advanced-course/08-event-delegation/</guid><description>&lt;p>Код: &lt;code>view-table.js&lt;/code> — &lt;code>attachDocCloseListener&lt;/code> (321-331, уже видели на
+главе 7, здесь смотрим под другим углом), &lt;code>head&lt;/code>-пиктограммы (487-526),
+&lt;code>startResize&lt;/code> (369-396).&lt;/p>
+&lt;h2 id="1-теория" class=link_owner>
+ 1. Теория
+ &lt;a href="#1-%d1%82%d0%b5%d0%be%d1%80%d0%b8%d1%8f" class="link icon">
+ &lt;svg>
+ &lt;use xlink:href="#anchor-link">&lt;/use>
+ &lt;/svg>
+ &lt;/a>
+&lt;/h2>
+&lt;h3 id="фазы-события-наследие-двух-несовместимых-моделей" class=link_owner>
+ Фазы события: наследие двух несовместимых моделей
+ &lt;a href="#%d1%84%d0%b0%d0%b7%d1%8b-%d1%81%d0%be%d0%b1%d1%8b%d1%82%d0%b8%d1%8f-%d0%bd%d0%b0%d1%81%d0%bb%d0%b5%d0%b4%d0%b8%d0%b5-%d0%b4%d0%b2%d1%83%d1%85-%d0%bd%d0%b5%d1%81%d0%be%d0%b2%d0%bc%d0%b5%d1%81%d1%82%d0%b8%d0%bc%d1%8b%d1%85-%d0%bc%d0%be%d0%b4%d0%b5%d0%bb%d0%b5%d0%b9" class="link icon">
+ &lt;svg>
+ &lt;use xlink:href="#anchor-link">&lt;/use>
+ &lt;/svg>
+ &lt;/a>
+&lt;/h3>
+&lt;p>Когда происходит клик на каком-то элементе, браузер не вызывает обработчики
+только на нём — событие проходит через всё дерево DOM, от корня документа до
+элемента-цели и обратно. Так было не всегда и не везде одинаково: в конце
+1990-х Netscape и Internet Explorer реализовали два взаимно несовместимых
+взгляда на эту механику — Netscape позволял перехватывать событие на пути
+«сверху вниз», к цели (capturing), Internet Explorer — только после того,
+как событие уже дошло до цели и начало подниматься обратно, «снизу вверх»
+(bubbling). Спецификация DOM Level 2 Events (2000 год) не выбрала одну из
+моделей, а объединила обе в три последовательные фазы одного и того же
+прохода события: capture — от &lt;code>document&lt;/code> вниз к элементу-цели; target —
+непосредственно на самом элементе; bubble — от цели обратно вверх до
+&lt;code>document&lt;/code>. Третий аргумент &lt;code>addEventListener(type, fn, useCapture)&lt;/code>
+определяет, на какой из двух оставшихся фаз сработает именно этот конкретный
+обработчик: &lt;code>true&lt;/code> — во время capture, до того как событие дойдёт до цели и
+начнёт всплывать; &lt;code>false&lt;/code> или отсутствие аргумента (принятое по умолчанию
+значение) — во время bubble, уже после того, как цель его обработала.
+Подавляющее большинство кода в индустрии использует именно bubble — ровно
+поэтому &lt;code>true&lt;/code>, встречающийся в коде &lt;code>ds-webui&lt;/code>, заслуживает отдельного
+разбора: это достаточно редкое, осознанное и не случайное решение.&lt;/p></description></item><item><title>Глава 9 — Производительность и event loop</title><link>https://joinsheets.github.io/ru/docs/advanced-course/09-performance-and-event-loop/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/advanced-course/09-performance-and-event-loop/</guid><description>&lt;p>Код: &lt;code>view-table.js&lt;/code> — батчинг строк (&lt;code>ROW_RENDER_BATCH&lt;/code>, &lt;code>rowDescriptors&lt;/code>/
+&lt;code>materializeRow&lt;/code>, строки 533-689), &lt;code>main.js&lt;/code>&amp;rsquo;s крах-watchdog
+(&lt;code>requestAnimationFrame&lt;/code>, строки 251-275, бегло видели в главе 6).&lt;/p>
+&lt;h2 id="1-теория" class=link_owner>
+ 1. Теория
+ &lt;a href="#1-%d1%82%d0%b5%d0%be%d1%80%d0%b8%d1%8f" class="link icon">
+ &lt;svg>
+ &lt;use xlink:href="#anchor-link">&lt;/use>
+ &lt;/svg>
+ &lt;/a>
+&lt;/h2>
+&lt;h3 id="конвейер-рендеринга-браузера" class=link_owner>
+ Конвейер рендеринга браузера
+ &lt;a href="#%d0%ba%d0%be%d0%bd%d0%b2%d0%b5%d0%b9%d0%b5%d1%80-%d1%80%d0%b5%d0%bd%d0%b4%d0%b5%d1%80%d0%b8%d0%bd%d0%b3%d0%b0-%d0%b1%d1%80%d0%b0%d1%83%d0%b7%d0%b5%d1%80%d0%b0" class="link icon">
+ &lt;svg>
+ &lt;use xlink:href="#anchor-link">&lt;/use>
+ &lt;/svg>
+ &lt;/a>
+&lt;/h3>
+&lt;p>Отображение кадра на экране — не одна операция, а последовательность стадий:
+Style (пересчёт CSS-правил для изменённых узлов), Layout (вычисление
+геометрии — где что находится и какого размера), Paint (заливка пикселей),
+Composite (сборка слоёв в финальный кадр). JS-код запускает эту цепочку, но
+не выполняет её сам и не выполняет её синхронно внутри себя: можно поменять
+сотни DOM-узлов подряд одним синхронным куском кода, и Layout/Paint для всех
+них случится один раз, позже, перед отрисовкой следующего кадра. При частоте
+обновления экрана 60 раз в секунду на всю эту цепочку, вместе с
+исполнившимся перед ней JS, остаётся примерно 16 миллисекунд (1000, делённое
+на 60) — так называемый бюджет кадра; превысить его означает пропустить
+кадр, что глаз воспринимает как рывок или подвисание.&lt;/p></description></item><item><title>Глава 10 — Капстоун: formula.js → Rust + wasm-bindgen → WASM</title><link>https://joinsheets.github.io/ru/docs/advanced-course/10-capstone-rust-wasm/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/advanced-course/10-capstone-rust-wasm/</guid><description>&lt;p>Код: &lt;code>formula.js&lt;/code> целиком (356 строк) — &lt;code>tokenize&lt;/code>, &lt;code>makeParser&lt;/code>/AST,
+&lt;code>evaluate&lt;/code>. &lt;code>tests/formula.test.js&lt;/code> — спецификация ожидаемого поведения,
+которую нужно повторить на Rust. Это капстоун-глава: не готовый код для
+разбора, а план переноса части кода с JS на Rust, который предстоит реализовать самостоятельно.&lt;/p>
+&lt;h2 id="1-теория" class=link_owner>
+ 1. Теория
+ &lt;a href="#1-%d1%82%d0%b5%d0%be%d1%80%d0%b8%d1%8f" class="link icon">
+ &lt;svg>
+ &lt;use xlink:href="#anchor-link">&lt;/use>
+ &lt;/svg>
+ &lt;/a>
+&lt;/h2>
+&lt;h3 id="webassembly-как-ещё-одна-виртуальная-машина-в-браузере" class=link_owner>
+ WebAssembly как ещё одна виртуальная машина в браузере
+ &lt;a href="#webassembly-%d0%ba%d0%b0%d0%ba-%d0%b5%d1%89%d1%91-%d0%be%d0%b4%d0%bd%d0%b0-%d0%b2%d0%b8%d1%80%d1%82%d1%83%d0%b0%d0%bb%d1%8c%d0%bd%d0%b0%d1%8f-%d0%bc%d0%b0%d1%88%d0%b8%d0%bd%d0%b0-%d0%b2-%d0%b1%d1%80%d0%b0%d1%83%d0%b7%d0%b5%d1%80%d0%b5" class="link icon">
+ &lt;svg>
+ &lt;use xlink:href="#anchor-link">&lt;/use>
+ &lt;/svg>
+ &lt;/a>
+&lt;/h3>
+&lt;p>WebAssembly — не «JS, но компилируемый», а отдельный, компактный,
+типизированный бинарный формат байт-кода, который браузер выполняет в
+собственной песочнице-VM, параллельно с обычным JS-движком, а не вместо
+него. Код для WASM обычно пишут на языке, для которого существует
+компилятор с таргетом WASM — Rust, C/C++, Go и другие, — и получившийся
+модуль совсем не «подмножество JS»: у него нет своего DOM, нет своего
+&lt;code>document&lt;/code>, нет сборщика мусора в привычном смысле. Это низкоуровневая
+виртуальная машина с линейной памятью — одним большим массивом байт — и
+набором экспортируемых функций, ничего больше. &lt;code>wasm-bindgen&lt;/code> — инструмент,
+генерирующий «клей»: JS-файл, который умеет вызывать функции
+скомпилированного &lt;code>.wasm&lt;/code>-модуля и передавать значения в обе стороны —
+числа почти бесплатно, напрямую, а строки и объекты копируются через
+линейную память WASM-модуля, и это копирование не бесплатно.&lt;/p></description></item></channel></rss>
