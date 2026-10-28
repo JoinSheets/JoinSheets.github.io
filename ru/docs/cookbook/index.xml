@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Книга рецептов on JoinSheets</title><link>https://joinsheets.github.io/ru/docs/cookbook/</link><description>Recent content in Книга рецептов on JoinSheets</description><generator>Hugo</generator><language>ru</language><atom:link href="https://joinsheets.github.io/ru/docs/cookbook/index.xml" rel="self" type="application/rss+xml"/><item><title>Объединение двух источников</title><link>https://joinsheets.github.io/ru/docs/cookbook/join-two-sources/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/cookbook/join-two-sources/</guid><description>&lt;p>&lt;strong>Задача:&lt;/strong> есть выгрузка CRM (клиенты) и выгрузка ERP (цены и остатки),
+нужна одна таблица с обеими.&lt;/p>
+&lt;ol>
+&lt;li>На экране &lt;strong>Data&lt;/strong> отметь оба источника.&lt;/li>
+&lt;li>Появится строка связки для второго источника. Выбери тип связки (&lt;code>LEFT&lt;/code>,
+чтобы оставить все строки CRM даже без пары в ERP — обычно разумный
+вариант по умолчанию) и сопоставляемое поле с каждой стороны (например,
+&lt;code>customer_id&lt;/code> ↔ &lt;code>client_ref&lt;/code>).&lt;/li>
+&lt;li>Отметь нужные поля из каждого источника.&lt;/li>
+&lt;li>Открой &lt;strong>Table&lt;/strong> — в результате одна строка на каждую совпавшую (или
+несовпавшую, для &lt;code>LEFT&lt;/code>/&lt;code>RIGHT&lt;/code>/&lt;code>FULL&lt;/code>) пару.&lt;/li>
+&lt;/ol>
+&lt;p>&lt;em>(Скоро появятся новые рецепты — условия, формулы, группировка с
+агрегатами.)&lt;/em>&lt;/p></description></item></channel></rss>

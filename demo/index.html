@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="version" content="0.1.0b1">
+  <title>JoinSheets</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app" class="app"><p class="muted" style="padding:1rem">Loading…</p></div>
+
+  <!--
+    At file://, data isn't fetched via fetch(). The manifest (+ optional
+    manifest.imports.js fragments) and the source files that follow load via <script>
+    injection -- see main.js (bootstrapManifest/initialBoot/loadSourceScript). The
+    bootstrap itself lives entirely in main.js (loads last, after effects.js) -- here
+    is only what the very first injected source <script> tags need: the namespace
+    they attach themselves to.
+  -->
+  <script>
+    window.DS = { sources: {} };
+  </script>
+  <script src="util.js"></script>
+  <script src="effects.js"></script>
+  <!--
+    import/ -- an optional git submodule (https://github.com/JoinSheets/JoinSheetsImport),
+    an .xlsx -> source format converter + manifest fragment. If the submodule isn't
+    initialized (a "lite" build) these two files simply won't be found, and the Import
+    button won't appear on Data (view-build.js checks window.DS_APP.importXlsx before
+    rendering) -- the page doesn't break, a 404 on a <script> doesn't block the other tags.
+  -->
+  <script src="import/vendor/xlsx.full.min.js"></script>
+  <script src="import/import.js"></script>
+  <script src="dataset.js"></script>
+  <script src="formula.js"></script>
+  <script src="entities.js"></script>
+  <script src="export.js"></script>
+  <script src="store.js"></script>
+  <script src="view-common.js"></script>
+  <script src="view-build.js"></script>
+  <script src="view-entities.js"></script>
+  <script src="view-table.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

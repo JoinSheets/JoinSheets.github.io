@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>JoinSheets</title><link>https://joinsheets.github.io/ru/</link><description>Recent content on JoinSheets</description><generator>Hugo</generator><language>ru</language><atom:link href="https://joinsheets.github.io/ru/index.xml" rel="self" type="application/rss+xml"/><item><title>Архитектура</title><link>https://joinsheets.github.io/ru/docs/developers/architecture/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/developers/architecture/</guid><description>&lt;h2 id="функциональные-требования" class=link_owner>
+ Функциональные требования
+ &lt;a href="#%d1%84%d1%83%d0%bd%d0%ba%d1%86%d0%b8%d0%be%d0%bd%d0%b0%d0%bb%d1%8c%d0%bd%d1%8b%d0%b5-%d1%82%d1%80%d0%b5%d0%b1%d0%be%d0%b2%d0%b0%d0%bd%d0%b8%d1%8f" class="link icon">
+ &lt;svg>
+ &lt;use xlink:href="#anchor-link">&lt;/use>
+ &lt;/svg>
+ &lt;/a>
+&lt;/h2>
+&lt;ul>
+&lt;li>Работает целиком на клиенте, в том числе по &lt;code>file://&lt;/code> — без сервера, без
+установки, без шага сборки.&lt;/li>
+&lt;li>Данные загружаются как обычные &lt;code>.js&lt;/code>-файлы, инжектируемые через
+&lt;code>&amp;lt;script&amp;gt;&lt;/code> (а не &lt;code>fetch()&lt;/code>, который &lt;code>file://&lt;/code> блокирует), дописывающие
+себя в общее пространство &lt;code>window.DS&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h2 id="ключевые-решения" class=link_owner>
+ Ключевые решения
+ &lt;a href="#%d0%ba%d0%bb%d1%8e%d1%87%d0%b5%d0%b2%d1%8b%d0%b5-%d1%80%d0%b5%d1%88%d0%b5%d0%bd%d0%b8%d1%8f" class="link icon">
+ &lt;svg>
+ &lt;use xlink:href="#anchor-link">&lt;/use>
+ &lt;/svg>
+ &lt;/a>
+&lt;/h2>
+&lt;ul>
+&lt;li>&lt;strong>Без сборщика, без фреймворка.&lt;/strong> Каждый модуль — небольшой IIFE в духе
+UMD, дописывающий себя в &lt;code>window.DS_APP&lt;/code> в браузере и экспортируемый через
+&lt;code>module.exports&lt;/code> под Node для тестов — см. хелпер-гиперскрипт &lt;code>el()&lt;/code> в
+&lt;code>util.js&lt;/code>, самый нижний слой.&lt;/li>
+&lt;li>&lt;strong>Один стор + редьюсер&lt;/strong> (&lt;code>store.js&lt;/code>), разбитый на доменные редьюсеры по
+префиксу действия (&lt;code>preset/*&lt;/code>, &lt;code>group/*&lt;/code>, &lt;code>table/*&lt;/code>, &amp;hellip;), с диспетчем
+через небольшой pub/sub (&lt;code>createStore&lt;/code>).&lt;/li>
+&lt;li>&lt;strong>Ленивый columnar-формат источников&lt;/strong>: каждый файл источника описывает по
+функции на поле, возвращающей значения этого поля для всех строк
+позиционно — V8 не материализует тело функции, если она не вызвана, так
+что неиспользуемые поля ничего не стоят при загрузке.&lt;/li>
+&lt;li>&lt;strong>Формулы, а не &lt;code>eval&lt;/code>.&lt;/strong> Расчётные поля используют небольшой
+самописный токенайзер/парсер/вычислитель (&lt;code>formula.js&lt;/code>), осознанно не
+&lt;code>eval&lt;/code>/&lt;code>new Function&lt;/code>, поскольку пресеты — обычные JSON-файлы, которыми
+люди обмениваются.&lt;/li>
+&lt;/ul>
+&lt;h2 id="тестирование" class=link_owner>
+ Тестирование
+ &lt;a href="#%d1%82%d0%b5%d1%81%d1%82%d0%b8%d1%80%d0%be%d0%b2%d0%b0%d0%bd%d0%b8%d0%b5" class="link icon">
+ &lt;svg>
+ &lt;use xlink:href="#anchor-link">&lt;/use>
+ &lt;/svg>
+ &lt;/a>
+&lt;/h2>
+&lt;p>Модули с чистыми функциями (&lt;code>dataset.js&lt;/code>, &lt;code>entities.js&lt;/code>, &lt;code>formula.js&lt;/code>,
+&lt;code>export.js&lt;/code>, &lt;code>store.js&lt;/code>) покрыты юнит-тестами &lt;code>node:test&lt;/code>. Отдельный
+smoke-тест (&lt;code>tests/smoke/dom-smoke.js&lt;/code>) реально прогоняет последовательность
+&lt;code>&amp;lt;script&amp;gt;&lt;/code>-бутстрапа на минимальном самодельном DOM-стабе — ловит ошибки
+склейки, которые юнит-тесты не видят (забытый экспорт, неправильный порядок
+скриптов).&lt;/p></description></item><item><title>Объединение двух источников</title><link>https://joinsheets.github.io/ru/docs/cookbook/join-two-sources/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/cookbook/join-two-sources/</guid><description>&lt;p>&lt;strong>Задача:&lt;/strong> есть выгрузка CRM (клиенты) и выгрузка ERP (цены и остатки),
+нужна одна таблица с обеими.&lt;/p>
+&lt;ol>
+&lt;li>На экране &lt;strong>Data&lt;/strong> отметь оба источника.&lt;/li>
+&lt;li>Появится строка связки для второго источника. Выбери тип связки (&lt;code>LEFT&lt;/code>,
+чтобы оставить все строки CRM даже без пары в ERP — обычно разумный
+вариант по умолчанию) и сопоставляемое поле с каждой стороны (например,
+&lt;code>customer_id&lt;/code> ↔ &lt;code>client_ref&lt;/code>).&lt;/li>
+&lt;li>Отметь нужные поля из каждого источника.&lt;/li>
+&lt;li>Открой &lt;strong>Table&lt;/strong> — в результате одна строка на каждую совпавшую (или
+несовпавшую, для &lt;code>LEFT&lt;/code>/&lt;code>RIGHT&lt;/code>/&lt;code>FULL&lt;/code>) пару.&lt;/li>
+&lt;/ol>
+&lt;p>&lt;em>(Скоро появятся новые рецепты — условия, формулы, группировка с
+агрегатами.)&lt;/em>&lt;/p></description></item><item><title>Экраны</title><link>https://joinsheets.github.io/ru/docs/user-guide/screens/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/user-guide/screens/</guid><description>&lt;p>В JoinSheets три экрана, переход между ними — через верхнее меню.&lt;/p>
+&lt;h2 id="data" class=link_owner>
+ Data
+ &lt;a href="#data" class="link icon">
+ &lt;svg>
+ &lt;use xlink:href="#anchor-link">&lt;/use>
+ &lt;/svg>
+ &lt;/a>
+&lt;/h2>
+&lt;p>Источники, связи между ними и условия по сырым полям — то, что в SQL идёт
+после &lt;code>FROM&lt;/code>/&lt;code>WHERE&lt;/code>. Выбери нужные источники и поля, затем свяжи их
+(left/right/inner/full), если источник не один.&lt;/p>
+&lt;h2 id="fields" class=link_owner>
+ Fields
+ &lt;a href="#fields" class="link icon">
+ &lt;svg>
+ &lt;use xlink:href="#anchor-link">&lt;/use>
+ &lt;/svg>
+ &lt;/a>
+&lt;/h2>
+&lt;p>То, что идёт после &lt;code>SELECT&lt;/code>: какие столбцы будут в результате и как они
+считаются — поле как есть, переименованное/типизированное поле, разрешение
+коллизии между несколькими входами по весам, либо формула.&lt;/p></description></item><item><title>Как внести вклад</title><link>https://joinsheets.github.io/ru/docs/developers/contributing/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/developers/contributing/</guid><description>&lt;ul>
+&lt;li>&lt;code>main&lt;/code> всегда чистый и готов к релизу — без артефактов, нужных только для
+разработки. Повседневная работа — в &lt;code>develop&lt;/code>; крупные изменения и фиксы
+багов — в отдельных ветках от &lt;code>develop&lt;/code>.&lt;/li>
+&lt;li>Версии помечаются тегом на &lt;code>main&lt;/code>; релиз также публикуется как GitHub
+Release с тем же архивом, приложенным как asset.&lt;/li>
+&lt;li>Предложить изменение — через issue, реализовать в отдельной ветке, открыть
+pull request в &lt;code>develop&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;p>&lt;em>(Эта страница со временем вырастет в полноценное руководство для
+контрибьюторов.)&lt;/em>&lt;/p></description></item></channel></rss>

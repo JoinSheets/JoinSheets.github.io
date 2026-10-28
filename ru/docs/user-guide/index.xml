@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Руководство пользователя on JoinSheets</title><link>https://joinsheets.github.io/ru/docs/user-guide/</link><description>Recent content in Руководство пользователя on JoinSheets</description><generator>Hugo</generator><language>ru</language><atom:link href="https://joinsheets.github.io/ru/docs/user-guide/index.xml" rel="self" type="application/rss+xml"/><item><title>Экраны</title><link>https://joinsheets.github.io/ru/docs/user-guide/screens/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/user-guide/screens/</guid><description>&lt;p>В JoinSheets три экрана, переход между ними — через верхнее меню.&lt;/p>
+&lt;h2 id="data" class=link_owner>
+ Data
+ &lt;a href="#data" class="link icon">
+ &lt;svg>
+ &lt;use xlink:href="#anchor-link">&lt;/use>
+ &lt;/svg>
+ &lt;/a>
+&lt;/h2>
+&lt;p>Источники, связи между ними и условия по сырым полям — то, что в SQL идёт
+после &lt;code>FROM&lt;/code>/&lt;code>WHERE&lt;/code>. Выбери нужные источники и поля, затем свяжи их
+(left/right/inner/full), если источник не один.&lt;/p>
+&lt;h2 id="fields" class=link_owner>
+ Fields
+ &lt;a href="#fields" class="link icon">
+ &lt;svg>
+ &lt;use xlink:href="#anchor-link">&lt;/use>
+ &lt;/svg>
+ &lt;/a>
+&lt;/h2>
+&lt;p>То, что идёт после &lt;code>SELECT&lt;/code>: какие столбцы будут в результате и как они
+считаются — поле как есть, переименованное/типизированное поле, разрешение
+коллизии между несколькими входами по весам, либо формула.&lt;/p></description></item></channel></rss>

@@ -1,0 +1,398 @@
+:root {
+  --bg: #ffffff;
+  --fg: #1c1c1c;
+  --muted: #6b7280;
+  --border: #e2e2e2;
+  --accent: #2563eb;
+  --accent-fg: #ffffff;
+  --row-alt: #fafafa;
+  --head-bg: #f4f4f5;
+  --del: #b45309;
+  --stale-bg: #fef3c7;
+  --stale-fg: #92400e;
+  --fresh-bg: #dcfce7;
+  --fresh-fg: #166534;
+  --error: #b91c1c;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #16171a;
+    --fg: #e6e6e6;
+    --muted: #9aa0a6;
+    --border: #34363b;
+    --accent: #3b82f6;
+    --row-alt: #1c1d21;
+    --head-bg: #202126;
+    --del: #fbbf24;
+    --stale-bg: #422006;
+    --stale-fg: #fde68a;
+    --fresh-bg: #052e16;
+    --fresh-fg: #86efac;
+    --error: #f87171;
+  }
+}
+
+* { box-sizing: border-box; }
+/* A flex column spanning the full viewport height -- needed so .scroll (the table)
+   can stretch to ALL of the genuinely free height (see .grid-wrap/.scroll below)
+   rather than guess in vh: without it, the page used to simply end at the content's
+   height, leaving empty space below down to the fixed status line. */
+body {
+  margin: 0; min-height: 100vh; display: flex; flex-direction: column;
+  font: 14px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: var(--fg);
+  background: var(--bg);
+}
+/* On Table, min-height doesn't work as intended: it's a FLOOR, not a ceiling, so when
+   the total content (nav + an open filter/export panel + table rows) exceeded 100vh,
+   body simply grew taller than 100vh and the whole page scrolled -- not just the
+   .scroll inside it. Because of that, the table's sticky header (relative to .scroll
+   -- see below) stopped sticking: a different container was scrolling. height:100vh +
+   overflow:hidden is a real ceiling, forcing .grid-wrap/.scroll (each has
+   min-height:0 at every level of the chain) to actually shrink and take over the
+   scroll themselves. Only on Table (a class set on body from main.js) -- other
+   screens (Data, etc.) need to grow naturally and scroll the whole page when there's
+   a lot of content. */
+body.route-table { height: 100vh; overflow: hidden; }
+/* no max-width/margin:auto -- this is an information-dense app, the amount of useful
+   information on screen matters more than the aesthetics of a narrow centered column.
+   There used to be a "full window width" mode only for the table (a checkbox) -- now
+   that's the only mode, uniformly, for every screen. */
+.app {
+  padding: 0 1rem 3rem; flex: 1 1 auto; min-height: 0;
+  display: flex; flex-direction: column;
+}
+h1 { font-size: 1.3rem; margin: 1rem 0 .5rem; }
+h2 { font-size: 1rem; margin: 1.5rem 0 .5rem; color: var(--muted); text-transform: uppercase; letter-spacing: .03em; }
+.muted { color: var(--muted); }
+.error { color: var(--error); font-weight: 600; }
+.warn { color: var(--stale-fg); }
+
+/* nav */
+.nav {
+  display: flex; align-items: center; gap: .75rem; flex-wrap: wrap;
+  flex: none;   /* don't shrink/grow as .app's flex child -- its own height follows its content */
+  padding: .6rem 0; margin-bottom: .5rem;
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; background: var(--bg); z-index: 5;
+}
+/* noticeably larger than regular text -- as a side effect, also increases the nav
+   bar's height, giving the menu buttons more room around them */
+.nav strong { font-size: 1.5rem; font-weight: 700; }
+.nav .spacer { flex: 1; }
+/* the status line at the bottom of the window (as in many desktop apps) -- not
+   .app, but a direct child of body: its own horizontal padding (.app doesn't give it
+   any outside itself), fixed -- always visible regardless of page scroll */
+.statusbar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 5;
+  padding: .4rem 1rem; border-top: 1px solid var(--border);
+  background: var(--bg); font-size: .85em;
+}
+.tab {
+  border: 1px solid var(--border); background: transparent; color: inherit;
+  padding: .35rem .8rem; border-radius: 6px; cursor: pointer; font: inherit;
+}
+.tab.active { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); }
+.tab:disabled { opacity: .4; cursor: not-allowed; }
+.gear {
+  border-radius: 6px; padding: .35rem .7rem;
+  display: inline-flex; align-items: center; gap: .35rem;
+}
+/* an accent-colored outline+text -- otherwise it blends into the background
+   (border/head-bg are almost the same as bg) */
+.nav .gear {
+  border-color: var(--accent); color: var(--accent); background: var(--bg);
+}
+
+/* forms */
+button {
+  border: 1px solid var(--border); background: var(--head-bg); color: inherit;
+  padding: .4rem .8rem; border-radius: 6px; cursor: pointer; font: inherit;
+}
+button:hover:not(:disabled) { border-color: var(--accent); }
+button:disabled { opacity: .5; cursor: not-allowed; }
+button.primary { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); }
+button.link { border: none; background: none; color: var(--accent); padding: .2rem .4rem; }
+input[type=text], select {
+  font: inherit; color: inherit; background: var(--bg);
+  border: 1px solid var(--border); border-radius: 5px; padding: .3rem .45rem;
+}
+.field { display: flex; flex-direction: column; gap: .25rem; }
+.field.small { font-size: .85em; }
+.field.small input { min-width: 12rem; }
+.row { display: flex; align-items: flex-end; gap: 1rem; flex-wrap: wrap; margin: .5rem 0; }
+.actions { display: flex; gap: .5rem; flex-wrap: wrap; margin-top: 1.5rem; }
+.file-btn {
+  border: 1px solid var(--border); background: var(--head-bg);
+  padding: .4rem .8rem; border-radius: 6px; cursor: pointer;
+}
+.file-btn input { display: none; }
+
+/* build: sources */
+.src-list { display: flex; flex-direction: column; gap: .4rem; }
+.src { border: 1px solid var(--border); border-radius: 8px; padding: .5rem .7rem; }
+.src.picked { border-color: var(--accent); }
+.src-description { color: var(--muted); font-size: .92em; margin-bottom: .25rem; }
+.src-head { display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; }
+.src-pick { display: inline-flex; align-items: center; gap: .4rem; cursor: pointer; }
+.src-fold {
+  flex: none; width: 1.6rem; height: 1.6rem; padding: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 1rem; line-height: 1; border-radius: 5px;
+}
+.src-fold:disabled { opacity: .35; }
+.src-fields-n { font-size: .92em; }
+.src-name { font-weight: 600; }
+.chk { display: inline-flex; align-items: center; gap: .3rem; }
+
+/* the selected-fields picker -- a vertical list */
+.field-list { display: flex; flex-direction: column; gap: .15rem; margin: .5rem 0 .2rem 1.6rem; }
+.field-item { display: flex; align-items: center; gap: .4rem; padding: .1rem 0; }
+.field-item .field-name { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .92em; }
+.field-item.key .field-name { font-weight: 600; }
+.field-item .tag {
+  font-size: .7em; text-transform: uppercase; letter-spacing: .04em;
+  background: var(--head-bg); border: 1px solid var(--border);
+  border-radius: 4px; padding: 0 .35rem; color: var(--muted);
+}
+
+.badge { font-size: .75em; padding: .1rem .5rem; border-radius: 999px; font-weight: 600; }
+.badge.stale { background: var(--stale-bg); color: var(--stale-fg); }
+.badge.fresh { background: var(--fresh-bg); color: var(--fresh-fg); }
+
+/* build: joins */
+.joins { display: flex; flex-direction: column; gap: .4rem; }
+.join { display: flex; align-items: center; gap: .3rem; flex-wrap: wrap; }
+.join .dot, .join .eq { color: var(--muted); font-weight: 700; }
+
+/* build: entities (table columns) */
+.entities { display: flex; flex-direction: column; gap: .5rem; }
+.entity { border: 1px solid var(--border); border-radius: 8px; padding: .5rem .6rem; }
+.entity.hidden-ent { opacity: .6; border-style: dashed; }
+.entity-head { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
+.entity-head .entity-field { flex: 1 1 20rem; max-width: 34rem; margin: 0; }
+.entity-head .ent-alias { width: 100%; min-width: 10rem; }
+.entity-tools { display: flex; align-items: center; gap: .1rem; margin-left: auto; flex: none; }
+.entity-rows { display: flex; flex-direction: column; gap: .1rem; margin: .5rem 0 .2rem; }
+.entity-field { display: flex; align-items: center; gap: .5rem; margin: .15rem 0; }
+.entity-field.block { align-items: flex-start; }
+.entity-field-lbl { flex: none; min-width: 9.5rem; color: var(--muted); font-size: .92em; }
+.entity-field-ctl { flex: 1 1 auto; min-width: 0; }
+.entity-inputs { display: flex; flex-direction: column; gap: .3rem; margin: .2rem 0; }
+.entity-input { display: flex; align-items: center; gap: .35rem; flex-wrap: wrap; }
+.entity-input .ent-weight { width: 4.5rem; }
+.entity-letter {
+  flex: none; width: 1.6rem; text-align: center; font-weight: 600; font-family: monospace;
+  color: var(--muted);
+}
+.entity .ent-formula { width: 100%; font-family: monospace; }
+.entity-format { display: flex; gap: .8rem; flex-wrap: wrap; margin-top: .3rem; }
+.entity-format .field.small input, .entity-format .field.small select { min-width: 5rem; }
+
+/* build: selection conditions */
+.conditions { display: flex; flex-direction: column; gap: .4rem; margin-bottom: .4rem; }
+.condition { display: flex; align-items: center; gap: .4rem; flex-wrap: wrap; }
+.condition.has-list { align-items: flex-start; }
+.condition .cond-value { min-width: 10rem; }
+.condition .cond-value:disabled { opacity: .45; }
+.cond-list-wrap { display: flex; flex-direction: column; gap: .25rem; }
+.cond-list {
+  font: inherit; color: inherit; background: var(--bg);
+  border: 1px solid var(--border); border-radius: 5px; padding: .3rem .45rem;
+  min-width: 18rem; resize: vertical;
+}
+.cond-list-tools { display: flex; align-items: center; gap: .6rem; font-size: .85em; }
+
+/* build: "Group By" -- each level (.condition) + below it its aggregators for the
+   summary row (.agg-list/.agg-row), with a light left indent+border so it reads as
+   "belongs to the level above", plus its own add button. */
+.condition-block { display: flex; flex-direction: column; gap: .3rem; }
+.agg-list { display: flex; flex-direction: column; gap: .3rem; padding-left: 1.4rem; border-left: 2px solid var(--border); }
+.agg-row select:first-child { min-width: 10rem; }
+.agg-foot { padding-left: 1.4rem; margin-top: 0; }
+.agg-foot .link:disabled { opacity: .45; cursor: default; }
+
+/* Advanced filter / Export -- panels hidden by default ABOVE the table (not
+   separate screens -- the table's data stays visible while you work with it):
+   the .advfilter wrapper collapses to zero when empty (both closed), .advfilter-panel
+   is the visible border+background of the open panel. */
+.advfilter { margin: 0; }
+.advfilter:not(:empty) { margin: .5rem 0; }
+.advfilter-panel {
+  border: 1px solid var(--border); border-radius: 8px;
+  background: var(--head-bg); padding: .6rem .75rem;
+}
+/* the horizontal line between blocks (conditions / sort / hide empty columns /
+   reset) inside the advanced-filter panel */
+.advfilter-panel .divider { border-top: 1px solid var(--border); margin: .8rem 0; }
+.advfilter-foot { display: flex; align-items: center; gap: 1rem; margin-top: .35rem; }
+.adv-conj { min-width: 4rem; }
+.adv-conj-spacer { display: inline-block; width: 4rem; }
+
+/* table: click-to-sort on the header */
+table.data .col-name {
+  cursor: pointer; user-select: none;
+  /* align-items:flex-start, not baseline -- the header used to be single-line, and
+     baseline worked fine; once col-name-txt started wrapping, browsers computed the
+     flex container's height from a multi-line element's baseline too low, and the
+     text's second line visually spilled past the <th>, overlapping the table's
+     first data row -- visible immediately, with no scrolling. flex-start computes
+     the height unambiguously. */
+  display: flex; align-items: flex-start; gap: .15rem;
+}
+table.data .col-name .col-name-txt { min-width: 0; white-space: normal; overflow-wrap: anywhere; }
+table.data .col-name:hover { color: var(--accent); }
+table.data .col-name.sorted { color: var(--accent); }
+table.data .col-name .sort-ind { font-size: .85em; flex: none; }
+
+/* table: manual column width -- drag the header's right edge */
+table.data th .col-resizer {
+  position: absolute; top: 0; right: 0; width: 8px; height: 100%;
+  cursor: col-resize; z-index: 3; user-select: none; touch-action: none;
+}
+table.data th .col-resizer:hover { background: var(--accent); opacity: .4; }
+body.col-resizing, body.col-resizing * { cursor: col-resize !important; user-select: none !important; }
+
+/* .page stretches to fill the rest of .app's height (a flex column, see above); for
+   build/filter/export this is just reserved space (shorter content leaves an empty
+   zone below, longer content scrolls the page as usual, nothing breaks). .page.table
+   goes further: it becomes a flex column itself, so .grid-wrap / .scroll can inherit
+   that height and fill it entirely. */
+.page { flex: 1 1 auto; min-height: 0; }
+.page.table { display: flex; flex-direction: column; }
+.grid-wrap { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+
+/* table */
+.grp-actions { margin: .3rem 0; display: flex; gap: .3rem; flex: none; }
+/* .scroll is a deliberately height-constrained area (like frozen panes in Excel): it
+   scrolls on its own, both horizontally and vertically. flex:1 (not a fixed
+   max-height:70vh, as it used to be) stretches it to ALL of .grid-wrap's genuinely
+   free height, rather than a guessed fraction of the screen: otherwise tall windows /
+   short tables left empty space below it, while on short windows 70vh could even
+   exceed what was available. .scroll used to be kept WITHOUT a height constraint
+   (overflow-x:auto, leaving the vertical axis "visible"/"clip"), so the sticky header
+   would stick to the page window -- but in both tested browsers (Firefox, Chromium)
+   the header stuck relative to .scroll anyway, offset by --nav-h, overlapping the
+   first data rows even before any scrolling. Since both engines treat .scroll as the
+   sticky reference point regardless, we embrace that deliberately and move the
+   reference point to 0 (see thead th below) -- a standard, reliable scheme that
+   doesn't rely on .scroll NOT being a scroll container. */
+.scroll { overflow: auto; flex: 1 1 auto; min-height: 0; border: 1px solid var(--border); border-radius: 8px; }
+table.data {
+  /* separate, not collapse -- with collapse, the border between cells draws EXACTLY
+     on the seam between rows (half bleeding into the neighbor), and the header's
+     accent 2px border (below) visually "ate into" the top of the first data row */
+  border-collapse: separate; border-spacing: 0; font-size: .9em;
+  table-layout: fixed; min-width: 100%;   /* the width (sum of columns) is set inline by renderGrid */
+}
+table.data th, table.data td {
+  border-bottom: 1px solid var(--border); padding: .3rem .5rem; text-align: left;
+  vertical-align: top;
+}
+table.data th { position: relative; }
+/* a value wraps to the column's width (fixed layout), it doesn't stretch the table */
+table.data td { overflow: hidden; overflow-wrap: anywhere; }
+table.data thead th {
+  /* top:0 relative to .scroll (now a deliberate, height-constrained scroll
+     container -- see .scroll above), not relative to the page window */
+  position: sticky; top: 0; z-index: 2;
+  /* the same accent color scheme as the buttons (.nav .gear) -- a background with a
+     light accent tint + an accent bottom border instead of the usual gray; the text
+     color is left alone -- otherwise the hover/sorted accent highlight would be lost */
+  background: color-mix(in srgb, var(--accent) 12%, var(--head-bg));
+  border-bottom: 1px solid var(--accent);
+}
+/* Pinning the filter to the bottom of the cell with a percentage height
+   (height:100% on the wrapper) didn't work: a <th> itself has no explicit height (it's
+   "auto", driven by its content), and per CSS 2.1 10.5 a descendant's percentage
+   height is then also "auto" -- the wrapper just shrank to its own content, as before
+   (checked in two browsers). The working approach is position:absolute on the filter
+   itself: it anchors to the cell's already-computed (stretched-to-the-row)
+   padding-box, not to its "auto" height at CSS-parse time. Space for the filter is
+   reserved via --filter-h (the real height, measured in renderGrid), not guessed in
+   rem. */
+table.data .col-name { font-weight: 600; padding-bottom: var(--filter-h, 2rem); }
+
+/* The row of three icons (search/filter/sort) under the column name -- the same
+   bottom-of-cell anchoring the filter field used to have (see the --filter-h comment
+   above), but this row itself is compact and doesn't float. */
+table.data .col-icons {
+  position: absolute; left: .5rem; bottom: .3rem;
+  display: flex; gap: .15rem;
+}
+table.data .col-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 1.4rem; height: 1.4rem; padding: 0; border: none; border-radius: 4px;
+  background: transparent; color: var(--muted); cursor: pointer;
+}
+table.data .col-icon:hover { color: var(--accent); background: var(--head-bg); }
+table.data .col-icon.active { color: var(--accent-fg); background: var(--accent); }
+table.data .col-icon.set:not(.active) { color: var(--accent); }
+table.data .col-icon svg { display: block; }
+
+/* The quick panel (search OR filter, the same component, see
+   ViewCommon.quickValueInput) -- a floating overlay ABOVE the table rows, not part of
+   --filter-h (it can be taller than the space reserved in the header, because of the
+   dropdown of values under the field). Its width is FIXED (not "left:.5rem;
+   right:.5rem", as it used to be) -- on a narrow column, the input used to shrink
+   along with it, sometimes to an unusable width (no room to place the cursor); a
+   fixed width can extend past a narrow column's right edge and overlap neighboring
+   headers -- that's fine, it's an overlay (z-index 10) above the rows, not part of the
+   column's layout. */
+table.data .quick-panel {
+  position: absolute; left: .5rem; top: 100%; z-index: 10;
+  width: 16rem; max-width: calc(100vw - 2rem);
+  background: var(--bg); border: 1px solid var(--border); border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .15); padding: .3rem; margin-top: .15rem;
+}
+table.data .quick-input-field { display: flex; align-items: stretch; position: relative; }
+table.data .quick-input { width: 100%; min-width: 0; font-size: .9em; padding-right: 1.7rem; }
+table.data .quick-input-apply {
+  position: absolute; right: 1px; top: 1px; bottom: 1px; width: 1.55rem;
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 0; border: none; border-radius: 0 4px 4px 0;
+  background: transparent; color: var(--muted); cursor: pointer;
+}
+table.data .quick-input-apply:hover:not(:disabled) {
+  border: none; color: var(--accent); background: var(--head-bg);
+}
+table.data .quick-input-apply svg { display: block; }
+table.data .quick-input-field.dirty .quick-input { border-color: var(--accent); }
+table.data .quick-input-field.dirty .quick-input-apply { color: var(--accent); }
+table.data .quick-values {
+  display: flex; flex-direction: column; max-height: 10rem; overflow-y: auto;
+  margin-top: .3rem; border-top: 1px solid var(--border);
+}
+table.data .quick-values-item {
+  text-align: left; border: none; background: transparent; color: var(--fg);
+  padding: .25rem .3rem; cursor: pointer; font-size: .85em;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  /* flex-shrink:0 is required: an overflow:hidden element's automatic minimum size
+     along the flex container's main axis is 0, not its content height (the flexbox
+     spec). Without this line, with many values the rows would shrink almost to
+     nothing instead of a scrollbar appearing -- overflow-y:auto on .quick-values
+     should catch the overflow, not flexbox row-shrinking. */
+  flex-shrink: 0;
+}
+table.data .quick-values-item:hover { background: var(--head-bg); color: var(--accent); }
+table.data .quick-values-limit {
+  display: flex; align-items: center; gap: .3rem; margin-top: .3rem;
+  font-size: .8em; color: var(--muted);
+}
+table.data .quick-values-limit-input { width: 3.5rem; font-size: 1em; }
+table.data tbody tr:nth-child(even) { background: var(--row-alt); }
+/* A brief highlight on the row a column search jumped to */
+table.data tbody tr.found { background: color-mix(in srgb, var(--accent) 22%, var(--bg)); transition: background .3s; }
+table.data td.del { color: var(--del); font-style: italic; }
+table.data td.empty::after { content: ""; }
+table.data td.unparsed {
+  background: var(--stale-bg); color: var(--stale-fg);
+  text-decoration: underline dotted; cursor: help;
+}
+table.data tr.grp td { background: var(--head-bg); cursor: pointer; font-weight: 500; }
+table.data tr.grp .caret { display: inline-block; width: 1em; color: var(--muted); }
+/* an aggregate (sum/average/...) in a group's summary row -- see view-table.js::
+   renderLevel/aggByColumn, Entities.aggregateGroup; right-aligned, like a number,
+   not like regular cell text. */
+table.data tr.grp td.agg-cell { text-align: right; }
+table.data tr.member td:first-child { padding-left: 1.5rem; }

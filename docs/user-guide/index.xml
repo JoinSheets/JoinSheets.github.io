@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>User Guide on JoinSheets</title><link>https://joinsheets.github.io/docs/user-guide/</link><description>Recent content in User Guide on JoinSheets</description><generator>Hugo</generator><language>en</language><atom:link href="https://joinsheets.github.io/docs/user-guide/index.xml" rel="self" type="application/rss+xml"/><item><title>Screens</title><link>https://joinsheets.github.io/docs/user-guide/screens/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/docs/user-guide/screens/</guid><description>&lt;p>JoinSheets has three screens, reached from the top nav.&lt;/p>
+&lt;h2 id="data" class=link_owner>
+ Data
+ &lt;a href="#data" class="link icon">
+ &lt;svg>
+ &lt;use xlink:href="#anchor-link">&lt;/use>
+ &lt;/svg>
+ &lt;/a>
+&lt;/h2>
+&lt;p>Sources, joins between them, and conditions on raw fields — what comes after
+&lt;code>FROM&lt;/code>/&lt;code>WHERE&lt;/code> in SQL. Pick which sources and fields to use, then join them
+(left/right/inner/full) if there&amp;rsquo;s more than one.&lt;/p>
+&lt;h2 id="fields" class=link_owner>
+ Fields
+ &lt;a href="#fields" class="link icon">
+ &lt;svg>
+ &lt;use xlink:href="#anchor-link">&lt;/use>
+ &lt;/svg>
+ &lt;/a>
+&lt;/h2>
+&lt;p>What comes after &lt;code>SELECT&lt;/code>: which columns the result table has, and how
+they&amp;rsquo;re computed — a field as-is, a renamed/typed field, collision
+resolution between several inputs by weight, or a formula.&lt;/p></description></item></channel></rss>

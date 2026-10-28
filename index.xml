@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>JoinSheets</title><link>https://joinsheets.github.io/</link><description>Recent content on JoinSheets</description><generator>Hugo</generator><language>en</language><atom:link href="https://joinsheets.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>Architecture</title><link>https://joinsheets.github.io/docs/developers/architecture/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/docs/developers/architecture/</guid><description>&lt;h2 id="functional-requirements" class=link_owner>
+ Functional requirements
+ &lt;a href="#functional-requirements" class="link icon">
+ &lt;svg>
+ &lt;use xlink:href="#anchor-link">&lt;/use>
+ &lt;/svg>
+ &lt;/a>
+&lt;/h2>
+&lt;ul>
+&lt;li>Runs entirely client-side, including from &lt;code>file://&lt;/code> — no server, no
+install, no build step.&lt;/li>
+&lt;li>Loads data as plain &lt;code>.js&lt;/code> files injected via &lt;code>&amp;lt;script&amp;gt;&lt;/code> tags (not
+&lt;code>fetch()&lt;/code>, which &lt;code>file://&lt;/code> blocks), writing into a shared &lt;code>window.DS&lt;/code>
+namespace.&lt;/li>
+&lt;/ul>
+&lt;h2 id="key-decisions" class=link_owner>
+ Key decisions
+ &lt;a href="#key-decisions" class="link icon">
+ &lt;svg>
+ &lt;use xlink:href="#anchor-link">&lt;/use>
+ &lt;/svg>
+ &lt;/a>
+&lt;/h2>
+&lt;ul>
+&lt;li>&lt;strong>No bundler, no framework.&lt;/strong> Each module is a small UMD-style IIFE
+attaching to &lt;code>window.DS_APP&lt;/code> in the browser and exporting via
+&lt;code>module.exports&lt;/code> under Node for tests — see &lt;code>util.js&lt;/code>&amp;rsquo;s &lt;code>el()&lt;/code> hyperscript
+helper for the lowest layer.&lt;/li>
+&lt;li>&lt;strong>A single store + reducer&lt;/strong> (&lt;code>store.js&lt;/code>), split into one reducer per
+action-namespace domain (&lt;code>preset/*&lt;/code>, &lt;code>group/*&lt;/code>, &lt;code>table/*&lt;/code>, &amp;hellip;), dispatched
+through a small pub/sub (&lt;code>createStore&lt;/code>).&lt;/li>
+&lt;li>&lt;strong>A lazy columnar source format&lt;/strong>: each source file defines one function
+per field, returning that field&amp;rsquo;s values for every row positionally — V8
+never materializes a field&amp;rsquo;s function body unless it&amp;rsquo;s actually called, so
+unused fields cost nothing to load.&lt;/li>
+&lt;li>&lt;strong>Formulas, not &lt;code>eval&lt;/code>.&lt;/strong> Computed fields use a small hand-written
+tokenizer/parser/evaluator (&lt;code>formula.js&lt;/code>), deliberately not &lt;code>eval&lt;/code>/&lt;code>new Function&lt;/code>, since presets are plain JSON files people exchange.&lt;/li>
+&lt;/ul>
+&lt;h2 id="testing" class=link_owner>
+ Testing
+ &lt;a href="#testing" class="link icon">
+ &lt;svg>
+ &lt;use xlink:href="#anchor-link">&lt;/use>
+ &lt;/svg>
+ &lt;/a>
+&lt;/h2>
+&lt;p>Pure-function modules (&lt;code>dataset.js&lt;/code>, &lt;code>entities.js&lt;/code>, &lt;code>formula.js&lt;/code>, &lt;code>export.js&lt;/code>,
+&lt;code>store.js&lt;/code>) are covered by &lt;code>node:test&lt;/code> unit tests. A separate smoke test
+(&lt;code>tests/smoke/dom-smoke.js&lt;/code>) runs the real &lt;code>&amp;lt;script&amp;gt;&lt;/code> bootstrap sequence
+against a minimal hand-rolled DOM stub, to catch wiring mistakes the unit
+tests can&amp;rsquo;t see (a missing export, the wrong script order).&lt;/p></description></item><item><title>Join two sources</title><link>https://joinsheets.github.io/docs/cookbook/join-two-sources/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/docs/cookbook/join-two-sources/</guid><description>&lt;p>&lt;strong>Task:&lt;/strong> you have a CRM export (customers) and an ERP export (prices and
+stock), and want one table with both.&lt;/p>
+&lt;ol>
+&lt;li>On &lt;strong>Data&lt;/strong>, check both sources.&lt;/li>
+&lt;li>A join row appears for the second source. Pick the join type (&lt;code>LEFT&lt;/code> to
+keep every CRM row even without an ERP match is usually the right
+default) and the matching field on each side (e.g. &lt;code>customer_id&lt;/code> ↔
+&lt;code>client_ref&lt;/code>).&lt;/li>
+&lt;li>Check the fields you want from each source.&lt;/li>
+&lt;li>Open &lt;strong>Table&lt;/strong> — the result has one row per matched (or unmatched, for
+&lt;code>LEFT&lt;/code>/&lt;code>RIGHT&lt;/code>/&lt;code>FULL&lt;/code>) pair.&lt;/li>
+&lt;/ol>
+&lt;p>&lt;em>(More recipes — conditions, formulas, grouping with aggregates — coming
+soon.)&lt;/em>&lt;/p></description></item><item><title>Screens</title><link>https://joinsheets.github.io/docs/user-guide/screens/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/docs/user-guide/screens/</guid><description>&lt;p>JoinSheets has three screens, reached from the top nav.&lt;/p>
+&lt;h2 id="data" class=link_owner>
+ Data
+ &lt;a href="#data" class="link icon">
+ &lt;svg>
+ &lt;use xlink:href="#anchor-link">&lt;/use>
+ &lt;/svg>
+ &lt;/a>
+&lt;/h2>
+&lt;p>Sources, joins between them, and conditions on raw fields — what comes after
+&lt;code>FROM&lt;/code>/&lt;code>WHERE&lt;/code> in SQL. Pick which sources and fields to use, then join them
+(left/right/inner/full) if there&amp;rsquo;s more than one.&lt;/p>
+&lt;h2 id="fields" class=link_owner>
+ Fields
+ &lt;a href="#fields" class="link icon">
+ &lt;svg>
+ &lt;use xlink:href="#anchor-link">&lt;/use>
+ &lt;/svg>
+ &lt;/a>
+&lt;/h2>
+&lt;p>What comes after &lt;code>SELECT&lt;/code>: which columns the result table has, and how
+they&amp;rsquo;re computed — a field as-is, a renamed/typed field, collision
+resolution between several inputs by weight, or a formula.&lt;/p></description></item><item><title>Contributing</title><link>https://joinsheets.github.io/docs/developers/contributing/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/docs/developers/contributing/</guid><description>&lt;ul>
+&lt;li>&lt;code>main&lt;/code> is always clean and releasable — no dev-only artifacts. Day-to-day
+work happens on &lt;code>develop&lt;/code>; larger changes and bug fixes get their own
+branch off &lt;code>develop&lt;/code>.&lt;/li>
+&lt;li>Versions are tagged on &lt;code>main&lt;/code>; releases also publish a GitHub Release with
+the same archive attached as an asset.&lt;/li>
+&lt;li>Propose a change via an issue, implement it in a branch, and open a pull
+request against &lt;code>develop&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;p>&lt;em>(This page will grow into a full contributor guide.)&lt;/em>&lt;/p></description></item></channel></rss>
