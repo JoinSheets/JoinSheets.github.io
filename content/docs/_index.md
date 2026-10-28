@@ -10,4 +10,4 @@ gradually.
 {{< button "./user-guide/" "User Guide" >}}
 {{< button "./cookbook/" "Cookbook" >}}
 {{< button "./developers/" "Developer Docs" >}}
-{{< button "./advanced-course/" "Advanced Course (RU)" >}}
+{{< button "./advanced-course/" "JoinSheets Roast: Rust Performance Boost Course" >}}
