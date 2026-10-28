@@ -21,10 +21,18 @@
 
 - `static/demo` — само приложение [JoinSheets](https://github.com/JoinSheets/JoinSheets)
   (зафиксировано на релизном теге), показывается как живое демо сайта.
+- `content/docs/quick-start` — [JoinSheetsQuickStart](https://github.com/JoinSheets/JoinSheetsQuickStart)
+- `content/docs/user-guide` — [JoinSheetsUserGuide](https://github.com/JoinSheets/JoinSheetsUserGuide)
+- `content/docs/cookbook` — [JoinSheetsCookbook](https://github.com/JoinSheets/JoinSheetsCookbook)
+- `content/docs/developers` — [JoinSheetsDocs](https://github.com/JoinSheets/JoinSheetsDocs)
 - `content/docs/advanced-course` — [JoinSheetsRoast](https://github.com/JoinSheets/JoinSheetsRoast),
   продвинутый курс для разработчиков (только на русском, без перевода на
   английский для этого раздела).
 - `themes/compose` (в ветке `hugo`) — тема Compose.
+
+Каждый раздел документации — отдельный репозиторий, чтобы его можно было
+клонировать, редактировать и версионировать независимо от самого сайта —
+репозиторий сайта просто указывает на коммит каждого из них.
 
 ## Сборка сайта
 
@@ -82,3 +90,7 @@ hugo server -D
   страницы раздела, и Hugo сейчас помечает их как дефолтный язык
   (английский), хотя контент на русском. Вернёмся к этому, когда будет
   сделана переработка самого курса.
+- После пулла новых коммитов submodules — перед сборкой заново выполнить
+  `git submodule update --init` (или `--init --recursive` для полной
+  сборки) — обычный `git pull`/`git checkout` на `main` сам по себе
+  содержимое submodules не обновляет.

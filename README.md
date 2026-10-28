@@ -21,10 +21,18 @@ Branches are kept separate so content history and config history don't mix;
 
 - `static/demo` — the [JoinSheets](https://github.com/JoinSheets/JoinSheets)
   app itself (pinned to a release tag), served as the site's live demo.
+- `content/docs/quick-start` — [JoinSheetsQuickStart](https://github.com/JoinSheets/JoinSheetsQuickStart)
+- `content/docs/user-guide` — [JoinSheetsUserGuide](https://github.com/JoinSheets/JoinSheetsUserGuide)
+- `content/docs/cookbook` — [JoinSheetsCookbook](https://github.com/JoinSheets/JoinSheetsCookbook)
+- `content/docs/developers` — [JoinSheetsDocs](https://github.com/JoinSheets/JoinSheetsDocs)
 - `content/docs/advanced-course` — [JoinSheetsRoast](https://github.com/JoinSheets/JoinSheetsRoast),
   the advanced developer course (Russian only, no English translation for
   this section).
 - `themes/compose` (on the `hugo` branch) — the Compose theme.
+
+Each doc section is its own repository so it can be cloned, edited, and
+versioned independently of the site itself — the site repo just points at a
+commit of each.
 
 ## Building the site
 
@@ -81,3 +89,7 @@ as `build.sh` does automatically).
   Hugo currently tags them as the default language (English) even though
   the content is Russian. To be revisited once the course's own rework is
   done.
+- After pulling new submodule commits, re-run `git submodule update --init`
+  (or `--init --recursive` for a full build) before building — a bare
+  `git pull`/`git checkout` on `main` does not update submodule content by
+  itself.
