@@ -4,3 +4,15 @@
 [submodule "static/demo"]
 	path = static/demo
 	url = https://github.com/JoinSheets/JoinSheets.git
+[submodule "content/docs/quick-start"]
+	path = content/docs/quick-start
+	url = https://github.com/JoinSheets/JoinSheetsQuickStart.git
+[submodule "content/docs/user-guide"]
+	path = content/docs/user-guide
+	url = https://github.com/JoinSheets/JoinSheetsUserGuide.git
+[submodule "content/docs/cookbook"]
+	path = content/docs/cookbook
+	url = https://github.com/JoinSheets/JoinSheetsCookbook.git
+[submodule "content/docs/developers"]
+	path = content/docs/developers
+	url = https://github.com/JoinSheets/JoinSheetsDocs.git
