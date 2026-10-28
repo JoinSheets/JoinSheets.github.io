@@ -52,7 +52,7 @@ cd JoinSheets.github.io
 
 `build.sh`:
 1. Initializes/updates the submodules above.
-2. Overlays `config/` + `themes/` from the `hugo` branch onto this checkout
+2. Overlays `config/` + `themes/` + `static/css/` from the `hugo` branch onto this checkout
    (temporarily — it's undone at the end, `main` itself never carries them).
 3. Runs `hugo --minify` into `public/`.
 4. Copies the result into a `gh-pages` git worktree at
@@ -73,12 +73,12 @@ To just preview content changes without pulling in the `hugo` branch's
 config each time:
 
 ```bash
-git checkout origin/hugo -- config/ themes/ .gitmodules
+git checkout origin/hugo -- config/ themes/ static/css/ .gitmodules
 git submodule update --init --recursive -- themes/compose
 hugo server -D
 ```
 
-(then `git checkout -- .gitmodules && rm -rf config themes` to clean up, same
+(then `git checkout -- .gitmodules && rm -rf config themes static/css` to clean up, same
 as `build.sh` does automatically).
 
 ## Known limitations (stub phase)
