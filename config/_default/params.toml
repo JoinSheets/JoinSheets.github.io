@@ -4,7 +4,11 @@ docSections = ["docs"]
 
 uniqueHomePage = true   # homepage is a custom landing page, not a doc list
 
-repo = "https://github.com/JoinSheets/JoinSheets.github.io"
+# The product repo, not this site's own repo -- linked from the footer (see
+# layouts/_partials/footer.html), not from the theme's own nav icon slot
+# ($config.source, which we leave unset): the main menu stayed GitHub-free on
+# purpose, so this is the one way to reach the source from any page.
+repo = "https://github.com/JoinSheets/JoinSheets"
 
 enableDarkMode = false
 defaultLightingMode = "auto"
@@ -13,3 +17,7 @@ customCSS = ["/css/custom.css"]   # justified body text -- see static/css/custom
 
 [search]
 on = false   # turned off for the stub phase -- not enough content yet to search
+
+[author]
+name = "A1ex Ma"
+url = "https://github.com/A1eksMa"

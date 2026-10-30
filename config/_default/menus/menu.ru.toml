@@ -7,8 +7,3 @@ url = "/demo/"
 name = "Документация"
 weight = 2
 url = "/ru/docs/"
-
-[[main]]
-name = "GitHub"
-weight = 3
-url = "https://github.com/JoinSheets/JoinSheets"

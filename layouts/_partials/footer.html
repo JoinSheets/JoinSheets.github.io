@@ -1,0 +1,38 @@
+{{- /*
+  Site override of Compose's own layouts/_partials/footer.html (same
+  mechanism as our nav.html override: a site-level partial of this name
+  wins over the theme's copy, so theme updates won't touch it).
+
+  The main menu (config/_default/menus/menu.*.toml) has no GitHub entry on
+  purpose -- this footer is the one link to the product repo, reachable from
+  every page instead of only the homepage. A one-line tagline above it keeps
+  the brand name from just repeating the nav logo with nothing to say.
+*/}}
+{{- $config := site.Params }}
+{{- $author := $config.author }}
+<footer class="pt-2 pb-2">
+  <div class="wrap">
+    <div>
+      <p class="footer_tagline">
+        {{- if eq site.Language.Lang "ru" }}
+          JoinSheets — лёгкий вьюер табличных данных, собранный без сборщика и фреймворков.
+        {{- else }}
+          JoinSheets — a lightweight data viewer, built without a bundler or framework.
+        {{- end }}
+      </p>
+      <p>
+        {{- if eq site.Language.Lang "ru" }}
+          Исходный код: <a href="{{ $config.repo }}" target="_blank" rel="noopener">github.com/JoinSheets/JoinSheets</a>
+        {{- else }}
+          Source code: <a href="{{ $config.repo }}" target="_blank" rel="noopener">github.com/JoinSheets/JoinSheets</a>
+        {{- end }}
+        &nbsp;·&nbsp;
+        &copy; <span class="year">{{ now.Year }}</span>
+        {{- with $author }}
+          <a href="{{ .url }}" target="_blank" rel="noopener">{{ .name }}</a>
+        {{- end }}
+      </p>
+    </div>
+    <a href="#pagetop" id="toTop" title={{ T "to_top" }}></a>
+  </div>
+</footer>

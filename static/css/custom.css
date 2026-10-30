@@ -16,3 +16,11 @@
   opacity: .6;
   pointer-events: none;
 }
+
+/* Footer tagline (layouts/_partials/footer.html) -- de-emphasized so it
+   reads as a one-line description, not a second heading next to the
+   source-code/copyright line below it. */
+.footer_tagline {
+  opacity: .7;
+  font-size: .9em;
+}
