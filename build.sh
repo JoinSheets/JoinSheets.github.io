@@ -24,9 +24,9 @@ fi
 echo "==> Pulling in submodules (content/docs/advanced-course, static/demo)"
 git submodule update --init --recursive
 
-echo "==> Overlaying config/ + themes/ + layouts/ + static/css/ from the hugo branch"
+echo "==> Overlaying config/ + themes/ + layouts/ + static/css/ + static/images/ from the hugo branch"
 git fetch origin hugo
-git checkout "origin/hugo" -- config/ themes/ layouts/ static/css/ .gitmodules
+git checkout "origin/hugo" -- config/ themes/ layouts/ static/css/ static/images/ .gitmodules
 git submodule update --init --recursive -- themes/compose
 
 echo "==> Building with hugo --minify"
@@ -55,12 +55,12 @@ cp -r public/. "$WORKTREE_DIR/"
 touch "$WORKTREE_DIR/.nojekyll"
 
 # Undo the hugo-branch overlay on main: unstage config/themes/layouts/
-# static/css (they don't belong in main's history) and restore main's own
-# .gitmodules (the doc-section + demo submodules, not the theme).
-# static/demo (a submodule on main) is left alone -- only static/css/ came
-# from hugo.
-git reset -q HEAD -- config themes layouts static/css .gitmodules 2>/dev/null || true
-rm -rf config themes layouts static/css
+# static/css/static/images (they don't belong in main's history) and
+# restore main's own .gitmodules (the doc-section + demo submodules, not
+# the theme). static/demo (a submodule on main) is left alone -- only
+# static/css/ and static/images/ came from hugo.
+git reset -q HEAD -- config themes layouts static/css static/images .gitmodules 2>/dev/null || true
+rm -rf config themes layouts static/css static/images
 git checkout -- .gitmodules
 
 echo

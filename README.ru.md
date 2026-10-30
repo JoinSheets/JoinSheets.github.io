@@ -53,8 +53,8 @@ cd JoinSheets.github.io
 
 `build.sh`:
 1. Инициализирует/обновляет submodules выше.
-2. Накладывает `config/` + `themes/` + `layouts/` + `static/css/` из ветки `hugo` на этот чекаут
-   (временно — в конце откатывается, сама `main` их никогда не несёт).
+2. Накладывает `config/` + `themes/` + `layouts/` + `static/css/` + `static/images/` из ветки `hugo`
+   на этот чекаут (временно — в конце откатывается, сама `main` их никогда не несёт).
 3. Собирает `hugo --minify` в `public/`.
 4. Копирует результат в git worktree ветки `gh-pages` по пути
    `../joinsheets-github-io-gh-pages` — **ничего не коммитит и не пушит.**
@@ -74,12 +74,12 @@ git push origin gh-pages
 ветки `hugo`:
 
 ```bash
-git checkout origin/hugo -- config/ themes/ layouts/ static/css/ .gitmodules
+git checkout origin/hugo -- config/ themes/ layouts/ static/css/ static/images/ .gitmodules
 git submodule update --init --recursive -- themes/compose
 hugo server -D
 ```
 
-(затем `git checkout -- .gitmodules && rm -rf config themes layouts static/css`, чтобы
+(затем `git checkout -- .gitmodules && rm -rf config themes layouts static/css static/images`, чтобы
 откатить — то же самое `build.sh` делает автоматически).
 
 ## Известные ограничения (стадия заглушки)
