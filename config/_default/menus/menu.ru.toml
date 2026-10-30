@@ -1,9 +1,1 @@
-[[main]]
-name = "Демо"
-weight = 1
-url = "/demo/"
-
-[[main]]
-name = "Документация"
-weight = 2
-url = "/ru/docs/"
+# See menu.en.toml -- intentionally empty.

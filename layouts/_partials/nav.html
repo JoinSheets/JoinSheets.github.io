@@ -6,10 +6,15 @@
   toggle -- Compose ships with no built-in one. Uses .AllTranslations, so it
   only ever links to a language a given page actually has; on an
   untranslated page it just shows the current language.
+
+  The brand/logo link points at the demo (not the homepage): the main menu
+  carries no items now (see config/_default/menus/), so the logo is the
+  site's one persistent way to reach the demo from anywhere. "/demo/" is a
+  plain static mount, not an i18n route, so it's absURL, not absLangURL.
 */}}
 {{- $config := site.Params }}
 <nav class="wrap nav menu">
-	<a href='{{ absLangURL "" }}' class="nav_brand">
+	<a href='{{ absURL "demo/" }}' class="nav_brand">
 		{{- $logos := $config.logo }}
 		{{- $litPath := absURL ($logos.lightMode) }}
 		{{- $darkPath := absURL ($logos.darkMode) }}

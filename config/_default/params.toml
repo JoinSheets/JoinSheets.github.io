@@ -21,3 +21,10 @@ on = false   # turned off for the stub phase -- not enough content yet to search
 [author]
 name = "A1ex Ma"
 url = "https://github.com/A1eksMa"
+
+# Placeholder pick out of design/logos/ (20 drafts, not part of the build --
+# see design/logos/README.md). Both modes point at the same file for now;
+# split lightMode/darkMode once a final logo is chosen.
+[logo]
+lightMode = "/images/logo.svg"
+darkMode = "/images/logo.svg"

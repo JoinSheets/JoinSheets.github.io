@@ -10,7 +10,12 @@
    de-emphasized rather than hidden, so it's clear which one is active. */
 .nav_lang {
   display: flex;
-  gap: .5rem;
+  align-items: center;
+}
+.nav_lang a:not(:last-child)::after {
+  content: "|";
+  margin: 0 .5rem;
+  opacity: .5;
 }
 .nav_lang a.active {
   opacity: .6;

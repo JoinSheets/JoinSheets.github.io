@@ -1,9 +1,7 @@
-[[main]]
-name = "Demo"
-weight = 1
-url = "/demo/"
-
-[[main]]
-name = "Docs"
-weight = 2
-url = "/docs/"
+# Intentionally empty: the main menu (layouts/_partials/nav.html, range over
+# site.Menus.main) carries no items. The two destinations that used to live
+# here (Demo, Docs) are reachable from the homepage's own buttons instead
+# (content/_index.md); the nav brand/logo now links straight to Demo (see
+# nav.html), and the product repo itself links back to this site. Keeping
+# this file (instead of deleting it) documents that the emptiness is a
+# decision, not an oversight.
