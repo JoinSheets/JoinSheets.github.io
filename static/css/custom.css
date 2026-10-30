@@ -12,6 +12,25 @@
   display: flex;
   align-items: center;
 }
+/* Compose's .nav-link carries its own 1rem left/right padding -- the pipe
+   below is a ::after on the "English" link, so that padding ends up sitting
+   between the pipe and "Русский" but not between "English" and the pipe,
+   pulling it off-center. Drop the horizontal padding here (keep the
+   top/bottom padding for a comfortable tap height) so the pipe's own
+   margin is the only thing spacing it from either word, symmetrically. */
+.nav_lang a {
+  padding-left: 0;
+  padding-right: 0;
+}
+/* ...but keep the outer edges (next to the search icon before, the mode
+   toggle after) from crowding -- restore padding only on the two outer
+   sides, matching the theme's own 1rem nav-link padding. */
+.nav_lang a:first-child {
+  padding-left: 1rem;
+}
+.nav_lang a:last-child {
+  padding-right: 1rem;
+}
 .nav_lang a:not(:last-child)::after {
   content: "|";
   margin: 0 .5rem;
