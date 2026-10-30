@@ -18,6 +18,11 @@
   opacity: .5;
 }
 .nav_lang a.active {
+  /* Compose has a generic ".active{color:var(--theme)}" rule (used elsewhere
+     for highlighting) that would otherwise tint just this link in the accent
+     color -- reset it so English/Русский stay the same font and color, only
+     opacity marks which one is current. */
+  color: inherit;
   opacity: .6;
   pointer-events: none;
 }
