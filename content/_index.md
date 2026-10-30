@@ -18,5 +18,3 @@ export to Excel/CSV. No server, no install — download the repository and open
 - Computes fields (aggregation, formulas, priority-based collision resolution).
 - Supports core table operations (search, sort, group, filter).
 - Exports the result to Excel/CSV.
-
-Source code: [github.com/JoinSheets/JoinSheets](https://github.com/JoinSheets/JoinSheets).
