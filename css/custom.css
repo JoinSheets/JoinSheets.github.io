@@ -5,6 +5,18 @@
   text-align: justify;
 }
 
+/* Logo (layouts/_partials/nav.html). The theme's own rule is just
+   ".nav_brand img{max-width:10rem}" -- no height constraint, so with our
+   1:1 SVG and no intrinsic size of its own, it rendered close to 160x160px.
+   .nav_header is position:absolute, and .main's fixed padding-top:6rem
+   assumes a compact header -- an oversized logo pushed the header taller
+   than that, covering the top of the page content. Give it an explicit,
+   compact size instead. */
+.nav_brand img, .nav_brand picture {
+  max-width: 2.25rem;
+  height: auto;
+}
+
 /* Language switcher (layouts/_partials/nav.html -- Compose has no built-in
    one). A couple of short links side by side; the current language is
    de-emphasized rather than hidden, so it's clear which one is active. No
