@@ -41,9 +41,10 @@ Not part of the Hugo build (this directory lives outside `static/`,
 
 ## Current pick
 
-`logo-10-venn-p4-solid.svg` is wired up for now (`config/_default/params.toml`
-`[logo]`, and mirrored into `static/images/logo.svg`) -- a placeholder choice,
-not a final one. Swap it for whichever draft you end up liking: replace
-`static/images/logo.svg` and, if you want separate light/dark-mode versions,
-split `[logo].lightMode` / `[logo].darkMode` in `params.toml` (they both point
-at the same file right now).
+`logo-13-venn-p4-outline.svg` -- picked. Wired up as `static/images/logo.svg`
+(`config/_default/params.toml`'s `[logo]` points at it), and mirrored as an
+inline SVG in the product repo's own nav header
+(`JoinSheets/view-common.js::ORG_LOGO_SVG`, `develop` branch) so both places
+use the same mark. `[logo].lightMode`/`.darkMode` still both point at the
+same file -- split them if a separate dark-mode variant turns out to be
+needed (an outline in dark slate/gray can get faint on a dark background).
