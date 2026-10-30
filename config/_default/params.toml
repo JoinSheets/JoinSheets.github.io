@@ -19,7 +19,7 @@ defaultLightingMode = "auto"
 # (confirmed: cache-control: max-age=600 on this path). Bump the ?v= query
 # by one on every edit to this file, so the URL itself changes and caches
 # can't paper over a real update.
-customCSS = ["/css/custom.css?v=2"]
+customCSS = ["/css/custom.css?v=3"]
 
 [search]
 on = false   # turned off for the stub phase -- not enough content yet to search
