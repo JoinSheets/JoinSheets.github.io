@@ -13,7 +13,13 @@ repo = "https://github.com/JoinSheets/JoinSheets"
 enableDarkMode = false
 defaultLightingMode = "auto"
 
-customCSS = ["/css/custom.css"]   # justified body text -- see static/css/custom.css
+# static/css/custom.css -- a plain static file, not run through Hugo's asset
+# pipeline, so its URL never changes between deploys and GitHub Pages'/the
+# browser's cache can keep serving an old copy for a while after an edit
+# (confirmed: cache-control: max-age=600 on this path). Bump the ?v= query
+# by one on every edit to this file, so the URL itself changes and caches
+# can't paper over a real update.
+customCSS = ["/css/custom.css?v=2"]
 
 [search]
 on = false   # turned off for the stub phase -- not enough content yet to search
