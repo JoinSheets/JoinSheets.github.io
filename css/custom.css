@@ -10,9 +10,27 @@
    de-emphasized rather than hidden, so it's clear which one is active. */
 .nav_lang {
   display: flex;
-  gap: .5rem;
+  align-items: center;
+}
+.nav_lang a:not(:last-child)::after {
+  content: "|";
+  margin: 0 .5rem;
+  opacity: .5;
 }
 .nav_lang a.active {
+  /* Compose has a generic ".active{color:var(--theme)}" rule (used elsewhere
+     for highlighting) that would otherwise tint just this link in the accent
+     color -- reset it so English/Русский stay the same font and color, only
+     opacity marks which one is current. */
+  color: inherit;
   opacity: .6;
   pointer-events: none;
+}
+
+/* Footer tagline (layouts/_partials/footer.html) -- de-emphasized so it
+   reads as a one-line description, not a second heading next to the
+   source-code/copyright line below it. */
+.footer_tagline {
+  opacity: .7;
+  font-size: .9em;
 }
