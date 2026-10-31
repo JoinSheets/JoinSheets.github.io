@@ -13,7 +13,7 @@
    than that, covering the top of the page content. Give it an explicit,
    compact size instead. */
 .nav_brand img, .nav_brand picture {
-  max-width: 2.25rem;
+  max-width: 4.5rem;
   height: auto;
 }
 
