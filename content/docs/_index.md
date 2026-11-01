@@ -9,5 +9,6 @@ gradually.
 {{< button "./quick-start/" "Quick Start" >}}
 {{< button "./user-guide/" "User Guide" >}}
 {{< button "./cookbook/" "Cookbook" >}}
+{{< button "./releases/" "Releases" >}}
 {{< button "./developers/" "Developer Docs" >}}
 {{< button "./advanced-course/" "JoinSheets Roast: Rust Performance Boost Course" >}}

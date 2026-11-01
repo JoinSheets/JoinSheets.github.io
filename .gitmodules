@@ -16,3 +16,6 @@
 [submodule "content/docs/developers"]
 	path = content/docs/developers
 	url = https://github.com/JoinSheets/JoinSheetsDocs.git
+[submodule "content/docs/releases"]
+	path = content/docs/releases
+	url = https://github.com/JoinSheets/JoinSheetsReleases.git
