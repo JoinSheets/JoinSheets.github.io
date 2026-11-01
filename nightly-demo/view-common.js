@@ -315,22 +315,31 @@
     // app's own chrome), the current preset's description below it (what you're
     // actually looking at right now -- a blank preset shows no second row at all,
     // not an empty one, see store.js::normalizePreset).
+    //
+    // The top row is itself two blocks -- .nav-brand (logo + name) and
+    // .nav-actions (the buttons) -- rather than one flat row of items, so a
+    // narrow screen wraps between the two blocks as a whole (brand on its own
+    // line, actions on the next) instead of wrapping in the middle of the
+    // button list wherever it happens to run out of width.
     return el('header', { class: 'nav' },
       el('div', { class: 'nav-row' },
-        el('a', {
-          class: 'org-logo', href: 'https://joinsheets.github.io/',
-          target: '_blank', rel: 'noopener', title: 'JoinSheets documentation & site'
-        }, el('span', { html: ORG_LOGO_SVG })),
-        el('strong', {}, 'JoinSheets'),
-        el('span', { class: 'spacer' }),
-        menu,
-        // Settings -- reachable from every screen (unlike the route-specific
-        // buttons above), always the rightmost item.
-        el('button', {
-          class: 'gear settings-toggle' + (state.settingsOpen ? ' active' : ''),
-          title: 'Settings', 'aria-label': 'Settings',
-          onclick: function () { d({ type: 'settings/toggle' }); }
-        }, el('span', { html: SETTINGS_SVG }))
+        el('div', { class: 'nav-brand' },
+          el('a', {
+            class: 'org-logo', href: 'https://joinsheets.github.io/',
+            target: '_blank', rel: 'noopener', title: 'JoinSheets documentation & site'
+          }, el('span', { html: ORG_LOGO_SVG })),
+          el('strong', {}, 'JoinSheets')
+        ),
+        el('div', { class: 'nav-actions' },
+          menu,
+          // Settings -- reachable from every screen (unlike the route-specific
+          // buttons above), always the rightmost item.
+          el('button', {
+            class: 'gear settings-toggle' + (state.settingsOpen ? ' active' : ''),
+            title: 'Settings', 'aria-label': 'Settings',
+            onclick: function () { d({ type: 'settings/toggle' }); }
+          }, el('span', { html: SETTINGS_SVG }))
+        )
       ),
       (state.preset && state.preset.description)
         ? el('div', { class: 'nav-row' }, el('strong', {}, state.preset.description))

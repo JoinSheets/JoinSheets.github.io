@@ -51,13 +51,23 @@ h2 { font-size: 1rem; margin: 1.5rem 0 .5rem; color: var(--muted); text-transfor
   border-bottom: 1px solid var(--border);
   position: sticky; top: 0; background: var(--bg); z-index: 5;
 }
-.nav-row { display: flex; align-items: center; gap: .75rem; flex-wrap: wrap; }
+/* justify-content:space-between (not a spacer element) pushes .nav-brand and
+   .nav-actions to opposite ends when both fit on one line; when they don't,
+   flex-wrap wraps between them as whole blocks -- brand on its own line,
+   actions on the next -- rather than wrapping in the middle of the button
+   list wherever it runs out of width. The preset-title row below (also
+   .nav-row, just one child) is unaffected -- space-between with a single
+   item has nothing to space out. */
+.nav-row { display: flex; align-items: center; justify-content: space-between; gap: .5rem .75rem; flex-wrap: wrap; }
+.nav-brand { display: flex; align-items: center; gap: .75rem; }
+/* can still wrap further on its own, if even the actions block alone doesn't
+   fit on one line */
+.nav-actions { display: flex; align-items: center; gap: .75rem; flex-wrap: wrap; }
 /* noticeably larger than regular text -- as a side effect, also increases the nav
    bar's height, giving the menu buttons more room around them */
 .nav strong { font-size: 1.5rem; font-weight: 700; }
-.nav .spacer { flex: 1; }
-/* org logo link, first in .nav (before "JoinSheets") -- the gap between it and the
-   title comes from .nav-row's own flex gap, nothing extra needed here. Sized to
+/* org logo link, first in .nav-brand (before "JoinSheets") -- the gap between it and
+   the title comes from .nav-brand's own flex gap, nothing extra needed here. Sized to
    match the site's own nav logo (joinsheets.github.io, static/css/custom.css
    ".nav_brand img{max-width:4.5rem}") closely enough that switching between
    the two doesn't read as a size change -- .nav here is position:sticky and
