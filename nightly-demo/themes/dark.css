@@ -1,0 +1,17 @@
+/* Dark -- Auto's dark half, forced regardless of the OS/browser setting. */
+:root {
+  --bg: #16171a;
+  --fg: #e6e6e6;
+  --muted: #9aa0a6;
+  --border: #34363b;
+  --accent: #3b82f6;
+  --accent-fg: #ffffff;
+  --row-alt: #1c1d21;
+  --head-bg: #202126;
+  --del: #fbbf24;
+  --stale-bg: #422006;
+  --stale-fg: #fde68a;
+  --fresh-bg: #052e16;
+  --fresh-fg: #86efac;
+  --error: #f87171;
+}

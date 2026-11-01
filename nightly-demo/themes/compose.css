@@ -1,0 +1,41 @@
+/* Compose -- styled after joinsheets.github.io's own docs-site theme (Compose,
+   info-tech-io/compose). --bg/--fg/--accent/--border are pulled directly from
+   Compose's own CSS custom properties (its html{}/html[data-mode="dark"]{} --bg,
+   --text, --theme, --border-color); the rest (--muted and the del/stale/fresh/
+   error semantic colors, which Compose has no equivalent of) are picked to match
+   that register -- Compose's own green accent (rgb(52,199,89)/rgb(48,209,88)) and
+   its darkgoldenrod inline-code color turn up again here as --accent and --del. */
+:root {
+  --bg: #ffffff;
+  --fg: #141010;
+  --muted: #6e6e73;
+  --border: #eeeeee;
+  --accent: rgb(52, 199, 89);
+  --accent-fg: #ffffff;
+  --row-alt: #f2f5f7;
+  --head-bg: #f2f5f7;
+  --del: #b8860b;
+  --stale-bg: #fdf3dc;
+  --stale-fg: #8a5a12;
+  --fresh-bg: #e3f6e9;
+  --fresh-fg: #1f7a3d;
+  --error: #d9342b;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: rgb(28, 28, 30);
+    --fg: #eeeeee;
+    --muted: #9b9ba1;
+    --border: #3a3a3c;
+    --accent: rgb(48, 209, 88);
+    --accent-fg: #ffffff;
+    --row-alt: rgb(36, 36, 38);
+    --head-bg: rgb(36, 36, 38);
+    --del: #d9a74a;
+    --stale-bg: #3a2e12;
+    --stale-fg: #e8b55a;
+    --fresh-bg: #0f2e1c;
+    --fresh-fg: #4ade80;
+    --error: #ff6b6b;
+  }
+}

@@ -1,1 +1,4 @@
 User-agent: *
+Disallow: /nightly-demo/
+
+Sitemap: https://joinsheets.github.io/sitemap.xml

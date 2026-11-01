@@ -1,0 +1,32 @@
+'use strict';
+
+// Tests for the CSV/Excel export and export filename construction. Run with: node --test.
+
+const test = require('node:test');
+const assert = require('node:assert/strict');
+const App = require('../export.js');
+
+test('toCsv: escapes commas and quotes', () => {
+  const dataset = { rows: [{ a: 'x,y', b: 'z' }] };
+  assert.equal(App.toCsv(dataset, ['a', 'b']), 'a,b\r\n"x,y",z');
+});
+
+test('xmlEsc: escapes XML special characters', () => {
+  assert.equal(App.xmlEsc('A&B <tag> "q"'), 'A&amp;B &lt;tag&gt; &quot;q&quot;');
+});
+
+test('sanitizeAuthor: replaces forbidden characters, empty -> export', () => {
+  assert.equal(App.sanitizeAuthor('  John Doe/Corp '), 'John-Doe-Corp');
+  assert.equal(App.sanitizeAuthor(''), 'export');
+  assert.equal(App.sanitizeAuthor(null), 'export');
+});
+
+test('exportFilename: a deterministic name', () => {
+  const when = new Date(2024, 1, 5, 3, 4, 5, 6); // 2024-02-05 03:04:05.006 (local)
+  assert.equal(App.exportFilename('Alice', 'csv', when), 'Alice_2024-02-05_03-04-05_006000.csv');
+});
+
+test('exportFilename: no name (the "Author" field was removed from the UI) -> export_...', () => {
+  const when = new Date(2024, 1, 5, 3, 4, 5, 6);
+  assert.equal(App.exportFilename(null, 'xls', when), 'export_2024-02-05_03-04-05_006000.xls');
+});

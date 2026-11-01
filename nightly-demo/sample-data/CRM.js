@@ -1,0 +1,25 @@
+// Sample data for development/demo -- do not edit by hand.
+// Format: the lazy columnar source format.
+window.DS = window.DS || { sources: {} };
+window.DS.sources["CRM"] = {
+  meta: {
+  "name": "CRM",
+  "key": "customer_id",
+  "as_of": 1706745600.0,
+  "generated_at": 1706750000.0,
+  "gen_max_cnt": 169,
+  "include_archive": false,
+  "rows": 54,
+  "labels": [
+    "email",
+    "phone",
+    "status"
+  ]
+},
+  columns: {
+    "customer_id": function () { return ["101", "102", "103", "104", "106", "107", "108", "109", "110", "111", "112", "113", "114", "115", "116", "117", "118", "119", "120", "121", "122", "123", "124", "125", "126", "127", "128", "129", "130", "131", "132", "133", "134", "135", "136", "137", "138", "139", "140", "141", "142", "143", "144", "145", "146", "147", "148", "149", "150", "151", "152", "153", "154", "155"]; },
+    "email": function () { return ["alice@example.com", "bob.new@example.com", "carol@example.com", "dave@example.com", "user106@example.com", "user107@example.com", "user108@example.com", "user109@example.com", "user110@example.com", "user111@example.com", "user112@example.com", "user113@example.com", "user114@example.com", "user115@example.com", "user116@example.com", "user117@example.com", "user118@example.com", "user119@example.com", "user120@example.com", "user121@example.com", "user122@example.com", "user123@example.com", "user124@example.com", "user125@example.com", "user126@example.com", "user127@example.com", "user128@example.com", "user129@example.com", "user130@example.com", "user131@example.com", "user132@example.com", "user133@example.com", "user134@example.com", "user135@example.com", "user136@example.com", "user137@example.com", "user138@example.com", "user139@example.com", "user140@example.com", "user141@example.com", "user142@example.com", "user143@example.com", "user144@example.com", "user145@example.com", "user146@example.com", "user147@example.com", "user148@example.com", "user149@example.com", "user150@example.com", "user151@example.com", "user152@example.com", "user153@example.com", "user154@example.com", "user155@example.com"]; },
+    "phone": function () { return ["+7-900-000-0001", "+7-900-000-0002", null, undefined, "+7-900-000-0106", "+7-900-000-0107", "+7-900-000-0108", "+7-900-000-0109", "+7-900-000-0110", "+7-900-000-0111", "+7-900-000-0112", "+7-900-000-0113", "+7-900-000-0114", "+7-900-000-0115", "+7-900-000-0116", "+7-900-000-0117", "+7-900-000-0118", "+7-900-000-0119", "+7-900-000-0120", "+7-900-000-0121", "+7-900-000-0122", "+7-900-000-0123", "+7-900-000-0124", "+7-900-000-0125", "+7-900-000-0126", "+7-900-000-0127", "+7-900-000-0128", "+7-900-000-0129", "+7-900-000-0130", "+7-900-000-0131", "+7-900-000-0132", "+7-900-000-0133", "+7-900-000-0134", "+7-900-000-0135", "+7-900-000-0136", "+7-900-000-0137", "+7-900-000-0138", "+7-900-000-0139", "+7-900-000-0140", "+7-900-000-0141", "+7-900-000-0142", "+7-900-000-0143", "+7-900-000-0144", "+7-900-000-0145", "+7-900-000-0146", "+7-900-000-0147", "+7-900-000-0148", "+7-900-000-0149", "+7-900-000-0150", "+7-900-000-0151", "+7-900-000-0152", "+7-900-000-0153", "+7-900-000-0154", "+7-900-000-0155"]; },
+    "status": function () { return ["active", "vip", "active", "active", "active", "active", "active", "active", "active", "active", "active", "active", "active", "active", "active", "active", "active", "active", "active", "active", "active", "active", "active", "active", "active", "active", "active", "active", "active", "active", "active", "active", "active", "active", "active", "active", "active", "active", "active", "active", "active", "active", "active", "active", "active", "active", "active", "active", "active", "active", "active", "active", "active", "active"]; }
+  }
+};
