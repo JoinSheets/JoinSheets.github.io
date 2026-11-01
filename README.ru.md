@@ -57,12 +57,12 @@ cd JoinSheets.github.io
    на этот чекаут (временно — в конце откатывается, сама `main` их никогда не несёт).
 3. Собирает `hugo --minify` в `public/`.
 4. Копирует результат в git worktree ветки `gh-pages` по пути
-   `../joinsheets-github-io-gh-pages` — **ничего не коммитит и не пушит.**
+   `../gh-pages.joinsheets.github.io` — **ничего не коммитит и не пушит.**
 
 Дальше — проверить worktree и закоммитить/запушить самостоятельно:
 
 ```bash
-cd ../joinsheets-github-io-gh-pages
+cd ../gh-pages.joinsheets.github.io
 git status
 git add -A && git commit -m "Build: <дата/причина>"
 git push origin gh-pages

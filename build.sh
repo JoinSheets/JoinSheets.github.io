@@ -29,12 +29,29 @@ git fetch origin hugo
 git checkout "origin/hugo" -- config/ themes/ layouts/ static/css/ static/images/ .gitmodules
 git submodule update --init --recursive -- themes/compose
 
-echo "==> Building with hugo --minify"
+echo "==> Building the release site with hugo --minify (static/demo at its pinned release ref)"
 rm -rf public
 hugo --minify
 
+# A second build of just the demo app, with static/demo tracking develop instead of
+# its pinned release tag -- a day-to-day dev-workflow preview (NOT a release-prep
+# step, run it whenever: right after a release, mid-development, whatever). Lets
+# you see what's currently on develop rendered for real -- including things a local
+# preview can't show, like GitHub Pages' own caching behavior. Published at
+# /nightly-demo/, not linked from anywhere on the site and excluded via robots.txt
+# (hugo branch) -- reachable by URL, not advertised.
+echo "==> Building a nightly demo preview (static/demo tracking develop)"
+DEMO_PINNED_REF="$(git -C static/demo rev-parse HEAD)"
+git -C static/demo fetch origin develop -q
+git -C static/demo checkout origin/develop -q
+rm -rf public-nightly
+hugo --minify --destination public-nightly
+# Restore the pinned ref -- static/demo is a real submodule gitlink on main, this
+# script must leave it exactly as it found it.
+git -C static/demo checkout "$DEMO_PINNED_REF" -q
+
 echo "==> Staging the build in a gh-pages worktree (not committing)"
-WORKTREE_DIR="$ROOT/../joinsheets-github-io-gh-pages"
+WORKTREE_DIR="$ROOT/../gh-pages.joinsheets.github.io"
 if [ ! -d "$WORKTREE_DIR" ]; then
   if git show-ref --verify --quiet refs/heads/gh-pages; then
     git worktree add "$WORKTREE_DIR" gh-pages
@@ -52,6 +69,9 @@ fi
 # Replace the worktree's tracked content with the fresh build, keep .git alone.
 find "$WORKTREE_DIR" -mindepth 1 -maxdepth 1 ! -name '.git' -exec rm -rf {} +
 cp -r public/. "$WORKTREE_DIR/"
+rm -rf "$WORKTREE_DIR/nightly-demo"
+mkdir -p "$WORKTREE_DIR/nightly-demo"
+cp -r public-nightly/demo/. "$WORKTREE_DIR/nightly-demo/"
 touch "$WORKTREE_DIR/.nojekyll"
 
 # Undo the hugo-branch overlay on main: unstage config/themes/layouts/
@@ -60,7 +80,7 @@ touch "$WORKTREE_DIR/.nojekyll"
 # the theme). static/demo (a submodule on main) is left alone -- only
 # static/css/ and static/images/ came from hugo.
 git reset -q HEAD -- config themes layouts static/css static/images .gitmodules 2>/dev/null || true
-rm -rf config themes layouts static/css static/images
+rm -rf config themes layouts static/css static/images public-nightly
 git checkout -- .gitmodules
 
 echo

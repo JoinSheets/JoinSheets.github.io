@@ -54,14 +54,25 @@ cd JoinSheets.github.io
 1. Initializes/updates the submodules above.
 2. Overlays `config/` + `themes/` + `layouts/` + `static/css/` + `static/images/` from the `hugo` branch
    onto this checkout (temporarily — it's undone at the end, `main` itself never carries them).
-3. Runs `hugo --minify` into `public/`.
-4. Copies the result into a `gh-pages` git worktree at
-   `../joinsheets-github-io-gh-pages` — **does not commit or push anything.**
+3. Runs `hugo --minify` into `public/` — the release site, `static/demo` at
+   its normal pinned ref.
+4. Builds a second time into `public-nightly/`, with `static/demo` switched
+   to `develop`'s tip instead (restored to its real pinned ref afterward) —
+   a day-to-day preview of the product's current `develop` state, not tied
+   to release prep; run this whenever you want to eyeball what's on
+   `develop`, release coming up or not.
+5. Copies `public/` into a `gh-pages` git worktree at
+   `../gh-pages.joinsheets.github.io`, and `public-nightly/demo/` into that
+   worktree's `nightly-demo/` — **does not commit or push anything.**
+
+The nightly preview isn't linked from anywhere on the site and is excluded
+via `robots.txt` — reachable by URL (`/nightly-demo/`) if you know it's
+there, not advertised.
 
 Review the worktree, then commit and push it yourself:
 
 ```bash
-cd ../joinsheets-github-io-gh-pages
+cd ../gh-pages.joinsheets.github.io
 git status
 git add -A && git commit -m "Build: <date/reason>"
 git push origin gh-pages
@@ -83,12 +94,12 @@ same as `build.sh` does automatically).
 
 ## Known limitations (stub phase)
 
-- `content/docs/advanced-course` is a plain submodule mount of
-  JoinSheetsRoast's own Markdown files (no Hugo front matter yet) — they
-  render, but without the section's own `weight`-ordered index page, and
-  Hugo currently tags them as the default language (English) even though
-  the content is Russian. To be revisited once the course's own rework is
-  done.
+- `content/docs/quick-start`/`user-guide`/`cookbook`/`developers` are plain
+  submodule mounts of their own stub Markdown files (no Hugo front matter) —
+  they render, but without their own `weight`-ordered index pages.
+  `content/docs/advanced-course` (JoinSheetsRoast) already has front matter
+  (`title`/`weight` on every chapter); the others are still stubs, to be
+  filled in as each section gets real content.
 - After pulling new submodule commits, re-run `git submodule update --init`
   (or `--init --recursive` for a full build) before building — a bare
   `git pull`/`git checkout` on `main` does not update submodule content by
