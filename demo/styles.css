@@ -54,10 +54,15 @@ h2 { font-size: 1rem; margin: 1.5rem 0 .5rem; color: var(--muted); text-transfor
 .nav strong { font-size: 1.5rem; font-weight: 700; }
 .nav .spacer { flex: 1; }
 /* org logo link, first in .nav (before the title) -- the gap between it and the
-   title comes from .nav's own flex gap, nothing extra needed here. */
+   title comes from .nav's own flex gap, nothing extra needed here. Sized to
+   match the site's own nav logo (joinsheets.github.io, static/css/custom.css
+   ".nav_brand img{max-width:4.5rem}") closely enough that switching between
+   the two doesn't read as a size change -- .nav here is position:sticky and
+   grows with its content, not position:absolute like the site's, so there's
+   no fixed-height budget to blow through by sizing this generously. */
 .org-logo {
   display: inline-flex; align-items: center; justify-content: center;
-  flex: none; width: 2.5rem; height: 2.5rem; border-radius: 6px;
+  flex: none; width: 3.25rem; height: 3.25rem; border-radius: 6px;
 }
 .org-logo:hover { background: var(--head-bg); }
 /* the status line at the bottom of the window (as in many desktop apps) -- not
