@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /nightly-demo/
+
+Sitemap: {{ "sitemap.xml" | absURL }}
