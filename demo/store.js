@@ -642,14 +642,19 @@
       case 'ui/setExportFormat':
         return Object.assign({}, state, { exportFormat: a.value });
 
-      // Export and Advanced filter are mutually exclusive panels above the table:
-      // opening one closes the other (closing one, by itself, doesn't touch the
-      // other -- it's already closed by that invariant).
+      // Export, Filter, and Settings are mutually exclusive panels: opening one
+      // closes the other two (closing one, by itself, doesn't touch the others --
+      // they're already closed by this same invariant). Settings has its own
+      // mount point, reachable from every route, not just Table like the other
+      // two -- but the user-facing behavior (one toggle button, same accent-fill
+      // "active" look, closes whatever else was open) is the same for all three,
+      // so the reducer treats them the same way too.
       case 'export/toggle': {
         var openingExport = !state.exportOpen;
         return Object.assign({}, state, {
           exportOpen: openingExport,
-          advOpen: openingExport ? false : state.advOpen
+          advOpen: openingExport ? false : state.advOpen,
+          settingsOpen: openingExport ? false : state.settingsOpen
         });
       }
 
@@ -657,16 +662,19 @@
         var openingAdv = !state.advOpen;
         return Object.assign({}, state, {
           advOpen: openingAdv,
-          exportOpen: openingAdv ? false : state.exportOpen
+          exportOpen: openingAdv ? false : state.exportOpen,
+          settingsOpen: openingAdv ? false : state.settingsOpen
         });
       }
 
-      // The settings panel (gear icon) -- its own mount point, reachable from every
-      // route, not just Table like Export/Advanced filter above, so it doesn't share
-      // their mutual-exclusivity (nothing forces it closed, or forces them closed by
-      // opening it).
-      case 'settings/toggle':
-        return Object.assign({}, state, { settingsOpen: !state.settingsOpen });
+      case 'settings/toggle': {
+        var openingSettings = !state.settingsOpen;
+        return Object.assign({}, state, {
+          settingsOpen: openingSettings,
+          exportOpen: openingSettings ? false : state.exportOpen,
+          advOpen: openingSettings ? false : state.advOpen
+        });
+      }
 
       case 'settings/setTheme':
         return Object.assign({}, state, { theme: a.theme });

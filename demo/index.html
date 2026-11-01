@@ -11,9 +11,14 @@
     var(--...) one of these files defines). "compose" (matching
     joinsheets.github.io's own look) until a saved choice says otherwise -- see
     main.js/store.js, and theme.js for the rest of the registry.
+
+    ?v= on both -- GitHub Pages caches these (max-age=600) at a URL that would
+    otherwise never change between edits. Bump BOTH numbers by one on any edit to
+    styles.css or a themes/*.css file -- theme.js::CSS_CACHE_BUST needs the same
+    bump (it can't read this one, plain HTML).
   -->
-  <link id="theme-style" rel="stylesheet" href="themes/compose.css">
-  <link rel="stylesheet" href="styles.css">
+  <link id="theme-style" rel="stylesheet" href="themes/compose.css?v=1">
+  <link rel="stylesheet" href="styles.css?v=1">
 </head>
 <body>
   <div id="app" class="app"><p class="muted" style="padding:1rem">Loading…</p></div>

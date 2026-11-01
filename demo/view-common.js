@@ -261,18 +261,24 @@
   // sharing one pictogram read as one, so the nav buttons dropped theirs. Settings (the
   // gear, below) is the one deliberate exception -- it has no label at all, so it needs
   // its icon to say what it is.
+  //
+  // Export/Filter/Settings open/close the same way (click toggles, opening one closes
+  // the other two -- see store.js's reducer) and look the same way while open: filled
+  // with the accent color (.gear.active, styles.css), not a ▸/▾ indicator in the label
+  // -- that read as less noticeable than a fill, and dropping it frees up enough width
+  // that all the nav buttons fit on one line on a narrow screen instead of wrapping.
   var viewNav = function (state, d) {
     var menu = state.route === 'table'
       ? [
           el('button', {
-            class: 'gear', disabled: !state.dataset,
+            class: 'gear' + (state.exportOpen ? ' active' : ''), disabled: !state.dataset,
             onclick: function () { d({ type: 'export/toggle' }); }
-          }, 'Export ' + (state.exportOpen ? '▾' : '▸')),
+          }, 'Export'),
           el('button', {
-            class: 'gear', disabled: !state.dataset,
+            class: 'gear' + (state.advOpen ? ' active' : ''), disabled: !state.dataset,
             title: 'Advanced filter and sort: temporary, applied on top of the selection, not saved',
             onclick: function () { d({ type: 'adv/toggle' }); }
-          }, 'Filter ' + (state.advOpen ? '▾' : '▸')),
+          }, 'Filter'),
           el('button', {
             class: 'gear',
             title: 'Fields: which columns to show and how to compute them',

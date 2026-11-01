@@ -26,6 +26,15 @@
     { id: 'dark', name: 'Dark', file: 'themes/dark.css' }
   ];
 
+  // GitHub Pages serves these with cache-control: max-age=600 and the plain file
+  // path never changes between edits, so a browser (or the CDN edge) can keep
+  // serving a stale copy for a while after a real change -- same issue the site
+  // itself hit with its own custom.css. Bump this by one on every edit to
+  // styles.css or any themes/*.css file (index.html's own <link rel=stylesheet
+  // href="styles.css?v=..."> needs the same bump, by hand -- plain HTML, can't
+  // read this constant).
+  var CSS_CACHE_BUST = 1;
+
   var findTheme = function (id) {
     return THEMES.find(function (t) { return t.id === id; }) || THEMES[0];
   };
@@ -35,8 +44,8 @@
   // localStorage value from before a theme was renamed/removed).
   var applyTheme = function (id) {
     var link = document.getElementById('theme-style');
-    if (link) link.href = findTheme(id).file;
+    if (link) link.href = findTheme(id).file + '?v=' + CSS_CACHE_BUST;
   };
 
-  return { THEMES: THEMES, findTheme: findTheme, applyTheme: applyTheme };
+  return { THEMES: THEMES, findTheme: findTheme, applyTheme: applyTheme, CSS_CACHE_BUST: CSS_CACHE_BUST };
 });

@@ -88,11 +88,14 @@ h2 { font-size: 1rem; margin: 1.5rem 0 .5rem; color: var(--muted); text-transfor
 .nav .gear {
   border-color: var(--accent); color: var(--accent); background: var(--bg);
 }
+/* Export/Filter/Settings, while their panel is open (store.js's reducer keeps
+   the three mutually exclusive, so at most one of these is ever active at
+   once) -- filled solid with the accent, same convention as .tab.active below,
+   instead of a ▸/▾ text indicator. */
+.nav .gear.active { background: var(--accent); color: var(--accent-fg); }
 /* Settings -- icon only, no label, so it doesn't need .gear's icon+text gap/
-   padding; filled with the accent (same convention as .tab.active below) while
-   the panel is open, instead of the ▸/▾ text indicator the labeled buttons use. */
+   padding. */
 .settings-toggle { gap: 0; padding: .35rem; }
-.settings-toggle.active { background: var(--accent); color: var(--accent-fg); }
 
 /* forms */
 button {
