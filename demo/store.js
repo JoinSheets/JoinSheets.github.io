@@ -19,7 +19,8 @@
   var OP_IDS = Dataset.OP_IDS, JOIN_TYPE_IDS = Dataset.JOIN_TYPE_IDS;
   var normalizeEntities = Entities.normalizeEntities, mergeEntity = Entities.mergeEntity,
       entityColumns = Entities.entityColumns, columnType = Entities.columnType;
-  var download = Effects.download, readFile = Effects.readFile, storage = Effects.storage;
+  var download = Effects.download, readFile = Effects.readFile, storage = Effects.storage,
+      prefs = Effects.prefs;
 
   var isStale = function (ms) { return ms.db_max_cnt > ms.gen_max_cnt; };
 
@@ -202,7 +203,21 @@
       return typeof saved === 'number' && isFinite(saved) && saved >= 0 ? saved : 10;
     })(),
     exportFormat: 'xls',     // the chosen format in the export panel ('xls' | 'csv')
-    exportOpen: false        // the export panel above the table is expanded
+    exportOpen: false,       // the export panel above the table is expanded
+
+    // Settings (theme, and later language/...) -- a global preference, not a
+    // per-dataset workflow thing, so it reads from `prefs` (localStorage, see
+    // effects.js) rather than `storage` (sessionStorage) above. Any string is
+    // accepted here and normalized later, at the point a theme is actually
+    // applied (theme.js::findTheme falls back to THEMES[0], "compose") -- keeps
+    // this file free of a dependency on the theme registry itself. "compose"
+    // (not "auto") matches index.html's own initial <link>, and
+    // joinsheets.github.io's look.
+    theme: (function () {
+      var saved = prefs.get('theme');
+      return typeof saved === 'string' && saved ? saved : 'compose';
+    })(),
+    settingsOpen: false      // the settings panel (gear icon, top right) is expanded
   };
 
   // ===========================================================================
@@ -645,6 +660,16 @@
           exportOpen: openingAdv ? false : state.exportOpen
         });
       }
+
+      // The settings panel (gear icon) -- its own mount point, reachable from every
+      // route, not just Table like Export/Advanced filter above, so it doesn't share
+      // their mutual-exclusivity (nothing forces it closed, or forces them closed by
+      // opening it).
+      case 'settings/toggle':
+        return Object.assign({}, state, { settingsOpen: !state.settingsOpen });
+
+      case 'settings/setTheme':
+        return Object.assign({}, state, { theme: a.theme });
 
       default:
         break;

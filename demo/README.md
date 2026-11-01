@@ -2,7 +2,7 @@
 
 **English** · [Русский](README.ru.md)
 
-![version](https://img.shields.io/badge/version-0.1.0b1-blue)
+![version](https://img.shields.io/badge/version-0.2.0b1-blue)
 ![license](https://img.shields.io/badge/license-Apache--2.0-green)
 ![status](https://img.shields.io/badge/status-beta-yellow)
 
@@ -23,6 +23,11 @@ submodule adds an "Import" button for loading data from Excel.
 
 Ships with a ready-to-try demo ([`sample-data/`](sample-data/)) for a quick start
 with simple examples.
+
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for what changed in each release, and what's
+planned next.
 
 ## License
 

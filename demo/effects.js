@@ -110,9 +110,27 @@
     }
   };
 
+  // localStorage, NOT sessionStorage -- the opposite tradeoff from `storage` above,
+  // deliberately: app-wide preferences (theme, language, ...) aren't workflow state
+  // tied to one tab's dataset, they're "how this user likes the app to look/behave",
+  // so a new tab should start with the SAME choice as every other one, and an
+  // already-open tab should pick up a change made in another tab live (see the
+  // 'storage' event listener in main.js, which only fires in OTHER tabs -- never the
+  // one that made the change).
+  var prefs = {
+    get: function (key) {
+      try { return JSON.parse(localStorage.getItem('joinsheets:' + key)); }
+      catch (e) { return null; }
+    },
+    set: function (key, value) {
+      try { localStorage.setItem('joinsheets:' + key, JSON.stringify(value)); }
+      catch (e) { /* private window / disabled -- best-effort */ }
+    }
+  };
+
   var api = {
     loadSourceScript: loadSourceScript, download: download, readFile: readFile,
-    pasteFromClipboard: pasteFromClipboard, storage: storage,
+    pasteFromClipboard: pasteFromClipboard, storage: storage, prefs: prefs,
     loadGlobal: loadGlobal, loadManifest: loadManifest, loadManifestFragments: loadManifestFragments
   };
 

@@ -17,7 +17,7 @@
       basePreset = App.basePreset, normalizePreset = App.normalizePreset,
       mergeManifests = App.mergeManifests;
   var loadSourceScript = App.loadSourceScript, download = App.download, storage = App.storage,
-      loadGlobal = App.loadGlobal, loadManifest = App.loadManifest,
+      prefs = App.prefs, loadGlobal = App.loadGlobal, loadManifest = App.loadManifest,
       loadManifestFragments = App.loadManifestFragments;
   var joinSources = App.joinSources, applyConditions = App.applyConditions,
       visibleColumns = App.visibleColumns, applyAdvanced = App.applyAdvanced,
@@ -28,7 +28,8 @@
   var viewNav = App.viewNav, viewFooter = App.viewFooter, viewBuild = App.viewBuild,
       viewEntities = App.viewEntities, viewTableShell = App.viewTableShell,
       renderAdvFilter = App.renderAdvFilter, renderExportPanel = App.renderExportPanel,
-      renderGrid = App.renderGrid;
+      renderSettingsPanel = App.renderSettingsPanel, renderGrid = App.renderGrid;
+  var applyTheme = App.applyTheme;
 
   // ---------------------------------------------------------------------------
   // The dataset-build effect (loads sources, joins)
@@ -171,6 +172,8 @@
   var lastDataset = null;   // a reference, not a signature -- build/success always creates a new object
   var lastAdvOpen = null;
   var lastExportOpen = null;
+  var lastSettingsOpen = null;
+  var lastTheme = null;
 
   // one info line at the bottom of the window: the data source + (on Table, once the
   // dataset is built) preset/slice/rows-after-filters/columns
@@ -199,6 +202,18 @@
     // naturally and scroll the whole page when there's a lot of content.
     document.body.classList.toggle('route-table', state.route === 'table');
 
+    // The active theme -- applied (swap the <link id="theme-style"> href) and
+    // persisted (so a new tab/next visit starts the same way) whenever it actually
+    // changes, regardless of manifest/route -- a theme pick shouldn't need a
+    // dataset loaded first. The reverse direction (another tab changing it) is
+    // handled by the 'storage' listener below, which dispatches into this same
+    // state, landing right back here.
+    if (state.theme !== lastTheme) {
+      applyTheme(state.theme);
+      prefs.set('theme', state.theme);
+      lastTheme = state.theme;
+    }
+
     clear(footerNode).appendChild(viewFooter(footerText(state), !state.dataDir));
 
     if (!state.manifest || !state.preset) {
@@ -210,10 +225,12 @@
     if (state.building && !state.dataset) {
       clear(root);
       root.appendChild(viewNav(state, d));
+      root.appendChild(el('div', { class: 'advfilter', id: 'settings-panel' }));
       root.appendChild(el('section', { class: 'page' },
         el('p', { class: 'muted' }, 'Opening the table with the default preset…')));
       lastRoute = null;
       lastDataset = null;
+      renderSettingsPanel(state, d);
       return;
     }
 
@@ -221,17 +238,24 @@
     // changed, a NEW build happened (build/success always makes a new dataset
     // reference, even if its shape matches the previous one: e.g. only as_of or the
     // preset name changed, while columns/row count stayed the same), or the
-    // export/advanced-filter panel above the table opened/closed (that also drives
-    // the ▸/▾ indicator in the nav itself, not just the page body). This used to
-    // compare a "columns+rows.length" signature instead of the reference -- it
-    // matched for two DIFFERENT builds of the same shape, and the header (which also
-    // carries the preset name and the as_of slice) stayed stuck on the old build.
+    // export/advanced-filter/settings panel above the table opened/closed (that also
+    // drives the ▸/▾ indicator and the gear's "active" state in the nav itself, not
+    // just the page body). This used to compare a "columns+rows.length" signature
+    // instead of the reference -- it matched for two DIFFERENT builds of the same
+    // shape, and the header (which also carries the preset name and the as_of slice)
+    // stayed stuck on the old build.
     var shellChanged = state.route !== lastRoute || state.dataset !== lastDataset
-      || state.advOpen !== lastAdvOpen || state.exportOpen !== lastExportOpen;
+      || state.advOpen !== lastAdvOpen || state.exportOpen !== lastExportOpen
+      || state.settingsOpen !== lastSettingsOpen;
 
-    if (shellChanged || root.children.length < 2) {
+    // root's children, in order: viewNav's header, the settings-panel mount div
+    // (route-independent -- settings/toggle works from Table/Data/Fields alike,
+    // unlike Export/Advanced filter which only exist inside viewTableShell), then
+    // the current route's own content.
+    if (shellChanged || root.children.length < 3) {
       clear(root);
       root.appendChild(viewNav(state, d));
+      root.appendChild(el('div', { class: 'advfilter', id: 'settings-panel' }));
       root.appendChild(
         state.route === 'build' ? viewBuild(state, d)
           : state.route === 'entities' ? viewEntities(state, d)
@@ -241,12 +265,15 @@
       lastDataset = state.dataset;
       lastAdvOpen = state.advOpen;
       lastExportOpen = state.exportOpen;
+      lastSettingsOpen = state.settingsOpen;
     } else if (state.route === 'build') {
       // the Data screen: replace it wholesale (inputs use onchange, focus isn't lost)
-      root.replaceChild(viewBuild(state, d), root.children[1]);
+      root.replaceChild(viewBuild(state, d), root.children[2]);
     } else if (state.route === 'entities') {
-      root.replaceChild(viewEntities(state, d), root.children[1]);
+      root.replaceChild(viewEntities(state, d), root.children[2]);
     }
+
+    renderSettingsPanel(state, d);   // every render(), regardless of route
 
     if (state.route === 'table') {
       // Crash watchdog (also armed in buildDataset above): column/filter/sort/
@@ -276,6 +303,20 @@
   };
 
   store.subscribe(render);
+
+  // Cross-tab settings sync: 'storage' fires in every OTHER already-open tab when
+  // one of them writes localStorage (never in the tab that made the change itself
+  // -- that tab's own render() above already applied+persisted it). Dispatching
+  // into this tab's own store keeps it consistent and re-renders the settings
+  // panel if it happens to be open here too. An id the registry doesn't recognize
+  // isn't a concern here -- theme.js::applyTheme/findTheme fall back to "auto".
+  window.addEventListener('storage', function (e) {
+    if (e.key !== 'joinsheets:theme' || e.newValue == null) return;
+    try {
+      var theme = JSON.parse(e.newValue);
+      if (typeof theme === 'string') store.dispatch({ type: 'settings/setTheme', theme: theme });
+    } catch (err) { /* ignore a malformed value */ }
+  });
 
   // ---------------------------------------------------------------------------
   // Loading the manifest: manifest.js (produced by an external pipeline) + any

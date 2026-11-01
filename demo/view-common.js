@@ -15,7 +15,7 @@
   }
 })(typeof window !== 'undefined' ? window : this, function (Util, Effects, Dataset) {
 
-  var el = Util.el;
+  var el = Util.el, clear = Util.clear;
   var pasteFromClipboard = Effects.pasteFromClipboard;
   var OPERATORS = Dataset.OPERATORS, OP_LIST = Dataset.OP_LIST, OP_NO_VALUE = Dataset.OP_NO_VALUE,
       parseList = Dataset.parseList;
@@ -184,6 +184,35 @@
     return el('div', { class: 'quick-panel' }, field, dropdown, limitRow);
   };
 
+  // Settings icon (a gear) -- the one icon left in the nav header after Export/
+  // Advanced filter/Fields/Data lost theirs (see viewNav below); icon-only, no
+  // label, so it needed one of its own rather than reusing the old "⚙ Data" text
+  // prefix. A filled ring (two circles combined with fill-rule=evenodd) plus 8
+  // teeth as rotated rects -- same monochrome currentColor treatment as the
+  // other small icons here (FUNNEL_SVG etc.).
+  var SETTINGS_SVG =
+    '<svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false">'
+    + '<path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor" d="M8 2.5A5.5 5.5 0 1 0 8 13.5A5.5 5.5 0 1 0 8 2.5Z'
+    + 'M8 5A3 3 0 1 0 8 11A3 3 0 1 0 8 5Z"/>'
+    + '<rect x="6.9" y=".3" width="2.2" height="3" rx=".5" fill="currentColor"/>'
+    + '<rect x="6.9" y=".3" width="2.2" height="3" rx=".5" fill="currentColor" transform="rotate(45 8 8)"/>'
+    + '<rect x="6.9" y=".3" width="2.2" height="3" rx=".5" fill="currentColor" transform="rotate(90 8 8)"/>'
+    + '<rect x="6.9" y=".3" width="2.2" height="3" rx=".5" fill="currentColor" transform="rotate(135 8 8)"/>'
+    + '<rect x="6.9" y=".3" width="2.2" height="3" rx=".5" fill="currentColor" transform="rotate(180 8 8)"/>'
+    + '<rect x="6.9" y=".3" width="2.2" height="3" rx=".5" fill="currentColor" transform="rotate(225 8 8)"/>'
+    + '<rect x="6.9" y=".3" width="2.2" height="3" rx=".5" fill="currentColor" transform="rotate(270 8 8)"/>'
+    + '<rect x="6.9" y=".3" width="2.2" height="3" rx=".5" fill="currentColor" transform="rotate(315 8 8)"/></svg>';
+
+  // The org mark (three overlapping rounded squares -- joinsheets.github.io's own
+  // logo, kept in its own colors rather than currentColor like the other icons here,
+  // so it reads as a brand mark rather than a UI control). Matches the site's actual
+  // pick, logo-13-venn-p4-outline.svg (design/logos/ in the JoinSheets.github.io repo).
+  var ORG_LOGO_SVG =
+    '<svg viewBox="0 0 100 100" width="24" height="24" aria-hidden="true" focusable="false">'
+    + '<rect x="16" y="14" width="50" height="50" rx="9" ry="9" fill="none" stroke="#2b2b2e" stroke-width="3.5"/>'
+    + '<rect x="38" y="18" width="42" height="42" rx="9" ry="9" fill="none" stroke="#9a9a9e" stroke-width="3.5"/>'
+    + '<rect x="26" y="42" width="38" height="38" rx="9" ry="9" fill="none" stroke="#d98f2b" stroke-width="3.5"/></svg>';
+
   // Funnel icon -- the same one used by the column quick-filter apply button in
   // view-table.js (reused from there via ViewCommon.FUNNEL_SVG -- one visual language
   // for "this is about filtering").
@@ -191,23 +220,6 @@
     '<svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true" focusable="false">'
     + '<path fill="currentColor" d="M1.7 2h12.6a.5.5 0 0 1 .4.8L10 9.2v3.5a.5.5 0 0 1-.7.46l-2.5-1.1'
     + 'A.5.5 0 0 1 6.3 11.6V9.2L1.3 2.8A.5.5 0 0 1 1.7 2Z"/></svg>';
-
-  // Export icon (a down arrow into a tray) -- the same monochrome (currentColor)
-  // treatment as the funnel, so it doesn't clash in style next to ⚙ and the funnel.
-  var EXPORT_SVG =
-    '<svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true" focusable="false">'
-    + '<path fill="currentColor" d="M8 1.25c.35 0 .63.28.63.63v6.4l1.68-1.68a.63.63 0 1 1 .88.9'
-    + 'l-2.75 2.75a.63.63 0 0 1-.88 0L4.8 7.5a.63.63 0 1 1 .88-.9l1.68 1.68v-6.4c0-.35.29-.63.63-.63Z"/>'
-    + '<path fill="currentColor" d="M2.5 10a.63.63 0 0 1 .63.63v1.87c0 .35.28.63.62.63h8.5c.34 0 '
-    + '.62-.28.62-.63v-1.87a.63.63 0 1 1 1.25 0v1.87A1.88 1.88 0 0 1 12.25 14h-8.5a1.88 1.88 0 0 1-1.87-1.88v-1.87c0-.34.28-.62.62-.62Z"/></svg>';
-
-  // Fields icon -- three ascending bars (like a metrics chart), same monochrome
-  // (currentColor) treatment.
-  var FIELDS_SVG =
-    '<svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true" focusable="false">'
-    + '<rect x="1" y="9" width="3" height="5" rx=".5" fill="currentColor"/>'
-    + '<rect x="6.5" y="5.5" width="3" height="8.5" rx=".5" fill="currentColor"/>'
-    + '<rect x="12" y="2" width="3" height="12" rx=".5" fill="currentColor"/></svg>';
 
   // Search icon -- a magnifying glass, under a column header (view-table.js), the same
   // monochrome treatment as the funnel/export/fields icons.
@@ -241,31 +253,35 @@
   // Main nav menu. Data and Fields are real pages (they fully replace the screen, which
   // makes sense as separate screens): Data holds sources, joins, conditions (what comes
   // after FROM in SQL); Fields holds the entities, i.e. which columns to show and how to
-  // compute them (what comes after SELECT). Export and Advanced filter are toggles for a
-  // panel hidden by default ABOVE the table (renderExportPanel / renderAdvFilter in
-  // view-table.js): the data stays visible while you filter or export it. Every button
-  // has its icon as the first child, one shared style (.gear).
+  // compute them (what comes after SELECT). Export and Filter are toggles for a panel
+  // hidden by default ABOVE the table (renderExportPanel / renderAdvFilter in
+  // view-table.js): the data stays visible while you filter or export it. Text labels
+  // only, no icons: these used to carry one (e.g. FUNNEL_SVG on Filter), but that same
+  // icon is also what marks a column's own quick-filter trigger -- two different things
+  // sharing one pictogram read as one, so the nav buttons dropped theirs. Settings (the
+  // gear, below) is the one deliberate exception -- it has no label at all, so it needs
+  // its icon to say what it is.
   var viewNav = function (state, d) {
     var menu = state.route === 'table'
       ? [
           el('button', {
             class: 'gear', disabled: !state.dataset,
             onclick: function () { d({ type: 'export/toggle' }); }
-          }, el('span', { html: EXPORT_SVG }), 'Export ' + (state.exportOpen ? '▾' : '▸')),
+          }, 'Export ' + (state.exportOpen ? '▾' : '▸')),
           el('button', {
             class: 'gear', disabled: !state.dataset,
             title: 'Advanced filter and sort: temporary, applied on top of the selection, not saved',
             onclick: function () { d({ type: 'adv/toggle' }); }
-          }, el('span', { html: FUNNEL_SVG }), 'Advanced filter ' + (state.advOpen ? '▾' : '▸')),
+          }, 'Filter ' + (state.advOpen ? '▾' : '▸')),
           el('button', {
             class: 'gear',
             title: 'Fields: which columns to show and how to compute them',
             onclick: function () { d({ type: 'route/set', route: 'entities' }); }
-          }, el('span', { html: FIELDS_SVG }), 'Fields'),
+          }, 'Fields'),
           el('button', {
             class: 'gear', title: 'Data: sources, joins, conditions',
             onclick: function () { d({ type: 'route/set', route: 'build' }); }
-          }, '⚙ Data')
+          }, 'Data')
         ]
       : state.route === 'build'
       // Data <-> Fields are adjacent builder pages (same level, it makes sense to
@@ -293,10 +309,64 @@
     // name: a blank preset (nothing selected) shows an empty string, not a placeholder
     // -- see store.js::normalizePreset.
     return el('header', { class: 'nav' },
+      el('a', {
+        class: 'org-logo', href: 'https://joinsheets.github.io/',
+        target: '_blank', rel: 'noopener', title: 'JoinSheets documentation & site'
+      }, el('span', { html: ORG_LOGO_SVG })),
       el('strong', {}, (state.preset && state.preset.description) || ''),
       el('span', { class: 'spacer' }),
-      menu
+      menu,
+      // Settings -- reachable from every screen (unlike the route-specific buttons
+      // above), always the rightmost item.
+      el('button', {
+        class: 'gear settings-toggle' + (state.settingsOpen ? ' active' : ''),
+        title: 'Settings', 'aria-label': 'Settings',
+        onclick: function () { d({ type: 'settings/toggle' }); }
+      }, el('span', { html: SETTINGS_SVG }))
     );
+  };
+
+  // The settings panel (gear icon in viewNav) -- unlike Export/Advanced filter
+  // above, reachable from every route, so main.js mounts its target div once,
+  // outside the per-route content, and calls this on every render() regardless of
+  // state.route. THEMES comes from theme.js, resolved lazily off window.DS_APP
+  // (not a factory dependency of this file) -- same lazy-reference convention
+  // view-table.js uses for main.js's store/exportXls/exportCsv: by the time any
+  // render() actually runs, every script has already loaded.
+  var renderSettingsPanel = function (state, d) {
+    var node = document.getElementById('settings-panel');
+    if (!node) return;
+    clear(node);
+    if (!state.settingsOpen) return;
+
+    var THEMES = (window.DS_APP && window.DS_APP.THEMES) || [];
+    node.appendChild(el('div', { class: 'advfilter-panel' },
+      el('h2', {}, 'Theme'),
+      el('div', { class: 'row' },
+        THEMES.map(function (t) {
+          return el('label', { class: 'chk' },
+            el('input', {
+              type: 'radio', name: 'theme', checked: state.theme === t.id,
+              onchange: function () { d({ type: 'settings/setTheme', theme: t.id }); }
+            }),
+            t.name
+          );
+        })
+      ),
+      el('h2', {}, 'Language'),
+      el('div', { class: 'row' },
+        el('span', { class: 'muted' }, 'English -- more languages coming in a future release')
+      ),
+      el('div', { class: 'actions' },
+        // The theme already applies as soon as it's picked above (and is saved/
+        // synced across tabs, see main.js) -- Apply's only real job is closing the
+        // panel, a second, explicit way to do what clicking the gear again also
+        // does.
+        el('button', {
+          class: 'primary', onclick: function () { d({ type: 'settings/toggle' }); }
+        }, 'Apply')
+      )
+    ));
   };
 
   // The status-line content at the bottom of the window (as in many desktop apps) --
@@ -310,7 +380,8 @@
   return {
     opSelect: opSelect, valueControl: valueControl, quickValueInput: quickValueInput,
     fieldSelect: fieldSelect, moveRemoveButtons: moveRemoveButtons,
-    viewNav: viewNav, viewFooter: viewFooter, conditionsBlock: conditionsBlock, conditionRow: conditionRow,
+    viewNav: viewNav, viewFooter: viewFooter, renderSettingsPanel: renderSettingsPanel,
+    conditionsBlock: conditionsBlock, conditionRow: conditionRow,
     FUNNEL_SVG: FUNNEL_SVG, SEARCH_SVG: SEARCH_SVG,
     SORT_SVG: SORT_SVG, SORT_ASC_SVG: SORT_ASC_SVG, SORT_DESC_SVG: SORT_DESC_SVG
   };

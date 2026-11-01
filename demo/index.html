@@ -3,8 +3,16 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="version" content="0.1.0b1">
+  <meta name="version" content="0.2.0b1">
   <title>JoinSheets</title>
+  <!--
+    The active theme -- swapped at runtime by theme.js (its href is the one thing
+    that changes; styles.css itself carries no colors, every rule reads a
+    var(--...) one of these files defines). "compose" (matching
+    joinsheets.github.io's own look) until a saved choice says otherwise -- see
+    main.js/store.js, and theme.js for the rest of the registry.
+  -->
+  <link id="theme-style" rel="stylesheet" href="themes/compose.css">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -23,6 +31,7 @@
   </script>
   <script src="util.js"></script>
   <script src="effects.js"></script>
+  <script src="theme.js"></script>
   <!--
     import/ -- an optional git submodule (https://github.com/JoinSheets/JoinSheetsImport),
     an .xlsx -> source format converter + manifest fragment. If the submodule isn't

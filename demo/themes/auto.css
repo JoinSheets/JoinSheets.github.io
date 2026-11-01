@@ -1,0 +1,37 @@
+/* Auto (system) -- the default theme, and the app's original look before themes were
+   split into their own files: follows the OS/browser's prefers-color-scheme, no
+   explicit choice of its own. See theme.js for the registry this file is one entry
+   of, and styles.css for every rule that reads these custom properties. */
+:root {
+  --bg: #ffffff;
+  --fg: #1c1c1c;
+  --muted: #6b7280;
+  --border: #e2e2e2;
+  --accent: #2563eb;
+  --accent-fg: #ffffff;
+  --row-alt: #fafafa;
+  --head-bg: #f4f4f5;
+  --del: #b45309;
+  --stale-bg: #fef3c7;
+  --stale-fg: #92400e;
+  --fresh-bg: #dcfce7;
+  --fresh-fg: #166534;
+  --error: #b91c1c;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #16171a;
+    --fg: #e6e6e6;
+    --muted: #9aa0a6;
+    --border: #34363b;
+    --accent: #3b82f6;
+    --row-alt: #1c1d21;
+    --head-bg: #202126;
+    --del: #fbbf24;
+    --stale-bg: #422006;
+    --stale-fg: #fde68a;
+    --fresh-bg: #052e16;
+    --fresh-fg: #86efac;
+    --error: #f87171;
+  }
+}

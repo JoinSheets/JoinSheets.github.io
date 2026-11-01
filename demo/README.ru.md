@@ -2,7 +2,7 @@
 
 [English](README.md) · **Русский**
 
-![version](https://img.shields.io/badge/version-0.1.0b1-blue)
+![version](https://img.shields.io/badge/version-0.2.0b1-blue)
 ![license](https://img.shields.io/badge/license-Apache--2.0-green)
 ![status](https://img.shields.io/badge/status-beta-yellow)
 
@@ -25,6 +25,11 @@
 В комплекте идет готовый демо-набор ([`sample-data/`](sample-data/)) —
 для быстрого старта на простых примерах.
 
+
+## История изменений
+
+См. [CHANGELOG.ru.md](CHANGELOG.ru.md) — что изменилось в каждом релизе и что
+запланировано дальше.
 
 ## Лицензия
 

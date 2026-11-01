@@ -1,36 +1,9 @@
-:root {
-  --bg: #ffffff;
-  --fg: #1c1c1c;
-  --muted: #6b7280;
-  --border: #e2e2e2;
-  --accent: #2563eb;
-  --accent-fg: #ffffff;
-  --row-alt: #fafafa;
-  --head-bg: #f4f4f5;
-  --del: #b45309;
-  --stale-bg: #fef3c7;
-  --stale-fg: #92400e;
-  --fresh-bg: #dcfce7;
-  --fresh-fg: #166534;
-  --error: #b91c1c;
-}
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #16171a;
-    --fg: #e6e6e6;
-    --muted: #9aa0a6;
-    --border: #34363b;
-    --accent: #3b82f6;
-    --row-alt: #1c1d21;
-    --head-bg: #202126;
-    --del: #fbbf24;
-    --stale-bg: #422006;
-    --stale-fg: #fde68a;
-    --fresh-bg: #052e16;
-    --fresh-fg: #86efac;
-    --error: #f87171;
-  }
-}
+/* No colors in this file -- every rule below reads a var(--bg)/var(--accent)/etc.
+   custom property, defined by whichever themes/*.css file index.html's
+   <link id="theme-style"> currently points at (see theme.js for the registry,
+   main.js for how the choice is applied/persisted/synced across tabs). The full
+   set, for reference: --bg --fg --muted --border --accent --accent-fg --row-alt
+   --head-bg --del --stale-bg --stale-fg --fresh-bg --fresh-fg --error. */
 
 * { box-sizing: border-box; }
 /* A flex column spanning the full viewport height -- needed so .scroll (the table)
@@ -80,6 +53,13 @@ h2 { font-size: 1rem; margin: 1.5rem 0 .5rem; color: var(--muted); text-transfor
    bar's height, giving the menu buttons more room around them */
 .nav strong { font-size: 1.5rem; font-weight: 700; }
 .nav .spacer { flex: 1; }
+/* org logo link, first in .nav (before the title) -- the gap between it and the
+   title comes from .nav's own flex gap, nothing extra needed here. */
+.org-logo {
+  display: inline-flex; align-items: center; justify-content: center;
+  flex: none; width: 2.5rem; height: 2.5rem; border-radius: 6px;
+}
+.org-logo:hover { background: var(--head-bg); }
 /* the status line at the bottom of the window (as in many desktop apps) -- not
    .app, but a direct child of body: its own horizontal padding (.app doesn't give it
    any outside itself), fixed -- always visible regardless of page scroll */
@@ -103,6 +83,11 @@ h2 { font-size: 1rem; margin: 1.5rem 0 .5rem; color: var(--muted); text-transfor
 .nav .gear {
   border-color: var(--accent); color: var(--accent); background: var(--bg);
 }
+/* Settings -- icon only, no label, so it doesn't need .gear's icon+text gap/
+   padding; filled with the accent (same convention as .tab.active below) while
+   the panel is open, instead of the ▸/▾ text indicator the labeled buttons use. */
+.settings-toggle { gap: 0; padding: .35rem; }
+.settings-toggle.active { background: var(--accent); color: var(--accent-fg); }
 
 /* forms */
 button {
