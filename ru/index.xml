@@ -138,17 +138,58 @@ Object Model, DOM. Корень дерева — объект &lt;code>document&
 3 — текст (&lt;code>Node.TEXT_NODE&lt;/code>), 8 — комментарий (&lt;code>Node.COMMENT_NODE&lt;/code>), 9 — сам
 документ (&lt;code>Node.DOCUMENT_NODE&lt;/code>). HTML-разметка, которую парсит браузер, — это один из способов описать
 такое дерево текстом; но дерево существует и тогда, когда ни один символ HTML
-не отображается, — именно с ним работает JavaScript через DOM API.&lt;/p></description></item><item><title>Как внести вклад</title><link>https://joinsheets.github.io/ru/docs/developers/contributing/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/developers/contributing/</guid><description>&lt;ul>
-&lt;li>&lt;code>main&lt;/code> всегда чистый и готов к релизу — без артефактов, нужных только для
-разработки. Повседневная работа — в &lt;code>develop&lt;/code>; крупные изменения и фиксы
-багов — в отдельных ветках от &lt;code>develop&lt;/code>.&lt;/li>
-&lt;li>Версии помечаются тегом на &lt;code>main&lt;/code>; релиз также публикуется как GitHub
-Release с тем же архивом, приложенным как asset.&lt;/li>
-&lt;li>Предложить изменение — через issue, реализовать в отдельной ветке, открыть
-pull request в &lt;code>develop&lt;/code>.&lt;/li>
+не отображается, — именно с ним работает JavaScript через DOM API.&lt;/p></description></item><item><title>Релизы</title><link>https://joinsheets.github.io/ru/docs/developers/releases/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/developers/releases/</guid><description>&lt;p>JoinSheets — приложение без сборки: нет бандлера, нет build-шага, нет CI. Релиз —
+это осознанное, ручное действие: слияние накопленных изменений в &lt;code>main&lt;/code>,
+упаковка и тег — а не что-то, что происходит при каждом пуше. Эта страница
+описывает, как это устроено.&lt;/p>
+&lt;h2 id="версионирование" class=link_owner>
+ Версионирование
+ &lt;a href="#%d0%b2%d0%b5%d1%80%d1%81%d0%b8%d0%be%d0%bd%d0%b8%d1%80%d0%be%d0%b2%d0%b0%d0%bd%d0%b8%d0%b5" class="link icon">
+ &lt;svg>
+ &lt;use xlink:href="#anchor-link">&lt;/use>
+ &lt;/svg>
+ &lt;/a>
+&lt;/h2>
+&lt;ul>
+&lt;li>Релизы помечаются тегом на конкретном коммите в &lt;code>main&lt;/code> (имя тега — сама
+версия, например &lt;code>0.2.0b1&lt;/code>).&lt;/li>
+&lt;li>JoinSheets сейчас в фазе &lt;strong>бета&lt;/strong>: нумерация версий продолжает ту же схему,
+что использовалась на этапе альфы, только вместо &lt;code>a&lt;/code> — &lt;code>b&lt;/code>: &lt;code>0.1.0b1&lt;/code>,
+&lt;code>0.2.0b1&lt;/code> и так далее.&lt;/li>
+&lt;li>Бета-фаза подразумевает небольшие, постепенные изменения: доработки UI/UX,
+время от времени — новые функции, без резких архитектурных скачков.&lt;/li>
 &lt;/ul>
-&lt;p>&lt;em>(Эта страница со временем вырастет в полноценное руководство для
-контрибьюторов.)&lt;/em>&lt;/p></description></item><item><title>Глава 3 — Состояние и редьюсер</title><link>https://joinsheets.github.io/ru/docs/advanced-course/03-state-and-reducer/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/advanced-course/03-state-and-reducer/</guid><description>&lt;p>Код: &lt;code>store.js&lt;/code> — &lt;code>createStore&lt;/code> (55-66), &lt;code>initialState&lt;/code> (176-209), доменные
+&lt;h2 id="веткование" class=link_owner>
+ Веткование
+ &lt;a href="#%d0%b2%d0%b5%d1%82%d0%ba%d0%be%d0%b2%d0%b0%d0%bd%d0%b8%d0%b5" class="link icon">
+ &lt;svg>
+ &lt;use xlink:href="#anchor-link">&lt;/use>
+ &lt;/svg>
+ &lt;/a>
+&lt;/h2>
+&lt;ul>
+&lt;li>&lt;code>develop&lt;/code> — ветка повседневной работы. &lt;code>main&lt;/code> всегда остаётся чистым,
+готовым к релизу снимком — без тестовых наборов и вспомогательных скриптов
+разработчика, только то, что нужно самому продукту для работы.&lt;/li>
+&lt;li>Релиз — это слияние &lt;code>develop&lt;/code> в &lt;code>main&lt;/code>, при этом артефакты разработки
+(тесты, тест-раннер и т.п.) в это слияние намеренно не попадают.&lt;/li>
+&lt;li>Крупные изменения сначала попадают в &lt;code>develop&lt;/code> через собственные
+короткоживущие ветки; это не жёсткое правило без исключений, но поведение
+по умолчанию.&lt;/li>
+&lt;/ul>
+&lt;h2 id="что-входит-в-релиз" class=link_owner>
+ Что входит в релиз
+ &lt;a href="#%d1%87%d1%82%d0%be-%d0%b2%d1%85%d0%be%d0%b4%d0%b8%d1%82-%d0%b2-%d1%80%d0%b5%d0%bb%d0%b8%d0%b7" class="link icon">
+ &lt;svg>
+ &lt;use xlink:href="#anchor-link">&lt;/use>
+ &lt;/svg>
+ &lt;/a>
+&lt;/h2>
+&lt;p>Каждый релизный коммит в &lt;code>main&lt;/code> добавляет один архив
+(&lt;code>JoinSheets-&amp;lt;версия&amp;gt;.tar.gz&lt;/code>) в корне репозитория — снимок продакшн-файлов
+релиза (код + демо-данные, без тестов, без содержимого submodule). Архив
+предыдущей версии не хранится — историю версий хранят её собственный тег и
+страница GitHub Release, а не файл в дереве репозитория.&lt;/p></description></item><item><title>Глава 3 — Состояние и редьюсер</title><link>https://joinsheets.github.io/ru/docs/advanced-course/03-state-and-reducer/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/advanced-course/03-state-and-reducer/</guid><description>&lt;p>Код: &lt;code>store.js&lt;/code> — &lt;code>createStore&lt;/code> (55-66), &lt;code>initialState&lt;/code> (176-209), доменные
 редьюсеры (224-612) и их композиция в &lt;code>reducer()&lt;/code> (614-668). Не нужно разбирать
 каждый &lt;code>case&lt;/code> — структура важнее содержимого конкретных веток.&lt;/p>
 &lt;h2 id="1-теория" class=link_owner>
@@ -176,7 +217,17 @@ pull request в &lt;code>develop&lt;/code>.&lt;/li>
 взаимодействий немного; но по мере роста приложения отладка превращается в
 расследование: баг воспроизводится, но чтобы понять, что именно и где
 изменило состояние, приходится ставить точки останова во всех
-местах, которые теоретически могли на него повлиять.&lt;/p></description></item><item><title>Глава 4 — Тестирование в JS, часть 1: принципы</title><link>https://joinsheets.github.io/ru/docs/advanced-course/04-testing-principles/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/advanced-course/04-testing-principles/</guid><description>&lt;p>Код: &lt;code>tests/preset.test.js&lt;/code> (первые ~90 строк — нормализация пресета + один
+местах, которые теоретически могли на него повлиять.&lt;/p></description></item><item><title>Как внести вклад</title><link>https://joinsheets.github.io/ru/docs/developers/contributing/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/developers/contributing/</guid><description>&lt;ul>
+&lt;li>&lt;code>main&lt;/code> всегда чистый и готов к релизу — без артефактов, нужных только для
+разработки. Повседневная работа — в &lt;code>develop&lt;/code>; крупные изменения и фиксы
+багов — в отдельных ветках от &lt;code>develop&lt;/code>.&lt;/li>
+&lt;li>Предложить изменение — через issue, реализовать в отдельной ветке, открыть
+pull request в &lt;code>develop&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;p>Про версионирование, конвенцию архив+GitHub Release, хотфиксы и ночную сборку —
+см. &lt;a href="../releases/">Релизы&lt;/a>.&lt;/p>
+&lt;p>&lt;em>(Эта страница со временем вырастет в полноценное руководство для
+контрибьюторов.)&lt;/em>&lt;/p></description></item><item><title>Глава 4 — Тестирование в JS, часть 1: принципы</title><link>https://joinsheets.github.io/ru/docs/advanced-course/04-testing-principles/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/advanced-course/04-testing-principles/</guid><description>&lt;p>Код: &lt;code>tests/preset.test.js&lt;/code> (первые ~90 строк — нормализация пресета + один
 тест редьюсера), &lt;code>store.js&lt;/code> как объект тестирования (уже разобран в главе 3).&lt;/p>
 &lt;h2 id="1-теория" class=link_owner>
  1. Теория
