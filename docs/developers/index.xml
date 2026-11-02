@@ -48,57 +48,21 @@ tokenizer/parser/evaluator (&lt;code>formula.js&lt;/code>), deliberately not &lt
 &lt;code>store.js&lt;/code>) are covered by &lt;code>node:test&lt;/code> unit tests. A separate smoke test
 (&lt;code>tests/smoke/dom-smoke.js&lt;/code>) runs the real &lt;code>&amp;lt;script&amp;gt;&lt;/code> bootstrap sequence
 against a minimal hand-rolled DOM stub, to catch wiring mistakes the unit
-tests can&amp;rsquo;t see (a missing export, the wrong script order).&lt;/p></description></item><item><title>Releases</title><link>https://joinsheets.github.io/docs/developers/releases/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/docs/developers/releases/</guid><description>&lt;p>JoinSheets is a zero-build static app: there&amp;rsquo;s no bundler, no build step, and no
-CI pipeline. A release is a deliberate, manual act &amp;ndash; merging accumulated work
-into &lt;code>main&lt;/code>, packaging it, and tagging it &amp;ndash; not something that happens on every
-push. This page describes how that works.&lt;/p>
-&lt;h2 id="versioning" class=link_owner>
- Versioning
- &lt;a href="#versioning" class="link icon">
+tests can&amp;rsquo;t see (a missing export, the wrong script order).&lt;/p></description></item><item><title>Releases</title><link>https://joinsheets.github.io/docs/developers/releases/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/docs/developers/releases/</guid><description>&lt;p>This section describes the core principles behind JoinSheets&amp;rsquo; release policy
+and the workflow for shipping a new release.&lt;/p>
+&lt;h2 id="development-phase" class=link_owner>
+ Development phase
+ &lt;a href="#development-phase" class="link icon">
  &lt;svg>
  &lt;use xlink:href="#anchor-link">&lt;/use>
  &lt;/svg>
  &lt;/a>
 &lt;/h2>
-&lt;ul>
-&lt;li>Releases are tagged on a specific commit on &lt;code>main&lt;/code> (the tag name is the
-version string itself, e.g. &lt;code>0.2.0b1&lt;/code>).&lt;/li>
-&lt;li>JoinSheets is currently in &lt;strong>beta&lt;/strong>: version numbers continue the same
-numbering the project used during its alpha phase, just with a &lt;code>b&lt;/code> instead
-of an &lt;code>a&lt;/code> &amp;ndash; &lt;code>0.1.0b1&lt;/code>, &lt;code>0.2.0b1&lt;/code>, and so on.&lt;/li>
-&lt;li>Beta means small, incremental changes: UI/UX work, occasional new features,
-no large architectural jumps.&lt;/li>
-&lt;/ul>
-&lt;h2 id="branching" class=link_owner>
- Branching
- &lt;a href="#branching" class="link icon">
- &lt;svg>
- &lt;use xlink:href="#anchor-link">&lt;/use>
- &lt;/svg>
- &lt;/a>
-&lt;/h2>
-&lt;ul>
-&lt;li>&lt;code>develop&lt;/code> is where day-to-day work happens. &lt;code>main&lt;/code> is always a clean,
-releasable snapshot &amp;ndash; no test suites or developer-only scripts, only what
-the product itself needs to run.&lt;/li>
-&lt;li>A release is &lt;code>develop&lt;/code> merged into &lt;code>main&lt;/code>, with development-only files
-(tests, the test runner, &amp;hellip;) deliberately left out of that merge.&lt;/li>
-&lt;li>Larger changes land on &lt;code>develop&lt;/code> through their own short-lived branches
-first; this isn&amp;rsquo;t a hard rule without exceptions, but the default.&lt;/li>
-&lt;/ul>
-&lt;h2 id="whats-in-a-release" class=link_owner>
- What&amp;rsquo;s in a release
- &lt;a href="#whats-in-a-release" class="link icon">
- &lt;svg>
- &lt;use xlink:href="#anchor-link">&lt;/use>
- &lt;/svg>
- &lt;/a>
-&lt;/h2>
-&lt;p>Every release commit on &lt;code>main&lt;/code> adds one archive (&lt;code>JoinSheets-&amp;lt;version&amp;gt;.tar.gz&lt;/code>)
-at the repository root &amp;ndash; a snapshot of the release&amp;rsquo;s production files (code +
-sample data, no tests, no submodule content). The previous version&amp;rsquo;s archive
-isn&amp;rsquo;t kept around; its own tag and GitHub Release page are the historical
-record, not the file in the tree.&lt;/p></description></item><item><title>Contributing</title><link>https://joinsheets.github.io/docs/developers/contributing/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/docs/developers/contributing/</guid><description>&lt;ul>
+&lt;p>The project is currently in beta: the core functionality is settled, and work
+now is about polishing individual pieces based on what early users run into.&lt;/p>
+&lt;p>During alpha, changes landed fast and somewhat chaotically, as new ideas or
+different ways to implement a feature came up, and releases were spontaneous
+&amp;ndash; driven by how fast development was moving and how much had changed.&lt;/p></description></item><item><title>Contributing</title><link>https://joinsheets.github.io/docs/developers/contributing/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/docs/developers/contributing/</guid><description>&lt;ul>
 &lt;li>&lt;code>main&lt;/code> is always clean and releasable — no dev-only artifacts. Day-to-day
 work happens on &lt;code>develop&lt;/code>; larger changes and bug fixes get their own
 branch off &lt;code>develop&lt;/code>.&lt;/li>
