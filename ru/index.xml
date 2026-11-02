@@ -225,17 +225,24 @@ Object Model, DOM. Корень дерева — объект &lt;code>document&
 Автоматический тест — это зафиксированная, повторяемая проверка одного такого
 сочетания: написанная один раз, она выполняется за миллисекунды сколько угодно
 раз подряд и сообщает о регрессии в момент, когда её внёс сам разработчик, а
-не когда её случайно обнаружит пользователь.&lt;/p></description></item><item><title>Как внести вклад</title><link>https://joinsheets.github.io/ru/docs/developers/contributing/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/developers/contributing/</guid><description>&lt;ul>
-&lt;li>&lt;code>main&lt;/code> всегда чистый и готов к релизу — без артефактов, нужных только для
-разработки. Повседневная работа — в &lt;code>develop&lt;/code>; крупные изменения и фиксы
-багов — в отдельных ветках от &lt;code>develop&lt;/code>.&lt;/li>
-&lt;li>Предложить изменение — через issue, реализовать в отдельной ветке, открыть
-pull request в &lt;code>develop&lt;/code>.&lt;/li>
-&lt;li>Перед тем как открывать pull request — прогнать тесты, и написать тесты на
-то, что изменил — см. &lt;a href="../testing/">Тестирование&lt;/a>.&lt;/li>
-&lt;/ul>
-&lt;p>Про версионирование, конвенцию архив+GitHub Release, хотфиксы и ночную сборку —
-см. &lt;a href="../releases/">Релизы&lt;/a>.&lt;/p></description></item><item><title>Глава 5 — Тестирование в JS, часть 2: смоук-тесты и fake-DOM</title><link>https://joinsheets.github.io/ru/docs/advanced-course/05-smoke-tests-fake-dom/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/advanced-course/05-smoke-tests-fake-dom/</guid><description>&lt;p>Код: &lt;code>tests/smoke/dom-smoke.js&lt;/code> целиком (253 строки).&lt;/p>
+не когда её случайно обнаружит пользователь.&lt;/p></description></item><item><title>Как внести вклад</title><link>https://joinsheets.github.io/ru/docs/developers/contributing/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/developers/contributing/</guid><description>&lt;p>JoinSheets активно развивается, и мы искренне признательны за любое
+проявленное участие — issue, pull request, отзыв на любой платформе, и даже
+просто звёздочка на GitHub.&lt;/p>
+&lt;h2 id="для-пользователей" class=link_owner>
+ Для пользователей
+ &lt;a href="#%d0%b4%d0%bb%d1%8f-%d0%bf%d0%be%d0%bb%d1%8c%d0%b7%d0%be%d0%b2%d0%b0%d1%82%d0%b5%d0%bb%d0%b5%d0%b9" class="link icon">
+ &lt;svg>
+ &lt;use xlink:href="#anchor-link">&lt;/use>
+ &lt;/svg>
+ &lt;/a>
+&lt;/h2>
+&lt;p>Команда активно работает над удобством использования и интерфейсом и
+вносит изменения на основе реального пользовательского опыта. Лучший вклад
+со стороны пользователя — завести issue: сообщить о том, что создало
+неудобство или проблему. Укажите версию приложения — пока это можно
+посмотреть только через исходный код страницы (&lt;code>&amp;lt;meta name=&amp;quot;version&amp;quot;&amp;gt;&lt;/code>,
+«Просмотр кода страницы» / DevTools в браузере) — отображения версии прямо
+в интерфейсе приложения пока нет.&lt;/p></description></item><item><title>Глава 5 — Тестирование в JS, часть 2: смоук-тесты и fake-DOM</title><link>https://joinsheets.github.io/ru/docs/advanced-course/05-smoke-tests-fake-dom/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/advanced-course/05-smoke-tests-fake-dom/</guid><description>&lt;p>Код: &lt;code>tests/smoke/dom-smoke.js&lt;/code> целиком (253 строки).&lt;/p>
 &lt;h2 id="1-теория" class=link_owner>
  1. Теория
  &lt;a href="#1-%d1%82%d0%b5%d0%be%d1%80%d0%b8%d1%8f" class="link icon">

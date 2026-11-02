@@ -115,14 +115,20 @@ and the workflow for shipping a new release.&lt;/p>
 now is about polishing individual pieces based on what early users run into.&lt;/p>
 &lt;p>During alpha, changes landed fast and somewhat chaotically, as new ideas or
 different ways to implement a feature came up, and releases were spontaneous
-&amp;ndash; driven by how fast development was moving and how much had changed.&lt;/p></description></item><item><title>Contributing</title><link>https://joinsheets.github.io/docs/developers/contributing/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/docs/developers/contributing/</guid><description>&lt;ul>
-&lt;li>&lt;code>main&lt;/code> is always clean and releasable — no dev-only artifacts. Day-to-day
-work happens on &lt;code>develop&lt;/code>; larger changes and bug fixes get their own
-branch off &lt;code>develop&lt;/code>.&lt;/li>
-&lt;li>Propose a change via an issue, implement it in a branch, and open a pull
-request against &lt;code>develop&lt;/code>.&lt;/li>
-&lt;li>Run the test suite before opening that pull request, and add tests for
-whatever you changed — see &lt;a href="../testing/">Testing&lt;/a>.&lt;/li>
-&lt;/ul>
-&lt;p>See &lt;a href="../releases/">Releases&lt;/a> for versioning, the release archive/GitHub
-Release convention, hotfixes, and the nightly preview build.&lt;/p></description></item></channel></rss>
+&amp;ndash; driven by how fast development was moving and how much had changed.&lt;/p></description></item><item><title>Contributing</title><link>https://joinsheets.github.io/docs/developers/contributing/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/docs/developers/contributing/</guid><description>&lt;p>JoinSheets is under active development, and any engagement is genuinely
+appreciated &amp;ndash; an issue, a pull request, feedback on any platform, even a
+star on GitHub.&lt;/p>
+&lt;h2 id="for-users" class=link_owner>
+ For users
+ &lt;a href="#for-users" class="link icon">
+ &lt;svg>
+ &lt;use xlink:href="#anchor-link">&lt;/use>
+ &lt;/svg>
+ &lt;/a>
+&lt;/h2>
+&lt;p>The team is actively working on usability and the interface, and makes
+changes based on real user experience. The best contribution from a user is
+an issue: report whatever got in your way or felt inconvenient. Include the
+app&amp;rsquo;s version &amp;ndash; right now that means checking &lt;code>&amp;lt;meta name=&amp;quot;version&amp;quot;&amp;gt;&lt;/code> in
+the page source (View Page Source, or your browser&amp;rsquo;s dev tools); there&amp;rsquo;s no
+in-app display of it yet.&lt;/p></description></item></channel></rss>
