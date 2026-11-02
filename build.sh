@@ -11,7 +11,7 @@
 # See README.md (main branch) for what to install first.
 set -euo pipefail
 
-ROOT="${1:?usage: build.sh <main-checkout-dir> -- normally invoked via main's own build.sh launcher, not run directly}"
+ROOT="${1:?usage: build.sh <main-checkout-dir> -- normally invoked via the build.sh launcher on main, not run directly}"
 cd "$ROOT"
 
 EXPECTED_HUGO_VERSION="0.148.0"
