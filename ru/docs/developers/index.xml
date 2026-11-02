@@ -47,11 +47,28 @@ UMD, дописывающий себя в &lt;code>window.DS_APP&lt;/code> в б
  &lt;/a>
 &lt;/h2>
 &lt;p>Модули с чистыми функциями (&lt;code>dataset.js&lt;/code>, &lt;code>entities.js&lt;/code>, &lt;code>formula.js&lt;/code>,
-&lt;code>export.js&lt;/code>, &lt;code>store.js&lt;/code>) покрыты юнит-тестами &lt;code>node:test&lt;/code>. Отдельный
-smoke-тест (&lt;code>tests/smoke/dom-smoke.js&lt;/code>) реально прогоняет последовательность
-&lt;code>&amp;lt;script&amp;gt;&lt;/code>-бутстрапа на минимальном самодельном DOM-стабе — ловит ошибки
-склейки, которые юнит-тесты не видят (забытый экспорт, неправильный порядок
-скриптов).&lt;/p></description></item><item><title>Релизы</title><link>https://joinsheets.github.io/ru/docs/developers/releases/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/developers/releases/</guid><description>&lt;p>В этом разделе описаны основные принципы релизной полтики JoinSheets
+&lt;code>export.js&lt;/code>, &lt;code>store.js&lt;/code>) — именно поэтому в архитектуре жёстко разделены
+логика и код, трогающий DOM: это и даёт возможность чисто покрыть их
+юнит-тестами &lt;code>node:test&lt;/code>. Как реально запускать набор тестов — см.
+&lt;a href="../testing/">Тестирование&lt;/a>.&lt;/p></description></item><item><title>Тестирование</title><link>https://joinsheets.github.io/ru/docs/developers/testing/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/developers/testing/</guid><description>&lt;p>У JoinSheets нет build-шага, нет бандлера и нет CI — а значит, никто не
+прогонит тесты за тебя автоматически. Прогнать их самостоятельно перед
+открытием pull request — это и есть вся страховка. На этой странице — что
+есть и как это запускать.&lt;/p>
+&lt;h2 id="юнит-тесты" class=link_owner>
+ Юнит-тесты
+ &lt;a href="#%d1%8e%d0%bd%d0%b8%d1%82-%d1%82%d0%b5%d1%81%d1%82%d1%8b" class="link icon">
+ &lt;svg>
+ &lt;use xlink:href="#anchor-link">&lt;/use>
+ &lt;/svg>
+ &lt;/a>
+&lt;/h2>
+&lt;p>Обычный &lt;a href="https://nodejs.org/api/test.html">&lt;code>node:test&lt;/code>&lt;/a> (встроенный
+тест-раннер Node, без зависимости от тестового фреймворка), в &lt;code>tests/&lt;/code>.
+Запустить весь набор:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>./run_tests.sh
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>(тонкая обёртка над &lt;code>node --test tests/*.test.js&lt;/code> — явный список файлов, а
+не рекурсивный поиск, чтобы тесты опционального submodule &lt;code>import/&lt;/code> не
+попадали в этот прогон).&lt;/p></description></item><item><title>Релизы</title><link>https://joinsheets.github.io/ru/docs/developers/releases/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/developers/releases/</guid><description>&lt;p>В этом разделе описаны основные принципы релизной полтики JoinSheets
 и рабочий процесс выпуска новых релизов.&lt;/p>
 &lt;h2 id="фаза-разработки" class=link_owner>
  Фаза разработки
@@ -73,8 +90,8 @@ smoke-тест (&lt;code>tests/smoke/dom-smoke.js&lt;/code>) реально пр
 багов — в отдельных ветках от &lt;code>develop&lt;/code>.&lt;/li>
 &lt;li>Предложить изменение — через issue, реализовать в отдельной ветке, открыть
 pull request в &lt;code>develop&lt;/code>.&lt;/li>
+&lt;li>Перед тем как открывать pull request — прогнать тесты, и написать тесты на
+то, что изменил — см. &lt;a href="../testing/">Тестирование&lt;/a>.&lt;/li>
 &lt;/ul>
 &lt;p>Про версионирование, конвенцию архив+GitHub Release, хотфиксы и ночную сборку —
-см. &lt;a href="../releases/">Релизы&lt;/a>.&lt;/p>
-&lt;p>&lt;em>(Эта страница со временем вырастет в полноценное руководство для
-контрибьюторов.)&lt;/em>&lt;/p></description></item></channel></rss>
+см. &lt;a href="../releases/">Релизы&lt;/a>.&lt;/p></description></item></channel></rss>
