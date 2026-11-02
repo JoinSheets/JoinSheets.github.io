@@ -10,12 +10,15 @@ theme. Live at <https://joinsheets.github.io/>.
 
 | Branch | Content |
 |---|---|
-| `main` | Site content (`content/`, `static/`), this README, `build.sh` |
-| `hugo` | Hugo config, theme (submodule), build-time assets |
+| `main` | Site content (`content/`, `static/`), this README, a `build.sh` launcher |
+| `hugo` | Hugo config, theme (submodule), build-time assets, the real `build.sh` |
 | `gh-pages` | The built site |
 
-Branches are kept separate so content history and config history don't mix;
-`build.sh` overlays `hugo` onto `main` only for the duration of a build.
+Branches are kept separate so content history and config history don't mix.
+`build.sh` is itself build tooling, not content, so it lives on `hugo` --
+`main`'s own `build.sh` is a thin launcher that fetches and runs the current
+`hugo`-branch copy, which overlays `hugo` onto `main` for the duration of a
+build (see below).
 
 ## Submodules
 
@@ -50,7 +53,10 @@ cd JoinSheets.github.io
 ./build.sh
 ```
 
-`build.sh`:
+`./build.sh` here is a launcher -- it fetches the real script from the `hugo`
+branch and runs it against this checkout (edit the `hugo`-branch copy, not
+this one, if the build process itself needs to change). It:
+
 1. Initializes/updates the submodules above.
 2. Overlays `config/` + `themes/` + `layouts/` + `static/css/` + `static/images/` from the `hugo` branch
    onto this checkout (temporarily — it's undone at the end, `main` itself never carries them).
