@@ -1,56 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>JoinSheets</title><link>https://joinsheets.github.io/ru/</link><description>Recent content on JoinSheets</description><generator>Hugo</generator><language>ru</language><atom:link href="https://joinsheets.github.io/ru/index.xml" rel="self" type="application/rss+xml"/><item><title>Архитектура</title><link>https://joinsheets.github.io/ru/docs/developers/architecture/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/developers/architecture/</guid><description>&lt;h2 id="функциональные-требования" class=link_owner>
- Функциональные требования
- &lt;a href="#%d1%84%d1%83%d0%bd%d0%ba%d1%86%d0%b8%d0%be%d0%bd%d0%b0%d0%bb%d1%8c%d0%bd%d1%8b%d0%b5-%d1%82%d1%80%d0%b5%d0%b1%d0%be%d0%b2%d0%b0%d0%bd%d0%b8%d1%8f" class="link icon">
- &lt;svg>
- &lt;use xlink:href="#anchor-link">&lt;/use>
- &lt;/svg>
- &lt;/a>
-&lt;/h2>
-&lt;ul>
-&lt;li>Работает целиком на клиенте, в том числе по &lt;code>file://&lt;/code> — без сервера, без
-установки, без шага сборки.&lt;/li>
-&lt;li>Данные загружаются как обычные &lt;code>.js&lt;/code>-файлы, инжектируемые через
-&lt;code>&amp;lt;script&amp;gt;&lt;/code> (а не &lt;code>fetch()&lt;/code>, который &lt;code>file://&lt;/code> блокирует), дописывающие
-себя в общее пространство &lt;code>window.DS&lt;/code>.&lt;/li>
-&lt;/ul>
-&lt;h2 id="ключевые-решения" class=link_owner>
- Ключевые решения
- &lt;a href="#%d0%ba%d0%bb%d1%8e%d1%87%d0%b5%d0%b2%d1%8b%d0%b5-%d1%80%d0%b5%d1%88%d0%b5%d0%bd%d0%b8%d1%8f" class="link icon">
- &lt;svg>
- &lt;use xlink:href="#anchor-link">&lt;/use>
- &lt;/svg>
- &lt;/a>
-&lt;/h2>
-&lt;ul>
-&lt;li>&lt;strong>Без сборщика, без фреймворка.&lt;/strong> Каждый модуль — небольшой IIFE в духе
-UMD, дописывающий себя в &lt;code>window.DS_APP&lt;/code> в браузере и экспортируемый через
-&lt;code>module.exports&lt;/code> под Node для тестов — см. хелпер-гиперскрипт &lt;code>el()&lt;/code> в
-&lt;code>util.js&lt;/code>, самый нижний слой.&lt;/li>
-&lt;li>&lt;strong>Один стор + редьюсер&lt;/strong> (&lt;code>store.js&lt;/code>), разбитый на доменные редьюсеры по
-префиксу действия (&lt;code>preset/*&lt;/code>, &lt;code>group/*&lt;/code>, &lt;code>table/*&lt;/code>, &amp;hellip;), с диспетчем
-через небольшой pub/sub (&lt;code>createStore&lt;/code>).&lt;/li>
-&lt;li>&lt;strong>Ленивый columnar-формат источников&lt;/strong>: каждый файл источника описывает по
-функции на поле, возвращающей значения этого поля для всех строк
-позиционно — V8 не материализует тело функции, если она не вызвана, так
-что неиспользуемые поля ничего не стоят при загрузке.&lt;/li>
-&lt;li>&lt;strong>Формулы, а не &lt;code>eval&lt;/code>.&lt;/strong> Расчётные поля используют небольшой
-самописный токенайзер/парсер/вычислитель (&lt;code>formula.js&lt;/code>), осознанно не
-&lt;code>eval&lt;/code>/&lt;code>new Function&lt;/code>, поскольку пресеты — обычные JSON-файлы, которыми
-люди обмениваются.&lt;/li>
-&lt;/ul>
-&lt;h2 id="тестирование" class=link_owner>
- Тестирование
- &lt;a href="#%d1%82%d0%b5%d1%81%d1%82%d0%b8%d1%80%d0%be%d0%b2%d0%b0%d0%bd%d0%b8%d0%b5" class="link icon">
- &lt;svg>
- &lt;use xlink:href="#anchor-link">&lt;/use>
- &lt;/svg>
- &lt;/a>
-&lt;/h2>
-&lt;p>Модули с чистыми функциями (&lt;code>dataset.js&lt;/code>, &lt;code>entities.js&lt;/code>, &lt;code>formula.js&lt;/code>,
-&lt;code>export.js&lt;/code>, &lt;code>store.js&lt;/code>) — именно поэтому в архитектуре жёстко разделены
-логика и код, трогающий DOM: это и даёт возможность чисто покрыть их
-юнит-тестами &lt;code>node:test&lt;/code>. Как реально запускать набор тестов — см.
-&lt;a href="../testing/">Тестирование&lt;/a>.&lt;/p></description></item><item><title>Глава 1 — Загрузка приложения без сборщика и пакетного менеджера</title><link>https://joinsheets.github.io/ru/docs/advanced-course/01-bootstrap-without-bundler/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/advanced-course/01-bootstrap-without-bundler/</guid><description>&lt;p>Файлы главы: &lt;code>index.html&lt;/code>, &lt;code>main.js&lt;/code> (целиком) и немного &lt;code>effects.js&lt;/code>.&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>JoinSheets</title><link>https://joinsheets.github.io/ru/</link><description>Recent content on JoinSheets</description><generator>Hugo</generator><language>ru</language><atom:link href="https://joinsheets.github.io/ru/index.xml" rel="self" type="application/rss+xml"/><item><title>Глава 1 — Загрузка приложения без сборщика и пакетного менеджера</title><link>https://joinsheets.github.io/ru/docs/advanced-course/01-bootstrap-without-bundler/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/advanced-course/01-bootstrap-without-bundler/</guid><description>&lt;p>Файлы главы: &lt;code>index.html&lt;/code>, &lt;code>main.js&lt;/code> (целиком) и немного &lt;code>effects.js&lt;/code>.&lt;/p>
 &lt;h2 id="1-теория" class=link_owner>
  1. Теория
  &lt;a href="#1-%d1%82%d0%b5%d0%be%d1%80%d0%b8%d1%8f" class="link icon">
@@ -88,7 +36,23 @@ UMD, дописывающий себя в &lt;code>window.DS_APP&lt;/code> в б
 несовпавшую, для &lt;code>LEFT&lt;/code>/&lt;code>RIGHT&lt;/code>/&lt;code>FULL&lt;/code>) пару.&lt;/li>
 &lt;/ol>
 &lt;p>&lt;em>(Скоро появятся новые рецепты — условия, формулы, группировка с
-агрегатами.)&lt;/em>&lt;/p></description></item><item><title>Экраны</title><link>https://joinsheets.github.io/ru/docs/user-guide/screens/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/user-guide/screens/</guid><description>&lt;p>В JoinSheets три экрана, переход между ними — через верхнее меню.&lt;/p>
+агрегатами.)&lt;/em>&lt;/p></description></item><item><title>Функциональные требования</title><link>https://joinsheets.github.io/ru/docs/developers/functional-requirements/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/developers/functional-requirements/</guid><description>&lt;p>JoinSheets начинался как пользовательский слой поверх более масштабного
+проекта — отдельного движка для версионированного, историзированного
+хранения данных, собираемых из разнородных источников (&lt;code>ds&lt;/code>). Этот нижний
+слой сознательно оставался в стороне от семантики и UI — всё, что касалось
+реального просмотра, объединения и выгрузки данных, жило одним слоем выше.
+Со временем этот верхний слой обзавёлся собственной законченной логикой и
+выделился в отдельный самостоятельный продукт со своим, самодостаточным
+объёмом задач — JoinSheets.&lt;/p>
+&lt;h2 id="сквозной-цикл-работы-с-данными" class=link_owner>
+ Сквозной цикл работы с данными
+ &lt;a href="#%d1%81%d0%ba%d0%b2%d0%be%d0%b7%d0%bd%d0%be%d0%b9-%d1%86%d0%b8%d0%ba%d0%bb-%d1%80%d0%b0%d0%b1%d0%be%d1%82%d1%8b-%d1%81-%d0%b4%d0%b0%d0%bd%d0%bd%d1%8b%d0%bc%d0%b8" class="link icon">
+ &lt;svg>
+ &lt;use xlink:href="#anchor-link">&lt;/use>
+ &lt;/svg>
+ &lt;/a>
+&lt;/h2>
+&lt;p>JoinSheets покрывает один непрерывный цикл:&lt;/p></description></item><item><title>Экраны</title><link>https://joinsheets.github.io/ru/docs/user-guide/screens/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/user-guide/screens/</guid><description>&lt;p>В JoinSheets три экрана, переход между ними — через верхнее меню.&lt;/p>
 &lt;h2 id="data" class=link_owner>
  Data
  &lt;a href="#data" class="link icon">
@@ -137,24 +101,43 @@ Object Model, DOM. Корень дерева — объект &lt;code>document&
 3 — текст (&lt;code>Node.TEXT_NODE&lt;/code>), 8 — комментарий (&lt;code>Node.COMMENT_NODE&lt;/code>), 9 — сам
 документ (&lt;code>Node.DOCUMENT_NODE&lt;/code>). HTML-разметка, которую парсит браузер, — это один из способов описать
 такое дерево текстом; но дерево существует и тогда, когда ни один символ HTML
-не отображается, — именно с ним работает JavaScript через DOM API.&lt;/p></description></item><item><title>Тестирование</title><link>https://joinsheets.github.io/ru/docs/developers/testing/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/developers/testing/</guid><description>&lt;p>Этот раздел описывает принятую на проекте систему тестирования, основные
-виды тестов, используемые инструменты тестирования. Перед тем как открывать
-pull request убедитесь, что сделанные изменения ничего не сломали.&lt;/p>
-&lt;p>У JoinSheets нет автоматизированного CI — полный набор тестов запускается вручную
-перед обновлением очередного релиза. Хорошим тоном является самостоятельный
-запуск тестов перед открытием pull request — это дает минимальную страховку
-от внезапных падений во время слияния версий и появления неявных конфликтов.&lt;/p>
-&lt;h2 id="юнит-тесты" class=link_owner>
- Юнит-тесты
- &lt;a href="#%d1%8e%d0%bd%d0%b8%d1%82-%d1%82%d0%b5%d1%81%d1%82%d1%8b" class="link icon">
+не отображается, — именно с ним работает JavaScript через DOM API.&lt;/p></description></item><item><title>Технические решения</title><link>https://joinsheets.github.io/ru/docs/developers/technical-decisions/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/developers/technical-decisions/</guid><description>&lt;p>&lt;a href="../functional-requirements/">Функциональные требования&lt;/a> отвечают на
+вопрос, &lt;em>что&lt;/em> должен делать JoinSheets. Эта страница — о том, &lt;em>как&lt;/em>: о
+технических требованиях, стоящих за этим, и о конкретных решениях,
+которые их удовлетворяют.&lt;/p>
+&lt;h2 id="технические-требования" class=link_owner>
+ Технические требования
+ &lt;a href="#%d1%82%d0%b5%d1%85%d0%bd%d0%b8%d1%87%d0%b5%d1%81%d0%ba%d0%b8%d0%b5-%d1%82%d1%80%d0%b5%d0%b1%d0%be%d0%b2%d0%b0%d0%bd%d0%b8%d1%8f" class="link icon">
  &lt;svg>
  &lt;use xlink:href="#anchor-link">&lt;/use>
  &lt;/svg>
  &lt;/a>
 &lt;/h2>
-&lt;p>Для юнит-тестов используется обычный &lt;a href="https://nodejs.org/api/test.html">&lt;code>node:test&lt;/code>&lt;/a>
-(встроенный тест-раннер Node, без зависимости от тестового фреймворка), в &lt;code>tests/&lt;/code>.
-Скрипт для запуска полного набора:&lt;/p></description></item><item><title>Глава 3 — Состояние и редьюсер</title><link>https://joinsheets.github.io/ru/docs/advanced-course/03-state-and-reducer/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/advanced-course/03-state-and-reducer/</guid><description>&lt;p>Код: &lt;code>store.js&lt;/code> — &lt;code>createStore&lt;/code> (55-66), &lt;code>initialState&lt;/code> (176-209), доменные
+&lt;p>Эти ограничения — не деталь реализации, а требования сами по себе, и именно
+они формируют каждое решение ниже:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Безопасность и зеро-траст.&lt;/strong> У приложения нет бэкенда и нет системы
+учётных записей, которой нужно доверять или которую можно
+скомпрометировать — на сервере нечего атаковать, потому что сервера нет.&lt;/li>
+&lt;li>&lt;strong>Локальная работа.&lt;/strong> Работает целиком на клиенте, в том числе прямо по
+&lt;code>file://&lt;/code> — без установки, без серверного процесса, без шага сборки перед
+запуском.&lt;/li>
+&lt;li>&lt;strong>Работа в закрытом контуре.&lt;/strong> Для функционирования приложения не
+требуются исходящие запросы какого-либо вида — оно должно полноценно
+работать в изолированной сети, без какого-либо сетевого выхода вовне.&lt;/li>
+&lt;li>&lt;strong>Отсутствие зависимостей.&lt;/strong> Приложение поставляется как собственный
+законченный набор файлов, без необходимости что-либо подтягивать, чтобы
+оно заработало.&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>Единственный компромисс:&lt;/strong> одна внешняя зависимость —
+&lt;a href="https://sheetjs.com/">SheetJS&lt;/a> (&lt;code>xlsx.full.min.js&lt;/code>, Community Edition),
+используемая опциональным конвертером
+&lt;a href="https://github.com/JoinSheets/JoinSheetsImport">JoinSheetsImport&lt;/a> для
+чтения &lt;code>.xlsx&lt;/code>-файлов. Она вшита (vendored) в репозиторий с фиксированной
+версией, под собственным файлом лицензии, и никогда не подтягивается с CDN
+или любого другого внешнего ресурса — ни на этапе сборки, ни во время
+работы нет ничего, куда нужно было бы обращаться, в том числе для её
+обновления.&lt;/p></description></item><item><title>Глава 3 — Состояние и редьюсер</title><link>https://joinsheets.github.io/ru/docs/advanced-course/03-state-and-reducer/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/advanced-course/03-state-and-reducer/</guid><description>&lt;p>Код: &lt;code>store.js&lt;/code> — &lt;code>createStore&lt;/code> (55-66), &lt;code>initialState&lt;/code> (176-209), доменные
 редьюсеры (224-612) и их композиция в &lt;code>reducer()&lt;/code> (614-668). Не нужно разбирать
 каждый &lt;code>case&lt;/code> — структура важнее содержимого конкретных веток.&lt;/p>
 &lt;h2 id="1-теория" class=link_owner>
@@ -182,23 +165,24 @@ pull request убедитесь, что сделанные изменения н
 взаимодействий немного; но по мере роста приложения отладка превращается в
 расследование: баг воспроизводится, но чтобы понять, что именно и где
 изменило состояние, приходится ставить точки останова во всех
-местах, которые теоретически могли на него повлиять.&lt;/p></description></item><item><title>Релизы</title><link>https://joinsheets.github.io/ru/docs/developers/releases/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/developers/releases/</guid><description>&lt;p>В этом разделе описаны основные принципы релизной политики JoinSheets
-и рабочий процесс выпуска новых релизов.&lt;/p>
-&lt;h2 id="фаза-разработки" class=link_owner>
- Фаза разработки
- &lt;a href="#%d1%84%d0%b0%d0%b7%d0%b0-%d1%80%d0%b0%d0%b7%d1%80%d0%b0%d0%b1%d0%be%d1%82%d0%ba%d0%b8" class="link icon">
+местах, которые теоретически могли на него повлиять.&lt;/p></description></item><item><title>Тестирование</title><link>https://joinsheets.github.io/ru/docs/developers/testing/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/developers/testing/</guid><description>&lt;p>Этот раздел описывает принятую на проекте систему тестирования, основные
+виды тестов, используемые инструменты тестирования. Перед тем как открывать
+pull request убедитесь, что сделанные изменения ничего не сломали.&lt;/p>
+&lt;p>У JoinSheets нет автоматизированного CI — полный набор тестов запускается вручную
+перед обновлением очередного релиза. Хорошим тоном является самостоятельный
+запуск тестов перед открытием pull request — это дает минимальную страховку
+от внезапных падений во время слияния версий и появления неявных конфликтов.&lt;/p>
+&lt;h2 id="юнит-тесты" class=link_owner>
+ Юнит-тесты
+ &lt;a href="#%d1%8e%d0%bd%d0%b8%d1%82-%d1%82%d0%b5%d1%81%d1%82%d1%8b" class="link icon">
  &lt;svg>
  &lt;use xlink:href="#anchor-link">&lt;/use>
  &lt;/svg>
  &lt;/a>
 &lt;/h2>
-&lt;p>В настоящее время проект находится на стадии бета-тестирования —
-когда основная функциональность уже определена и устоялась, и идет
-шлифовка отдельных составляющих на основе опыта первых пользователей.&lt;/p>
-&lt;p>На стадии альфа изменения в проекте появлялись быстро и хаотично,
-по мере появления новых идей или вариантов реализации той или иной фичи,
-а релизы были спонтанными и зависели от скорости разработки
-и масштабов внесенных изменений.&lt;/p></description></item><item><title>Глава 4 — Тестирование в JS, часть 1: принципы</title><link>https://joinsheets.github.io/ru/docs/advanced-course/04-testing-principles/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/advanced-course/04-testing-principles/</guid><description>&lt;p>Код: &lt;code>tests/preset.test.js&lt;/code> (первые ~90 строк — нормализация пресета + один
+&lt;p>Для юнит-тестов используется обычный &lt;a href="https://nodejs.org/api/test.html">&lt;code>node:test&lt;/code>&lt;/a>
+(встроенный тест-раннер Node, без зависимости от тестового фреймворка), в &lt;code>tests/&lt;/code>.
+Скрипт для запуска полного набора:&lt;/p></description></item><item><title>Глава 4 — Тестирование в JS, часть 1: принципы</title><link>https://joinsheets.github.io/ru/docs/advanced-course/04-testing-principles/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/advanced-course/04-testing-principles/</guid><description>&lt;p>Код: &lt;code>tests/preset.test.js&lt;/code> (первые ~90 строк — нормализация пресета + один
 тест редьюсера), &lt;code>store.js&lt;/code> как объект тестирования (уже разобран в главе 3).&lt;/p>
 &lt;h2 id="1-теория" class=link_owner>
  1. Теория
@@ -224,24 +208,23 @@ pull request убедитесь, что сделанные изменения н
 Автоматический тест — это зафиксированная, повторяемая проверка одного такого
 сочетания: написанная один раз, она выполняется за миллисекунды сколько угодно
 раз подряд и сообщает о регрессии в момент, когда её внёс сам разработчик, а
-не когда её случайно обнаружит пользователь.&lt;/p></description></item><item><title>Как внести вклад</title><link>https://joinsheets.github.io/ru/docs/developers/contributing/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/developers/contributing/</guid><description>&lt;p>JoinSheets находится в активной фазе развития, и мы искренне признательны за любое
-проявленное участие — issue, pull request, отзыв на любой платформе, или
-звёздочка на GitHub.&lt;/p>
-&lt;h2 id="для-пользователей" class=link_owner>
- Для пользователей
- &lt;a href="#%d0%b4%d0%bb%d1%8f-%d0%bf%d0%be%d0%bb%d1%8c%d0%b7%d0%be%d0%b2%d0%b0%d1%82%d0%b5%d0%bb%d0%b5%d0%b9" class="link icon">
+не когда её случайно обнаружит пользователь.&lt;/p></description></item><item><title>Релизы</title><link>https://joinsheets.github.io/ru/docs/developers/releases/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/developers/releases/</guid><description>&lt;p>В этом разделе описаны основные принципы релизной политики JoinSheets
+и рабочий процесс выпуска новых релизов.&lt;/p>
+&lt;h2 id="фаза-разработки" class=link_owner>
+ Фаза разработки
+ &lt;a href="#%d1%84%d0%b0%d0%b7%d0%b0-%d1%80%d0%b0%d0%b7%d1%80%d0%b0%d0%b1%d0%be%d1%82%d0%ba%d0%b8" class="link icon">
  &lt;svg>
  &lt;use xlink:href="#anchor-link">&lt;/use>
  &lt;/svg>
  &lt;/a>
 &lt;/h2>
-&lt;p>Команда активно работает над удобством использования и интерфейсом и
-старается вносить изменения на основе реального пользовательского опыта.
-Лучший вклад со стороны пользователя — завести issue: сообщить о проблеме,
-или дать предложения по улучшению пользовательского опыта.
-Не забудьте указать версию приложения — её можно увидеть в
-разделе Настройки (откройте иконку шестерёнки в главном окне
-приложения и посмотрите раздел &lt;strong>About&lt;/strong>).&lt;/p></description></item><item><title>Глава 5 — Тестирование в JS, часть 2: смоук-тесты и fake-DOM</title><link>https://joinsheets.github.io/ru/docs/advanced-course/05-smoke-tests-fake-dom/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/advanced-course/05-smoke-tests-fake-dom/</guid><description>&lt;p>Код: &lt;code>tests/smoke/dom-smoke.js&lt;/code> целиком (253 строки).&lt;/p>
+&lt;p>В настоящее время проект находится на стадии бета-тестирования —
+когда основная функциональность уже определена и устоялась, и идет
+шлифовка отдельных составляющих на основе опыта первых пользователей.&lt;/p>
+&lt;p>На стадии альфа изменения в проекте появлялись быстро и хаотично,
+по мере появления новых идей или вариантов реализации той или иной фичи,
+а релизы были спонтанными и зависели от скорости разработки
+и масштабов внесенных изменений.&lt;/p></description></item><item><title>Глава 5 — Тестирование в JS, часть 2: смоук-тесты и fake-DOM</title><link>https://joinsheets.github.io/ru/docs/advanced-course/05-smoke-tests-fake-dom/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/advanced-course/05-smoke-tests-fake-dom/</guid><description>&lt;p>Код: &lt;code>tests/smoke/dom-smoke.js&lt;/code> целиком (253 строки).&lt;/p>
 &lt;h2 id="1-теория" class=link_owner>
  1. Теория
  &lt;a href="#1-%d1%82%d0%b5%d0%be%d1%80%d0%b8%d1%8f" class="link icon">
@@ -270,7 +253,24 @@ pull request убедитесь, что сделанные изменения н
 &lt;code>App.viewBuild&lt;/code>, а &lt;code>view-build.js&lt;/code> на самом деле не подключился) — ни один из
 этих багов не воспроизводится при прямом &lt;code>require()&lt;/code>, потому что все файлы в
 такой схеме доступны всегда, независимо от того, в каком порядке их
-действительно загрузит браузер.&lt;/p></description></item><item><title>Глава 6 — Рендер без Virtual DOM</title><link>https://joinsheets.github.io/ru/docs/advanced-course/06-render-without-vdom/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/advanced-course/06-render-without-vdom/</guid><description>&lt;p>Код: &lt;code>main.js::render()&lt;/code> (строки 193-277) + &lt;code>store.subscribe(render)&lt;/code> (279).&lt;/p>
+действительно загрузит браузер.&lt;/p></description></item><item><title>Как внести вклад</title><link>https://joinsheets.github.io/ru/docs/developers/contributing/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/developers/contributing/</guid><description>&lt;p>JoinSheets находится в активной фазе развития, и мы искренне признательны за любое
+проявленное участие — issue, pull request, отзыв на любой платформе, или
+звёздочка на GitHub.&lt;/p>
+&lt;h2 id="для-пользователей" class=link_owner>
+ Для пользователей
+ &lt;a href="#%d0%b4%d0%bb%d1%8f-%d0%bf%d0%be%d0%bb%d1%8c%d0%b7%d0%be%d0%b2%d0%b0%d1%82%d0%b5%d0%bb%d0%b5%d0%b9" class="link icon">
+ &lt;svg>
+ &lt;use xlink:href="#anchor-link">&lt;/use>
+ &lt;/svg>
+ &lt;/a>
+&lt;/h2>
+&lt;p>Команда активно работает над удобством использования и интерфейсом и
+старается вносить изменения на основе реального пользовательского опыта.
+Лучший вклад со стороны пользователя — завести issue: сообщить о проблеме,
+или дать предложения по улучшению пользовательского опыта.
+Не забудьте указать версию приложения — её можно увидеть в
+разделе Настройки (откройте иконку шестерёнки в главном окне
+приложения и посмотрите раздел &lt;strong>About&lt;/strong>).&lt;/p></description></item><item><title>Глава 6 — Рендер без Virtual DOM</title><link>https://joinsheets.github.io/ru/docs/advanced-course/06-render-without-vdom/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/advanced-course/06-render-without-vdom/</guid><description>&lt;p>Код: &lt;code>main.js::render()&lt;/code> (строки 193-277) + &lt;code>store.subscribe(render)&lt;/code> (279).&lt;/p>
 &lt;h2 id="1-теория" class=link_owner>
  1. Теория
  &lt;a href="#1-%d1%82%d0%b5%d0%be%d1%80%d0%b8%d1%8f" class="link icon">

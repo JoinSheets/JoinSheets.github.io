@@ -1,54 +1,42 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Developer Docs on JoinSheets</title><link>https://joinsheets.github.io/docs/developers/</link><description>Recent content in Developer Docs on JoinSheets</description><generator>Hugo</generator><language>en</language><atom:link href="https://joinsheets.github.io/docs/developers/index.xml" rel="self" type="application/rss+xml"/><item><title>Architecture</title><link>https://joinsheets.github.io/docs/developers/architecture/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/docs/developers/architecture/</guid><description>&lt;h2 id="functional-requirements" class=link_owner>
- Functional requirements
- &lt;a href="#functional-requirements" class="link icon">
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Developer Docs on JoinSheets</title><link>https://joinsheets.github.io/docs/developers/</link><description>Recent content in Developer Docs on JoinSheets</description><generator>Hugo</generator><language>en</language><atom:link href="https://joinsheets.github.io/docs/developers/index.xml" rel="self" type="application/rss+xml"/><item><title>Functional Requirements</title><link>https://joinsheets.github.io/docs/developers/functional-requirements/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/docs/developers/functional-requirements/</guid><description>&lt;p>JoinSheets began as the user-facing layer on top of a larger project &amp;ndash; a
+separate engine for versioned, historized storage of data pulled in from
+disparate sources (&lt;code>ds&lt;/code>). That lower layer deliberately stayed out of
+semantics and UI; everything about actually looking at, combining, and
+exporting the data lived one layer up. Over time that upstream layer grew
+its own complete logic and split off into its own standalone product, with
+its own self-contained scope &amp;ndash; JoinSheets.&lt;/p></description></item><item><title>Technical Decisions</title><link>https://joinsheets.github.io/docs/developers/technical-decisions/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/docs/developers/technical-decisions/</guid><description>&lt;p>&lt;a href="../functional-requirements/">Functional Requirements&lt;/a> covers &lt;em>what&lt;/em>
+JoinSheets has to do. This page covers &lt;em>how&lt;/em> &amp;ndash; the technical requirements
+behind that, and the concrete implementation choices that satisfy them.&lt;/p>
+&lt;h2 id="technical-requirements" class=link_owner>
+ Technical requirements
+ &lt;a href="#technical-requirements" class="link icon">
  &lt;svg>
  &lt;use xlink:href="#anchor-link">&lt;/use>
  &lt;/svg>
  &lt;/a>
 &lt;/h2>
+&lt;p>These constraints aren&amp;rsquo;t implementation detail &amp;ndash; they&amp;rsquo;re requirements in
+their own right, and they shape every decision below:&lt;/p>
 &lt;ul>
-&lt;li>Runs entirely client-side, including from &lt;code>file://&lt;/code> — no server, no
-install, no build step.&lt;/li>
-&lt;li>Loads data as plain &lt;code>.js&lt;/code> files injected via &lt;code>&amp;lt;script&amp;gt;&lt;/code> tags (not
-&lt;code>fetch()&lt;/code>, which &lt;code>file://&lt;/code> blocks), writing into a shared &lt;code>window.DS&lt;/code>
-namespace.&lt;/li>
+&lt;li>&lt;strong>Security and zero trust.&lt;/strong> The app has no backend and no account system
+to trust or compromise &amp;ndash; there&amp;rsquo;s nothing on a server to attack, because
+there&amp;rsquo;s no server.&lt;/li>
+&lt;li>&lt;strong>Local-only operation.&lt;/strong> Runs entirely client-side, including straight
+from &lt;code>file://&lt;/code> &amp;ndash; no install, no server process, no build step to run
+first.&lt;/li>
+&lt;li>&lt;strong>Works inside a closed network.&lt;/strong> No outbound requests of any kind are
+needed for the app to function &amp;ndash; it has to work fully air-gapped, with
+no network path out at all.&lt;/li>
+&lt;li>&lt;strong>No dependencies.&lt;/strong> The app ships as its own complete set of files, with
+nothing to fetch to make it run.&lt;/li>
 &lt;/ul>
-&lt;h2 id="key-decisions" class=link_owner>
- Key decisions
- &lt;a href="#key-decisions" class="link icon">
- &lt;svg>
- &lt;use xlink:href="#anchor-link">&lt;/use>
- &lt;/svg>
- &lt;/a>
-&lt;/h2>
-&lt;ul>
-&lt;li>&lt;strong>No bundler, no framework.&lt;/strong> Each module is a small UMD-style IIFE
-attaching to &lt;code>window.DS_APP&lt;/code> in the browser and exporting via
-&lt;code>module.exports&lt;/code> under Node for tests — see &lt;code>util.js&lt;/code>&amp;rsquo;s &lt;code>el()&lt;/code> hyperscript
-helper for the lowest layer.&lt;/li>
-&lt;li>&lt;strong>A single store + reducer&lt;/strong> (&lt;code>store.js&lt;/code>), split into one reducer per
-action-namespace domain (&lt;code>preset/*&lt;/code>, &lt;code>group/*&lt;/code>, &lt;code>table/*&lt;/code>, &amp;hellip;), dispatched
-through a small pub/sub (&lt;code>createStore&lt;/code>).&lt;/li>
-&lt;li>&lt;strong>A lazy columnar source format&lt;/strong>: each source file defines one function
-per field, returning that field&amp;rsquo;s values for every row positionally — V8
-never materializes a field&amp;rsquo;s function body unless it&amp;rsquo;s actually called, so
-unused fields cost nothing to load.&lt;/li>
-&lt;li>&lt;strong>Formulas, not &lt;code>eval&lt;/code>.&lt;/strong> Computed fields use a small hand-written
-tokenizer/parser/evaluator (&lt;code>formula.js&lt;/code>), deliberately not &lt;code>eval&lt;/code>/&lt;code>new Function&lt;/code>, since presets are plain JSON files people exchange.&lt;/li>
-&lt;/ul>
-&lt;h2 id="testing" class=link_owner>
- Testing
- &lt;a href="#testing" class="link icon">
- &lt;svg>
- &lt;use xlink:href="#anchor-link">&lt;/use>
- &lt;/svg>
- &lt;/a>
-&lt;/h2>
-&lt;p>Pure-function modules (&lt;code>dataset.js&lt;/code>, &lt;code>entities.js&lt;/code>, &lt;code>formula.js&lt;/code>, &lt;code>export.js&lt;/code>,
-&lt;code>store.js&lt;/code>) are the reason this architecture keeps a hard line between logic
-and DOM-touching code: it&amp;rsquo;s what makes them cleanly covered by &lt;code>node:test&lt;/code>
-unit tests in the first place. See &lt;a href="../testing/">Testing&lt;/a> for how to actually
-run the suite.&lt;/p></description></item><item><title>Testing</title><link>https://joinsheets.github.io/docs/developers/testing/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/docs/developers/testing/</guid><description>&lt;p>This page describes the project&amp;rsquo;s testing approach, the main kinds of tests,
+&lt;p>&lt;strong>The one compromise:&lt;/strong> a single external dependency,
+&lt;a href="https://sheetjs.com/">SheetJS&lt;/a> (&lt;code>xlsx.full.min.js&lt;/code>, Community Edition), used
+by the optional &lt;a href="https://github.com/JoinSheets/JoinSheetsImport">JoinSheetsImport&lt;/a>
+converter to read &lt;code>.xlsx&lt;/code> files. It&amp;rsquo;s vendored into the repository at a
+fixed version, under its own license file, and never fetched from a CDN or
+any other external resource &amp;ndash; there is nothing to reach out to, at build
+time or at run time, including to update it.&lt;/p></description></item><item><title>Testing</title><link>https://joinsheets.github.io/docs/developers/testing/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/docs/developers/testing/</guid><description>&lt;p>This page describes the project&amp;rsquo;s testing approach, the main kinds of tests,
 and the tools behind them. Before opening a pull request, make sure your
 change didn&amp;rsquo;t break anything.&lt;/p>
 &lt;p>JoinSheets has no automated CI &amp;ndash; the full suite is run by hand before each
