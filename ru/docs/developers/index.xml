@@ -53,7 +53,7 @@ UMD, дописывающий себя в &lt;code>window.DS_APP&lt;/code> в б
 &lt;a href="../testing/">Тестирование&lt;/a>.&lt;/p></description></item><item><title>Тестирование</title><link>https://joinsheets.github.io/ru/docs/developers/testing/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/developers/testing/</guid><description>&lt;p>Этот раздел описывает принятую на проекте систему тестирования, основные
 виды тестов, используемые инструменты тестирования. Перед тем как открывать
 pull request убедитесь, что сделанные изменения ничего не сломали.&lt;/p>
-&lt;p>У JoinSheets автоматизированного CI — полный набор тестов запускается вручную
+&lt;p>У JoinSheets нет автоматизированного CI — полный набор тестов запускается вручную
 перед обновлением очередного релиза. Хорошим тоном является самостоятельный
 запуск тестов перед открытием pull request — это дает минимальную страховку
 от внезапных падений во время слияния версий и появления неявных конфликтов.&lt;/p>
@@ -67,7 +67,7 @@ pull request убедитесь, что сделанные изменения н
 &lt;/h2>
 &lt;p>Для юнит-тестов используется обычный &lt;a href="https://nodejs.org/api/test.html">&lt;code>node:test&lt;/code>&lt;/a>
 (встроенный тест-раннер Node, без зависимости от тестового фреймворка), в &lt;code>tests/&lt;/code>.
-Скрипт для запуска полного набора:&lt;/p></description></item><item><title>Релизы</title><link>https://joinsheets.github.io/ru/docs/developers/releases/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/developers/releases/</guid><description>&lt;p>В этом разделе описаны основные принципы релизной полтики JoinSheets
+Скрипт для запуска полного набора:&lt;/p></description></item><item><title>Релизы</title><link>https://joinsheets.github.io/ru/docs/developers/releases/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/developers/releases/</guid><description>&lt;p>В этом разделе описаны основные принципы релизной политики JoinSheets
 и рабочий процесс выпуска новых релизов.&lt;/p>
 &lt;h2 id="фаза-разработки" class=link_owner>
  Фаза разработки
@@ -79,10 +79,10 @@ pull request убедитесь, что сделанные изменения н
 &lt;/h2>
 &lt;p>В настоящее время проект находится на стадии бета-тестирования —
 когда основная функциональность уже определена и устоялась, и идет
-шлифовка отдельных состовляющих на основе опыта первых пользователей.&lt;/p>
+шлифовка отдельных составляющих на основе опыта первых пользователей.&lt;/p>
 &lt;p>На стадии альфа изменения в проекте появлялись быстро и хаотично,
 по мере появления новых идей или вариантов реализации той или иной фичи,
-а релизы были спонтанными и зависили от скорости разработки и
+а релизы были спонтанными и зависели от скорости разработки
 и масштабов внесенных изменений.&lt;/p></description></item><item><title>Как внести вклад</title><link>https://joinsheets.github.io/ru/docs/developers/contributing/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/developers/contributing/</guid><description>&lt;p>JoinSheets находится в активной фазе развития, и мы искренне признательны за любое
 проявленное участие — issue, pull request, отзыв на любой платформе, или
 звёздочка на GitHub.&lt;/p>
