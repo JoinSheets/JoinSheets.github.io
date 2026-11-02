@@ -50,10 +50,13 @@ UMD, дописывающий себя в &lt;code>window.DS_APP&lt;/code> в б
 &lt;code>export.js&lt;/code>, &lt;code>store.js&lt;/code>) — именно поэтому в архитектуре жёстко разделены
 логика и код, трогающий DOM: это и даёт возможность чисто покрыть их
 юнит-тестами &lt;code>node:test&lt;/code>. Как реально запускать набор тестов — см.
-&lt;a href="../testing/">Тестирование&lt;/a>.&lt;/p></description></item><item><title>Тестирование</title><link>https://joinsheets.github.io/ru/docs/developers/testing/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/developers/testing/</guid><description>&lt;p>У JoinSheets нет build-шага, нет бандлера и нет CI — а значит, никто не
-прогонит тесты за тебя автоматически. Прогнать их самостоятельно перед
-открытием pull request — это и есть вся страховка. На этой странице — что
-есть и как это запускать.&lt;/p>
+&lt;a href="../testing/">Тестирование&lt;/a>.&lt;/p></description></item><item><title>Тестирование</title><link>https://joinsheets.github.io/ru/docs/developers/testing/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/developers/testing/</guid><description>&lt;p>Этот раздел описывает принятую на проекте систему тестирования, основные
+виды тестов, используемые инструменты тестирования. Перед тем как открывать
+pull request убедитесь, что сделанные изменения ничего не сломали.&lt;/p>
+&lt;p>У JoinSheets автоматизированного CI — полный набор тестов запускается вручную
+перед обновлением очередного релиза. Хорошим тоном является самостоятельный
+запуск тестов перед открытием pull request — это дает минимальную страховку
+от внезапных падений во время слияния версий и появления неявных конфликтов.&lt;/p>
 &lt;h2 id="юнит-тесты" class=link_owner>
  Юнит-тесты
  &lt;a href="#%d1%8e%d0%bd%d0%b8%d1%82-%d1%82%d0%b5%d1%81%d1%82%d1%8b" class="link icon">
@@ -62,13 +65,9 @@ UMD, дописывающий себя в &lt;code>window.DS_APP&lt;/code> в б
  &lt;/svg>
  &lt;/a>
 &lt;/h2>
-&lt;p>Обычный &lt;a href="https://nodejs.org/api/test.html">&lt;code>node:test&lt;/code>&lt;/a> (встроенный
-тест-раннер Node, без зависимости от тестового фреймворка), в &lt;code>tests/&lt;/code>.
-Запустить весь набор:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>./run_tests.sh
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>(тонкая обёртка над &lt;code>node --test tests/*.test.js&lt;/code> — явный список файлов, а
-не рекурсивный поиск, чтобы тесты опционального submodule &lt;code>import/&lt;/code> не
-попадали в этот прогон).&lt;/p></description></item><item><title>Релизы</title><link>https://joinsheets.github.io/ru/docs/developers/releases/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/developers/releases/</guid><description>&lt;p>В этом разделе описаны основные принципы релизной полтики JoinSheets
+&lt;p>Для юнит-тестов используется обычный &lt;a href="https://nodejs.org/api/test.html">&lt;code>node:test&lt;/code>&lt;/a>
+(встроенный тест-раннер Node, без зависимости от тестового фреймворка), в &lt;code>tests/&lt;/code>.
+Скрипт для запуска полного набора:&lt;/p></description></item><item><title>Релизы</title><link>https://joinsheets.github.io/ru/docs/developers/releases/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/developers/releases/</guid><description>&lt;p>В этом разделе описаны основные принципы релизной полтики JoinSheets
 и рабочий процесс выпуска новых релизов.&lt;/p>
 &lt;h2 id="фаза-разработки" class=link_owner>
  Фаза разработки
@@ -84,9 +83,9 @@ UMD, дописывающий себя в &lt;code>window.DS_APP&lt;/code> в б
 &lt;p>На стадии альфа изменения в проекте появлялись быстро и хаотично,
 по мере появления новых идей или вариантов реализации той или иной фичи,
 а релизы были спонтанными и зависили от скорости разработки и
-и масштабов внесенных изменений.&lt;/p></description></item><item><title>Как внести вклад</title><link>https://joinsheets.github.io/ru/docs/developers/contributing/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/developers/contributing/</guid><description>&lt;p>JoinSheets активно развивается, и мы искренне признательны за любое
-проявленное участие — issue, pull request, отзыв на любой платформе, и даже
-просто звёздочка на GitHub.&lt;/p>
+и масштабов внесенных изменений.&lt;/p></description></item><item><title>Как внести вклад</title><link>https://joinsheets.github.io/ru/docs/developers/contributing/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/developers/contributing/</guid><description>&lt;p>JoinSheets находится в активной фазе развития, и мы искренне признательны за любое
+проявленное участие — issue, pull request, отзыв на любой платформе, или
+звёздочка на GitHub.&lt;/p>
 &lt;h2 id="для-пользователей" class=link_owner>
  Для пользователей
  &lt;a href="#%d0%b4%d0%bb%d1%8f-%d0%bf%d0%be%d0%bb%d1%8c%d0%b7%d0%be%d0%b2%d0%b0%d1%82%d0%b5%d0%bb%d0%b5%d0%b9" class="link icon">
@@ -96,7 +95,9 @@ UMD, дописывающий себя в &lt;code>window.DS_APP&lt;/code> в б
  &lt;/a>
 &lt;/h2>
 &lt;p>Команда активно работает над удобством использования и интерфейсом и
-вносит изменения на основе реального пользовательского опыта. Лучший вклад
-со стороны пользователя — завести issue: сообщить о том, что создало
-неудобство или проблему. Укажите версию приложения — откройте иконку
-шестерёнки (Настройки) и посмотрите раздел &lt;strong>About&lt;/strong>.&lt;/p></description></item></channel></rss>
+старается вносить изменения на основе реального пользовательского опыта.
+Лучший вклад со стороны пользователя — завести issue: сообщить о проблеме,
+или дать предложения по улучшению пользовательского опыта.
+Не забудьте указать версию приложения — её можно увидеть в
+разделе Настройки (откройте иконку шестерёнки в главном окне
+приложения и посмотрите раздел &lt;strong>About&lt;/strong>).&lt;/p></description></item></channel></rss>

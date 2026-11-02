@@ -137,10 +137,13 @@ Object Model, DOM. Корень дерева — объект &lt;code>document&
 3 — текст (&lt;code>Node.TEXT_NODE&lt;/code>), 8 — комментарий (&lt;code>Node.COMMENT_NODE&lt;/code>), 9 — сам
 документ (&lt;code>Node.DOCUMENT_NODE&lt;/code>). HTML-разметка, которую парсит браузер, — это один из способов описать
 такое дерево текстом; но дерево существует и тогда, когда ни один символ HTML
-не отображается, — именно с ним работает JavaScript через DOM API.&lt;/p></description></item><item><title>Тестирование</title><link>https://joinsheets.github.io/ru/docs/developers/testing/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/developers/testing/</guid><description>&lt;p>У JoinSheets нет build-шага, нет бандлера и нет CI — а значит, никто не
-прогонит тесты за тебя автоматически. Прогнать их самостоятельно перед
-открытием pull request — это и есть вся страховка. На этой странице — что
-есть и как это запускать.&lt;/p>
+не отображается, — именно с ним работает JavaScript через DOM API.&lt;/p></description></item><item><title>Тестирование</title><link>https://joinsheets.github.io/ru/docs/developers/testing/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/developers/testing/</guid><description>&lt;p>Этот раздел описывает принятую на проекте систему тестирования, основные
+виды тестов, используемые инструменты тестирования. Перед тем как открывать
+pull request убедитесь, что сделанные изменения ничего не сломали.&lt;/p>
+&lt;p>У JoinSheets автоматизированного CI — полный набор тестов запускается вручную
+перед обновлением очередного релиза. Хорошим тоном является самостоятельный
+запуск тестов перед открытием pull request — это дает минимальную страховку
+от внезапных падений во время слияния версий и появления неявных конфликтов.&lt;/p>
 &lt;h2 id="юнит-тесты" class=link_owner>
  Юнит-тесты
  &lt;a href="#%d1%8e%d0%bd%d0%b8%d1%82-%d1%82%d0%b5%d1%81%d1%82%d1%8b" class="link icon">
@@ -149,13 +152,9 @@ Object Model, DOM. Корень дерева — объект &lt;code>document&
  &lt;/svg>
  &lt;/a>
 &lt;/h2>
-&lt;p>Обычный &lt;a href="https://nodejs.org/api/test.html">&lt;code>node:test&lt;/code>&lt;/a> (встроенный
-тест-раннер Node, без зависимости от тестового фреймворка), в &lt;code>tests/&lt;/code>.
-Запустить весь набор:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>./run_tests.sh
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>(тонкая обёртка над &lt;code>node --test tests/*.test.js&lt;/code> — явный список файлов, а
-не рекурсивный поиск, чтобы тесты опционального submodule &lt;code>import/&lt;/code> не
-попадали в этот прогон).&lt;/p></description></item><item><title>Глава 3 — Состояние и редьюсер</title><link>https://joinsheets.github.io/ru/docs/advanced-course/03-state-and-reducer/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/advanced-course/03-state-and-reducer/</guid><description>&lt;p>Код: &lt;code>store.js&lt;/code> — &lt;code>createStore&lt;/code> (55-66), &lt;code>initialState&lt;/code> (176-209), доменные
+&lt;p>Для юнит-тестов используется обычный &lt;a href="https://nodejs.org/api/test.html">&lt;code>node:test&lt;/code>&lt;/a>
+(встроенный тест-раннер Node, без зависимости от тестового фреймворка), в &lt;code>tests/&lt;/code>.
+Скрипт для запуска полного набора:&lt;/p></description></item><item><title>Глава 3 — Состояние и редьюсер</title><link>https://joinsheets.github.io/ru/docs/advanced-course/03-state-and-reducer/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/advanced-course/03-state-and-reducer/</guid><description>&lt;p>Код: &lt;code>store.js&lt;/code> — &lt;code>createStore&lt;/code> (55-66), &lt;code>initialState&lt;/code> (176-209), доменные
 редьюсеры (224-612) и их композиция в &lt;code>reducer()&lt;/code> (614-668). Не нужно разбирать
 каждый &lt;code>case&lt;/code> — структура важнее содержимого конкретных веток.&lt;/p>
 &lt;h2 id="1-теория" class=link_owner>
@@ -225,9 +224,9 @@ Object Model, DOM. Корень дерева — объект &lt;code>document&
 Автоматический тест — это зафиксированная, повторяемая проверка одного такого
 сочетания: написанная один раз, она выполняется за миллисекунды сколько угодно
 раз подряд и сообщает о регрессии в момент, когда её внёс сам разработчик, а
-не когда её случайно обнаружит пользователь.&lt;/p></description></item><item><title>Как внести вклад</title><link>https://joinsheets.github.io/ru/docs/developers/contributing/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/developers/contributing/</guid><description>&lt;p>JoinSheets активно развивается, и мы искренне признательны за любое
-проявленное участие — issue, pull request, отзыв на любой платформе, и даже
-просто звёздочка на GitHub.&lt;/p>
+не когда её случайно обнаружит пользователь.&lt;/p></description></item><item><title>Как внести вклад</title><link>https://joinsheets.github.io/ru/docs/developers/contributing/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/developers/contributing/</guid><description>&lt;p>JoinSheets находится в активной фазе развития, и мы искренне признательны за любое
+проявленное участие — issue, pull request, отзыв на любой платформе, или
+звёздочка на GitHub.&lt;/p>
 &lt;h2 id="для-пользователей" class=link_owner>
  Для пользователей
  &lt;a href="#%d0%b4%d0%bb%d1%8f-%d0%bf%d0%be%d0%bb%d1%8c%d0%b7%d0%be%d0%b2%d0%b0%d1%82%d0%b5%d0%bb%d0%b5%d0%b9" class="link icon">
@@ -237,10 +236,12 @@ Object Model, DOM. Корень дерева — объект &lt;code>document&
  &lt;/a>
 &lt;/h2>
 &lt;p>Команда активно работает над удобством использования и интерфейсом и
-вносит изменения на основе реального пользовательского опыта. Лучший вклад
-со стороны пользователя — завести issue: сообщить о том, что создало
-неудобство или проблему. Укажите версию приложения — откройте иконку
-шестерёнки (Настройки) и посмотрите раздел &lt;strong>About&lt;/strong>.&lt;/p></description></item><item><title>Глава 5 — Тестирование в JS, часть 2: смоук-тесты и fake-DOM</title><link>https://joinsheets.github.io/ru/docs/advanced-course/05-smoke-tests-fake-dom/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/advanced-course/05-smoke-tests-fake-dom/</guid><description>&lt;p>Код: &lt;code>tests/smoke/dom-smoke.js&lt;/code> целиком (253 строки).&lt;/p>
+старается вносить изменения на основе реального пользовательского опыта.
+Лучший вклад со стороны пользователя — завести issue: сообщить о проблеме,
+или дать предложения по улучшению пользовательского опыта.
+Не забудьте указать версию приложения — её можно увидеть в
+разделе Настройки (откройте иконку шестерёнки в главном окне
+приложения и посмотрите раздел &lt;strong>About&lt;/strong>).&lt;/p></description></item><item><title>Глава 5 — Тестирование в JS, часть 2: смоук-тесты и fake-DOM</title><link>https://joinsheets.github.io/ru/docs/advanced-course/05-smoke-tests-fake-dom/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/advanced-course/05-smoke-tests-fake-dom/</guid><description>&lt;p>Код: &lt;code>tests/smoke/dom-smoke.js&lt;/code> целиком (253 строки).&lt;/p>
 &lt;h2 id="1-теория" class=link_owner>
  1. Теория
  &lt;a href="#1-%d1%82%d0%b5%d0%be%d1%80%d0%b8%d1%8f" class="link icon">

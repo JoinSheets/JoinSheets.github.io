@@ -48,25 +48,13 @@ tokenizer/parser/evaluator (&lt;code>formula.js&lt;/code>), deliberately not &lt
 &lt;code>store.js&lt;/code>) are the reason this architecture keeps a hard line between logic
 and DOM-touching code: it&amp;rsquo;s what makes them cleanly covered by &lt;code>node:test&lt;/code>
 unit tests in the first place. See &lt;a href="../testing/">Testing&lt;/a> for how to actually
-run the suite.&lt;/p></description></item><item><title>Testing</title><link>https://joinsheets.github.io/docs/developers/testing/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/docs/developers/testing/</guid><description>&lt;p>JoinSheets has no build step, no bundler, and no CI &amp;ndash; which means nothing
-runs your tests for you automatically. Running them yourself, before opening
-a pull request, is the whole safety net. This page covers what&amp;rsquo;s there and
-how to run it.&lt;/p>
-&lt;h2 id="unit-tests" class=link_owner>
- Unit tests
- &lt;a href="#unit-tests" class="link icon">
- &lt;svg>
- &lt;use xlink:href="#anchor-link">&lt;/use>
- &lt;/svg>
- &lt;/a>
-&lt;/h2>
-&lt;p>Plain &lt;a href="https://nodejs.org/api/test.html">&lt;code>node:test&lt;/code>&lt;/a> (Node&amp;rsquo;s built-in test
-runner &amp;ndash; no test framework dependency), under &lt;code>tests/&lt;/code>. Run the whole suite
-with:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>./run_tests.sh
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>(a thin wrapper around &lt;code>node --test tests/*.test.js&lt;/code> &amp;ndash; an explicit file
-list, not a recursive search, so the optional &lt;code>import/&lt;/code> submodule&amp;rsquo;s own
-tests don&amp;rsquo;t get swept into this repository&amp;rsquo;s run).&lt;/p></description></item><item><title>Releases</title><link>https://joinsheets.github.io/docs/developers/releases/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/docs/developers/releases/</guid><description>&lt;p>This section describes the core principles behind JoinSheets&amp;rsquo; release policy
+run the suite.&lt;/p></description></item><item><title>Testing</title><link>https://joinsheets.github.io/docs/developers/testing/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/docs/developers/testing/</guid><description>&lt;p>This page describes the project&amp;rsquo;s testing approach, the main kinds of tests,
+and the tools behind them. Before opening a pull request, make sure your
+change didn&amp;rsquo;t break anything.&lt;/p>
+&lt;p>JoinSheets has no automated CI &amp;ndash; the full suite is run by hand before each
+release ships. Running it yourself before opening a pull request is good
+practice too: it&amp;rsquo;s the minimum protection against a sudden break during a
+merge, or an implicit conflict nobody noticed.&lt;/p></description></item><item><title>Releases</title><link>https://joinsheets.github.io/docs/developers/releases/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/docs/developers/releases/</guid><description>&lt;p>This section describes the core principles behind JoinSheets&amp;rsquo; release policy
 and the workflow for shipping a new release.&lt;/p>
 &lt;h2 id="development-phase" class=link_owner>
  Development phase
@@ -91,7 +79,8 @@ star on GitHub.&lt;/p>
  &lt;/svg>
  &lt;/a>
 &lt;/h2>
-&lt;p>The team is actively working on usability and the interface, and makes
-changes based on real user experience. The best contribution from a user is
-an issue: report whatever got in your way or felt inconvenient. Include the
-app&amp;rsquo;s version &amp;ndash; open the gear icon (Settings) and check &lt;strong>About&lt;/strong>.&lt;/p></description></item></channel></rss>
+&lt;p>The team is actively working on usability and the interface, and tries to
+base changes on real user experience. The best contribution from a user is
+an issue: report a problem, or suggest a usability improvement. Include the
+app&amp;rsquo;s version &amp;ndash; open the gear icon in the app&amp;rsquo;s main window (Settings) and
+check &lt;strong>About&lt;/strong>.&lt;/p></description></item></channel></rss>
