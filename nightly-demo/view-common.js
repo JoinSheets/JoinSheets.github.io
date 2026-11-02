@@ -203,6 +203,16 @@
     + '<rect x="6.9" y=".3" width="2.2" height="3" rx=".5" fill="currentColor" transform="rotate(270 8 8)"/>'
     + '<rect x="6.9" y=".3" width="2.2" height="3" rx=".5" fill="currentColor" transform="rotate(315 8 8)"/></svg>';
 
+  // The one source of truth for the running version is index.html's own
+  // <meta name="version">, bumped by hand at every release -- read it from
+  // there (Settings > About) rather than hardcoding the string a second
+  // time in JS, where it would inevitably drift out of sync. Falls back to
+  // "(unknown)" rather than throwing if the tag is ever missing.
+  var appVersion = function () {
+    var meta = document.querySelector('meta[name="version"]');
+    return (meta && meta.content) || '(unknown)';
+  };
+
   // The org mark (three overlapping rounded squares -- joinsheets.github.io's own
   // logo, kept in its own colors rather than currentColor like the other icons here,
   // so it reads as a brand mark rather than a UI control). Matches the site's actual
@@ -377,6 +387,17 @@
       el('h2', {}, 'Language'),
       el('div', { class: 'row' },
         el('span', { class: 'muted' }, 'English -- more languages coming in a future release')
+      ),
+      el('h2', {}, 'About'),
+      el('div', { class: 'row' },
+        // The version has exactly one source of truth: index.html's own
+        // <meta name="version">, bumped by hand at every release -- read it
+        // from there instead of duplicating the string in JS.
+        el('span', {}, 'JoinSheets ' + appVersion()),
+        el('a', {
+          class: 'about-link', href: 'https://joinsheets.github.io/',
+          target: '_blank', rel: 'noopener'
+        }, 'Documentation & site')
       ),
       el('div', { class: 'actions' },
         // The theme already applies as soon as it's picked above (and is saved/

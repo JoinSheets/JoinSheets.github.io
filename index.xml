@@ -129,6 +129,4 @@ star on GitHub.&lt;/p>
 &lt;p>The team is actively working on usability and the interface, and makes
 changes based on real user experience. The best contribution from a user is
 an issue: report whatever got in your way or felt inconvenient. Include the
-app&amp;rsquo;s version &amp;ndash; right now that means checking &lt;code>&amp;lt;meta name=&amp;quot;version&amp;quot;&amp;gt;&lt;/code> in
-the page source (View Page Source, or your browser&amp;rsquo;s dev tools); there&amp;rsquo;s no
-in-app display of it yet.&lt;/p></description></item></channel></rss>
+app&amp;rsquo;s version &amp;ndash; open the gear icon (Settings) and check &lt;strong>About&lt;/strong>.&lt;/p></description></item></channel></rss>

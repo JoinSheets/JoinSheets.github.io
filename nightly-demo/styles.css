@@ -119,6 +119,10 @@ button:hover:not(:disabled) { border-color: var(--accent); }
 button:disabled { opacity: .5; cursor: not-allowed; }
 button.primary { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); }
 button.link { border: none; background: none; color: var(--accent); padding: .2rem .4rem; }
+/* Settings > About -- a real navigating <a>, not a button.link (needs a plain
+   href/target, no onclick), styled to match anyway instead of the browser
+   default blue/underline. */
+.about-link { color: var(--accent); }
 input[type=text], select {
   font: inherit; color: inherit; background: var(--bg);
   border: 1px solid var(--border); border-radius: 5px; padding: .3rem .45rem;

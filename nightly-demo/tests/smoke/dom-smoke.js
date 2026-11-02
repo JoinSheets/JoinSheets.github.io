@@ -144,6 +144,10 @@ context.document = {
   createElement(tag) { return makeNode(tag); },
   createTextNode(text) { return { nodeType: 3, text: text }; },
   getElementById(id) { return idRegistry[id] || null; },
+  // view-common.js::appVersion looks up <meta name="version"> -- this stub
+  // never parses a real index.html (no actual meta tags ever exist here), so
+  // always null; appVersion already falls back to "(unknown)" for that.
+  querySelector() { return null; },
   // view-table.js::attachDocCloseListener attaches ONE document-level click
   // listener (closes the quick panel on a click outside it) -- the stub just needs
   // to accept the call, this smoke test doesn't check it actually firing (no real
