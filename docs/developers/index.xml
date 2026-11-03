@@ -5,8 +5,9 @@ semantics and UI; everything about actually looking at, combining, and
 exporting the data lived one layer up. Over time that upstream layer grew
 its own complete logic and split off into its own standalone product, with
 its own self-contained scope &amp;ndash; JoinSheets.&lt;/p></description></item><item><title>Technical Decisions</title><link>https://joinsheets.github.io/docs/developers/technical-decisions/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/docs/developers/technical-decisions/</guid><description>&lt;p>&lt;a href="../functional-requirements/">Functional Requirements&lt;/a> covers &lt;em>what&lt;/em>
-JoinSheets has to do. This page covers &lt;em>how&lt;/em> &amp;ndash; the technical requirements
-behind that, and the concrete implementation choices that satisfy them.&lt;/p>
+JoinSheets has to do. This page covers how, and with what tools and
+technologies, it gets that done &amp;ndash; plus the technical requirements and
+constraints that shaped those decisions in the first place.&lt;/p>
 &lt;h2 id="technical-requirements" class=link_owner>
  Technical requirements
  &lt;a href="#technical-requirements" class="link icon">
@@ -15,28 +16,9 @@ behind that, and the concrete implementation choices that satisfy them.&lt;/p>
  &lt;/svg>
  &lt;/a>
 &lt;/h2>
-&lt;p>These constraints aren&amp;rsquo;t implementation detail &amp;ndash; they&amp;rsquo;re requirements in
-their own right, and they shape every decision below:&lt;/p>
-&lt;ul>
-&lt;li>&lt;strong>Security and zero trust.&lt;/strong> The app has no backend and no account system
-to trust or compromise &amp;ndash; there&amp;rsquo;s nothing on a server to attack, because
-there&amp;rsquo;s no server.&lt;/li>
-&lt;li>&lt;strong>Local-only operation.&lt;/strong> Runs entirely client-side, including straight
-from &lt;code>file://&lt;/code> &amp;ndash; no install, no server process, no build step to run
-first.&lt;/li>
-&lt;li>&lt;strong>Works inside a closed network.&lt;/strong> No outbound requests of any kind are
-needed for the app to function &amp;ndash; it has to work fully air-gapped, with
-no network path out at all.&lt;/li>
-&lt;li>&lt;strong>No dependencies.&lt;/strong> The app ships as its own complete set of files, with
-nothing to fetch to make it run.&lt;/li>
-&lt;/ul>
-&lt;p>&lt;strong>The one compromise:&lt;/strong> a single external dependency,
-&lt;a href="https://sheetjs.com/">SheetJS&lt;/a> (&lt;code>xlsx.full.min.js&lt;/code>, Community Edition), used
-by the optional &lt;a href="https://github.com/JoinSheets/JoinSheetsImport">JoinSheetsImport&lt;/a>
-converter to read &lt;code>.xlsx&lt;/code> files. It&amp;rsquo;s vendored into the repository at a
-fixed version, under its own license file, and never fetched from a CDN or
-any other external resource &amp;ndash; there is nothing to reach out to, at build
-time or at run time, including to update it.&lt;/p></description></item><item><title>Testing</title><link>https://joinsheets.github.io/docs/developers/testing/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/docs/developers/testing/</guid><description>&lt;p>This page describes the project&amp;rsquo;s testing approach, the main kinds of tests,
+&lt;p>JoinSheets was built as part of a larger project, under a fairly strict set
+of requirements that ended up shaping both the app&amp;rsquo;s architecture and its
+technology stack:&lt;/p></description></item><item><title>Testing</title><link>https://joinsheets.github.io/docs/developers/testing/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/docs/developers/testing/</guid><description>&lt;p>This page describes the project&amp;rsquo;s testing approach, the main kinds of tests,
 and the tools behind them. Before opening a pull request, make sure your
 change didn&amp;rsquo;t break anything.&lt;/p>
 &lt;p>JoinSheets has no automated CI &amp;ndash; the full suite is run by hand before each
