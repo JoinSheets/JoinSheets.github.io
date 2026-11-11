@@ -36,23 +36,23 @@
 несовпавшую, для &lt;code>LEFT&lt;/code>/&lt;code>RIGHT&lt;/code>/&lt;code>FULL&lt;/code>) пару.&lt;/li>
 &lt;/ol>
 &lt;p>&lt;em>(Скоро появятся новые рецепты — условия, формулы, группировка с
-агрегатами.)&lt;/em>&lt;/p></description></item><item><title>Функциональные требования</title><link>https://joinsheets.github.io/ru/docs/developers/functional-requirements/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/developers/functional-requirements/</guid><description>&lt;p>JoinSheets начинался как пользовательский слой поверх более масштабного
-проекта — отдельного движка для версионированного, историзированного
-хранения данных, собираемых из разнородных источников (&lt;code>ds&lt;/code>). Этот нижний
-слой сознательно оставался в стороне от семантики и UI — всё, что касалось
-реального просмотра, объединения и выгрузки данных, жило одним слоем выше.
-Со временем этот верхний слой обзавёлся собственной законченной логикой и
-выделился в отдельный самостоятельный продукт со своим, самодостаточным
-объёмом задач — JoinSheets.&lt;/p>
-&lt;h2 id="сквозной-цикл-работы-с-данными" class=link_owner>
- Сквозной цикл работы с данными
- &lt;a href="#%d1%81%d0%ba%d0%b2%d0%be%d0%b7%d0%bd%d0%be%d0%b9-%d1%86%d0%b8%d0%ba%d0%bb-%d1%80%d0%b0%d0%b1%d0%be%d1%82%d1%8b-%d1%81-%d0%b4%d0%b0%d0%bd%d0%bd%d1%8b%d0%bc%d0%b8" class="link icon">
- &lt;svg>
- &lt;use xlink:href="#anchor-link">&lt;/use>
- &lt;/svg>
- &lt;/a>
-&lt;/h2>
-&lt;p>JoinSheets покрывает один непрерывный цикл:&lt;/p></description></item><item><title>Экраны</title><link>https://joinsheets.github.io/ru/docs/user-guide/screens/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/user-guide/screens/</guid><description>&lt;p>В JoinSheets три экрана, переход между ними — через верхнее меню.&lt;/p>
+агрегатами.)&lt;/em>&lt;/p></description></item><item><title>Функциональные требования</title><link>https://joinsheets.github.io/ru/docs/developers/functional-requirements/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/developers/functional-requirements/</guid><description>&lt;p>JoinSheets — самостоятельный, логически завершённый продукт: конструктор таблиц,
+мини-надстройка в духе BI, реализующая сквозной ETL-цикл (загрузка → обработка →
+выгрузка) поверх плоских таблиц. При этом он по-прежнему используется в связке с
+пайплайном, из которого когда-то выделился (подробнее — в свёрнутом блоке в конце
+страницы): сейчас это не взаимоисключающие варианты, а две равноправные формы
+использования.&lt;/p>
+&lt;p>Исходная задача была не просто «показать таблицу», а дать нескольким
+пользователям, смотрящим на один и тот же общий датасет, возможность настроить
+&lt;em>свой&lt;/em> срез — каждому нужен свой набор полей, свои связки, свои условия отбора,
+иногда свой взгляд на одни и те же данные под другим углом. Отсюда и главное
+требование к функциональности: гибкая, &lt;strong>декларативная&lt;/strong> настройка отображения
+поверх общего датасета — с возможностью сохранить её, загрузить заново, передать
+другому пользователю или переключаться между несколькими такими настройками.
+Декларативная — потому что сам пресет ничего не меняет в исходных данных, он
+только описывает, каким должен быть результат (какие поля, как разрешены
+коллизии между источниками, какие связки и условия); нужный срез собирается
+заново из нетронутых источников при каждом построении.&lt;/p></description></item><item><title>Экраны</title><link>https://joinsheets.github.io/ru/docs/user-guide/screens/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://joinsheets.github.io/ru/docs/user-guide/screens/</guid><description>&lt;p>В JoinSheets три экрана, переход между ними — через верхнее меню.&lt;/p>
 &lt;h2 id="data" class=link_owner>
  Data
  &lt;a href="#data" class="link icon">
