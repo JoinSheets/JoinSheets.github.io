@@ -479,6 +479,12 @@ test('reducer: manifest/loaded with conflicts -- manifestError names the conflic
   const s = App.reducer(App.initialState, {
     type: 'manifest/loaded', manifest: { sources: [] }, dataDir: 'data', conflicts: ['CRM', 'ERP']
   });
-  assert.match(s.manifestError, /CRM/);
-  assert.match(s.manifestError, /ERP/);
+  assert.equal(s.manifestError.key, 'error.manifestConflict');
+  assert.match(s.manifestError.params.names, /CRM/);
+  assert.match(s.manifestError.params.names, /ERP/);
+});
+
+test('reducer: settings/setLang changes lang', () => {
+  const s = App.reducer(App.initialState, { type: 'settings/setLang', lang: 'ru' });
+  assert.equal(s.lang, 'ru');
 });

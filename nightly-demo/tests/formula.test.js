@@ -9,7 +9,7 @@ const Formula = require('../formula.js');
 
 var evalStr = function (text, letters, lookupRaw) {
   const r = Formula.parse(text, Object.keys(letters || {}));
-  assert.ok(r.ok, 'expected a successful parse: ' + (r.error || ''));
+  assert.ok(r.ok, 'expected a successful parse: ' + (r.errorKey || ''));
   return Formula.evaluate(r.ast, { letters: letters || {}, lookupRaw: lookupRaw });
 };
 
@@ -66,7 +66,7 @@ test('IF as a function -- the same as the ternary operator', () => {
 test('IF requires exactly 3 arguments', () => {
   const r = Formula.parse('IF(A > 10, "x")', ['A']);
   assert.equal(r.ok, false);
-  assert.match(r.error, /3 arguments/);
+  assert.equal(r.errorKey, 'formulaError.ifArgCount');
 });
 
 test('comparison: numeric when both sides look like numbers', () => {
@@ -119,37 +119,54 @@ test('[Source.Field]: reads the value via lookupRaw, bypassing letters', () => {
 test('parse: an unknown letter -> a clear error', () => {
   const r = Formula.parse('A + B', ['A']);
   assert.equal(r.ok, false);
-  assert.match(r.error, /unknown variable: B/);
+  assert.equal(r.errorKey, 'formulaError.unknownVariable');
+  assert.equal(r.errorParams.name, 'B');
 });
 
 test('parse: an unknown function -> a clear error', () => {
   const r = Formula.parse('NOPE(A)', ['A']);
   assert.equal(r.ok, false);
-  assert.match(r.error, /unknown function/);
+  assert.equal(r.errorKey, 'formulaError.unknownFunction');
+  assert.equal(r.errorParams.name, 'NOPE');
 });
 
 test('parse: an unclosed parenthesis -> an error', () => {
   const r = Formula.parse('(A + B', ['A', 'B']);
   assert.equal(r.ok, false);
+  assert.equal(r.errorKey, 'formulaError.expectedOp');
+  assert.equal(r.errorParams.op, ')');
 });
 
 test('parse: an unclosed [ -> an error', () => {
   const r = Formula.parse('A + [ERP.price', ['A']);
   assert.equal(r.ok, false);
-  assert.match(r.error, /\[/);
+  assert.equal(r.errorKey, 'formulaError.unterminatedBracket');
 });
 
 test('parse: an unterminated string -> an error', () => {
-  const r = Formula.parse('IF(A > 1, "x, "y")', ['A']);
+  const r = Formula.parse('IF(A > 1, "x, y)', ['A']);
   assert.equal(r.ok, false);
+  assert.equal(r.errorKey, 'formulaError.unterminatedString');
 });
 
 test('parse: an empty formula -> an error', () => {
-  assert.equal(Formula.parse('', ['A']).ok, false);
-  assert.equal(Formula.parse('   ', ['A']).ok, false);
+  const r1 = Formula.parse('', ['A']);
+  const r2 = Formula.parse('   ', ['A']);
+  assert.equal(r1.ok, false);
+  assert.equal(r1.errorKey, 'formulaError.emptyFormula');
+  assert.equal(r2.ok, false);
+  assert.equal(r2.errorKey, 'formulaError.emptyFormula');
 });
 
 test('parse: trailing characters after the end of the expression -> an error', () => {
   const r = Formula.parse('A + B)', ['A', 'B']);
   assert.equal(r.ok, false);
+  assert.equal(r.errorKey, 'formulaError.trailingCharacters');
+});
+
+test('parse: an unexpected character -> a clear error naming it', () => {
+  const r = Formula.parse('A & B', ['A', 'B']);
+  assert.equal(r.ok, false);
+  assert.equal(r.errorKey, 'formulaError.unexpectedCharacter');
+  assert.equal(r.errorParams.char, '"&"');
 });

@@ -223,7 +223,7 @@ setTimeout(() => {
       'el', 'joinSources', 'matchCondition', 'parseNum', 'parseDate', 'toCsv',
       'createStore', 'reducer', 'normalizePreset', 'opSelect', 'viewNav', 'viewBuild',
       'viewTableShell', 'renderGrid', 'store', 'buildDataset', 'exportXls', 'exportCsv',
-      'renderSettingsPanel', 'applyTheme', 'THEMES', 'prefs'
+      'renderSettingsPanel', 'applyTheme', 'THEMES', 'prefs', 't', 'setLocale', 'LOCALES'
     ];
     const missing = expectedExports.filter((k) => typeof DS_APP[k] === 'undefined');
     assert.deepEqual(missing, [], 'missing exports on window.DS_APP: ' + missing.join(', '));
@@ -232,8 +232,10 @@ setTimeout(() => {
 
     if (SIMULATE_CRASH) {
       assert.equal(state.route, 'build', 'expected the Data screen after recovering from a crash');
-      assert.ok(state.buildError && /ran out of memory/.test(state.buildError),
-        'expected an explanation about the crash, got: ' + state.buildError);
+      // buildError is {key, params}, translated only at the view layer (view-build.js,
+      // via i18n.js::t) -- not a ready English string, see store.js.
+      assert.equal(state.buildError && state.buildError.key, 'error.restartedAfterCrash',
+        'expected an explanation about the crash, got: ' + JSON.stringify(state.buildError));
       // not assert.deepEqual(..., {}) -- state.preset was created inside the vm
       // context, its Object.prototype is from a different "realm" than {} in this
       // file; deepStrictEqual (node:assert/strict) also compares the prototype, so

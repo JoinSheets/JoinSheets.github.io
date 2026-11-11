@@ -30,6 +30,7 @@
       renderAdvFilter = App.renderAdvFilter, renderExportPanel = App.renderExportPanel,
       renderSettingsPanel = App.renderSettingsPanel, renderGrid = App.renderGrid;
   var applyTheme = App.applyTheme;
+  var setLocale = App.setLocale, t = App.t;
 
   // ---------------------------------------------------------------------------
   // The dataset-build effect (loads sources, joins)
@@ -46,11 +47,11 @@
     var state = store.getState();
     var names = selectedNames(state.preset);
     if (!names.length) {
-      store.dispatch({ type: 'build/error', message: 'No source selected' });
+      store.dispatch({ type: 'build/error', key: 'error.noSourceSelected' });
       return;
     }
     if (!state.dataDir) {
-      store.dispatch({ type: 'build/error', message: 'No data directory (data/ or sample-data/)' });
+      store.dispatch({ type: 'build/error', key: 'error.noDataDirectory' });
       return;
     }
     store.dispatch({ type: 'build/start' });
@@ -63,7 +64,7 @@
         .map(function (r, i) { return r.status === 'rejected' ? names[i] : null; })
         .filter(Boolean);
       if (failed.length) {
-        store.dispatch({ type: 'build/error', message: 'Failed to load sources: ' + failed.join(', ') });
+        store.dispatch({ type: 'build/error', key: 'error.failedToLoadSources', params: { names: failed.join(', ') } });
         return;
       }
       // The lazy columnar format: box.columns[label] is a function returning an array
@@ -98,7 +99,7 @@
       });
       var joined = joinSources(selected, state.preset.view.joins || []);
       if (!joined.columns.length) {
-        store.dispatch({ type: 'build/error', message: 'No field selected to display' });
+        store.dispatch({ type: 'build/error', key: 'error.noFieldSelected' });
         return;
       }
       // first pass: Data's conditions -- on the sources' raw fields, right after the
@@ -174,20 +175,21 @@
   var lastExportOpen = null;
   var lastSettingsOpen = null;
   var lastTheme = null;
+  var lastLang = null;
 
   // one info line at the bottom of the window: the data source + (on Table, once the
   // dataset is built) preset/slice/rows-after-filters/columns
   var footerText = function (state) {
-    var parts = [state.dataDir ? ('Path: ' + state.dataDir) : 'Path: not found (neither data nor sample-data)'];
+    var parts = [state.dataDir ? (t('footer.path') + state.dataDir) : t('footer.pathNotFound')];
     if (state.route === 'table' && state.dataset) {
       var cols = visibleColumns(state.dataset, state.hideEmpty);
       var shownRows = applyAdvanced(state.dataset, state.adv).rows.length;
       parts.push(
-        'Preset: ' + state.preset.name,
-        'Sources: ' + selectedNames(state.preset).join(' + '),
-        'As of: ' + (state.dataset.as_of != null ? fmtDate(state.dataset.as_of) : 'now'),
-        'Rows: ' + shownRows + ' of ' + state.dataset.rows.length,
-        'Columns: ' + cols.length
+        t('footer.preset') + state.preset.name,
+        t('footer.sources') + selectedNames(state.preset).join(' + '),
+        t('footer.asOf') + (state.dataset.as_of != null ? fmtDate(state.dataset.as_of) : t('footer.asOfNow')),
+        t('footer.rows') + shownRows + t('footer.rowsOf') + state.dataset.rows.length,
+        t('footer.columns') + cols.length
       );
     }
     return parts.join(' · ');
@@ -195,6 +197,13 @@
 
   var render = function (state) {
     var d = store.dispatch;
+
+    // Picks which dictionary t() reads from for this whole render pass -- unlike
+    // applyTheme below (a one-time DOM touch, gated on change), this runs on EVERY
+    // render(): virtually every branch below rebuilds text nodes from scratch via
+    // t(), and they all need to read the right language, not just the first one
+    // after a switch.
+    setLocale(state.lang);
 
     // only Table is pinned to 100vh (see body.route-table in styles.css) -- .scroll
     // inside it needs to actually be constrained for its own internal scroll to kick
@@ -214,10 +223,19 @@
       lastTheme = state.theme;
     }
 
+    // Persisted (and cross-tab synced, see the 'storage' listener below) the same way
+    // as theme just above -- applying it, though, already happened unconditionally at
+    // the top of render(), not gated here: every render rebuilds text, not just the
+    // one right after a switch.
+    if (state.lang !== lastLang) {
+      prefs.set('lang', state.lang);
+      lastLang = state.lang;
+    }
+
     clear(footerNode).appendChild(viewFooter(footerText(state), !state.dataDir));
 
     if (!state.manifest || !state.preset) {
-      clear(root).appendChild(el('p', { class: 'muted', style: 'padding:1rem' }, 'Initializing…'));
+      clear(root).appendChild(el('p', { class: 'muted', style: 'padding:1rem' }, t('app.initializing')));
       return;
     }
 
@@ -227,7 +245,7 @@
       root.appendChild(viewNav(state, d));
       root.appendChild(el('div', { class: 'advfilter', id: 'settings-panel' }));
       root.appendChild(el('section', { class: 'page' },
-        el('p', { class: 'muted' }, 'Opening the table with the default preset…')));
+        el('p', { class: 'muted' }, t('app.openingDefaultPreset'))));
       lastRoute = null;
       lastDataset = null;
       renderSettingsPanel(state, d);
@@ -311,11 +329,18 @@
   // panel if it happens to be open here too. An id the registry doesn't recognize
   // isn't a concern here -- theme.js::applyTheme/findTheme fall back to "auto".
   window.addEventListener('storage', function (e) {
-    if (e.key !== 'joinsheets:theme' || e.newValue == null) return;
-    try {
-      var theme = JSON.parse(e.newValue);
-      if (typeof theme === 'string') store.dispatch({ type: 'settings/setTheme', theme: theme });
-    } catch (err) { /* ignore a malformed value */ }
+    if (e.newValue == null) return;
+    if (e.key === 'joinsheets:theme') {
+      try {
+        var theme = JSON.parse(e.newValue);
+        if (typeof theme === 'string') store.dispatch({ type: 'settings/setTheme', theme: theme });
+      } catch (err) { /* ignore a malformed value */ }
+    } else if (e.key === 'joinsheets:lang') {
+      try {
+        var lang = JSON.parse(e.newValue);
+        if (typeof lang === 'string') store.dispatch({ type: 'settings/setLang', lang: lang });
+      } catch (err) { /* ignore a malformed value */ }
+    }
   });
 
   // ---------------------------------------------------------------------------
@@ -393,14 +418,7 @@
     if (storage.get('renderWatchdog')) {
       storage.set('renderWatchdog', false);
       store.dispatch({ type: 'preset/set', preset: normalizePreset({}) });
-      store.dispatch({
-        type: 'build/error',
-        message: 'The previous attempt to build the table in this tab did not finish -- it looks '
-          + 'like the browser ran out of memory for the selected preset and the tab restarted. To '
-          + 'avoid a restart loop, an empty preset was applied. The saved preset is untouched -- you '
-          + 'can open it manually on the Data screen (e.g. to narrow the selected sources/fields '
-          + 'before trying again).'
-      });
+      store.dispatch({ type: 'build/error', key: 'error.restartedAfterCrash' });
       // render(), triggered by both dispatches above, unconditionally re-saves
       // state.preset (see "if (state.preset) storage.set('preset', ...)" in render()
       // itself) -- meaning it just overwrote the saved preset with the empty one.

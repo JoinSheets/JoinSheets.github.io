@@ -117,7 +117,7 @@
           if (text[i] === '\\' && i + 1 < n) { buf += text[i + 1]; i += 2; }
           else { buf += text[i]; i++; }
         }
-        if (i >= n) return { error: 'unterminated string', pos: start };
+        if (i >= n) return { errorKey: 'formulaError.unterminatedString', errorParams: {}, pos: start };
         i++;
         tokens.push({ type: 'string', value: buf, pos: start });
         continue;
@@ -127,7 +127,7 @@
         i++;
         var b = '';
         while (i < n && text[i] !== ']') { b += text[i]; i++; }
-        if (i >= n) return { error: 'unterminated "[" bracket', pos: start };
+        if (i >= n) return { errorKey: 'formulaError.unterminatedBracket', errorParams: {}, pos: start };
         i++;
         tokens.push({ type: 'bracket', value: b, pos: start });
         continue;
@@ -161,7 +161,7 @@
         continue;
       }
 
-      return { error: 'unexpected character ' + JSON.stringify(c), pos: start };
+      return { errorKey: 'formulaError.unexpectedCharacter', errorParams: { char: JSON.stringify(c) }, pos: start };
     }
     return { tokens: tokens };
   };
@@ -173,13 +173,20 @@
   var makeParser = function (tokens, knownLetters) {
     var pos = 0;
     var peek = function () { return tokens[pos]; };
-    var fail = function (msg, tok) {
+    // Throws an error carrying an i18n key + params (translated only at the view layer,
+    // see view-entities.js) instead of a baked-in English message -- caught once, in
+    // parse() below.
+    var fail = function (key, params, tok) {
       var p = tok ? tok.pos : (tokens.length ? tokens[tokens.length - 1].pos : 0);
-      throw new Error(msg + ' (position ' + p + ')');
+      var err = new Error(key);
+      err.i18nKey = key;
+      err.i18nParams = params || {};
+      err.pos = p;
+      throw err;
     };
     var expectOp = function (op) {
       var t = peek();
-      if (!t || t.type !== 'op' || t.value !== op) fail('expected "' + op + '"', t);
+      if (!t || t.type !== 'op' || t.value !== op) fail('formulaError.expectedOp', { op: op }, t);
       pos++;
     };
 
@@ -198,7 +205,7 @@
 
     var parsePrimary = function () {
       var t = peek();
-      if (!t) fail('unexpected end of formula', null);
+      if (!t) fail('formulaError.unexpectedEnd', {}, null);
       if (t.type === 'number') { pos++; return { type: 'num', value: t.value }; }
       if (t.type === 'string') { pos++; return { type: 'str', value: t.value }; }
       if (t.type === 'bracket') { pos++; return { type: 'raw', path: t.value }; }
@@ -210,13 +217,13 @@
           var args = parseArgs();
           expectOp(')');
           if (t.value === 'IF') {
-            if (args.length !== 3) fail('IF expects exactly 3 arguments: condition, "then", "else"', t);
+            if (args.length !== 3) fail('formulaError.ifArgCount', {}, t);
             return { type: 'if', cond: args[0], then: args[1], else: args[2] };
           }
-          if (!FUNCTIONS[t.value]) fail('unknown function: ' + t.value, t);
+          if (!FUNCTIONS[t.value]) fail('formulaError.unknownFunction', { name: t.value }, t);
           return { type: 'call', name: t.value, args: args };
         }
-        if (knownLetters.indexOf(t.value) === -1) fail('unknown variable: ' + t.value, t);
+        if (knownLetters.indexOf(t.value) === -1) fail('formulaError.unknownVariable', { name: t.value }, t);
         return { type: 'var', name: t.value };
       }
       if (t.type === 'op' && t.value === '(') {
@@ -225,7 +232,7 @@
         expectOp(')');
         return inner;
       }
-      fail('unexpected token', t);
+      fail('formulaError.unexpectedToken', {}, t);
     };
 
     var parseUnary = function () {
@@ -284,24 +291,29 @@
     return {
       parse: function () {
         var ast = parseTernary();
-        if (pos < tokens.length) fail('trailing characters after the end of the expression', peek());
+        if (pos < tokens.length) fail('formulaError.trailingCharacters', {}, peek());
         return ast;
       }
     };
   };
 
   // text: the formula string. knownLetters: array of letters available as variables (entity
-  // inputs, in letterFor order). Result: {ok:true, ast} | {ok:false, error}.
+  // inputs, in letterFor order). Result: {ok:true, ast} | {ok:false, errorKey, errorParams, pos}.
+  // errorKey/errorParams are translated only at the view layer (view-entities.js, via
+  // i18n.js::t) -- this module stays English-string-free on the failure path, same as on
+  // the success one. pos is null for errors that aren't tied to one particular character
+  // (e.g. an empty formula).
   var parse = function (text, knownLetters) {
     text = text == null ? '' : String(text);
-    if (!text.trim()) return { ok: false, error: 'empty formula' };
+    if (!text.trim()) return { ok: false, errorKey: 'formulaError.emptyFormula', errorParams: {}, pos: null };
     var scan = tokenize(text);
-    if (scan.error) return { ok: false, error: scan.error + ' (position ' + scan.pos + ')' };
+    if (scan.errorKey) return { ok: false, errorKey: scan.errorKey, errorParams: scan.errorParams, pos: scan.pos };
     try {
       var ast = makeParser(scan.tokens, knownLetters || []).parse();
       return { ok: true, ast: ast };
     } catch (e) {
-      return { ok: false, error: e.message };
+      if (!e.i18nKey) throw e;   // a real bug, not a user-facing parse failure -- don't swallow it
+      return { ok: false, errorKey: e.i18nKey, errorParams: e.i18nParams, pos: e.pos };
     }
   };
 

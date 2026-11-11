@@ -11,20 +11,20 @@
 // resolveEntities. DOM-dependent code -- not covered by node:test. Depends on util.js,
 // store.js (selectedNames), entities.js (ENTITY_KINDS/ENTITY_TYPES/entityOutNames/
 // lettersForInputs), formula.js (letterFor/parse/FUNCTIONS), view-common.js
-// (conditionsBlock).
+// (conditionsBlock), i18n.js (t).
 // The reference to main.js (buildDataset/store) resolves lazily through window.DS_APP
 // at click time -- main.js loads last.
 (function (root, factory) {
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = factory(
       require('./util.js'), require('./store.js'), require('./entities.js'),
-      require('./view-common.js'), require('./formula.js')
+      require('./view-common.js'), require('./formula.js'), require('./i18n.js')
     );
   } else {
     root.DS_APP = root.DS_APP || {};
-    Object.assign(root.DS_APP, factory(root.DS_APP, root.DS_APP, root.DS_APP, root.DS_APP, root.DS_APP));
+    Object.assign(root.DS_APP, factory(root.DS_APP, root.DS_APP, root.DS_APP, root.DS_APP, root.DS_APP, root.DS_APP));
   }
-})(typeof window !== 'undefined' ? window : this, function (Util, Store, Entities, ViewCommon, Formula) {
+})(typeof window !== 'undefined' ? window : this, function (Util, Store, Entities, ViewCommon, Formula, I18N) {
 
   var el = Util.el;
   var selectedNames = Store.selectedNames;
@@ -33,6 +33,7 @@
       presetColumns = Entities.presetColumns;
   var conditionsBlock = ViewCommon.conditionsBlock, fieldSelect = ViewCommon.fieldSelect,
       moveRemoveButtons = ViewCommon.moveRemoveButtons;
+  var t = I18N.t;
 
   var viewEntities = function (state, d) {
     var preset = state.preset;
@@ -50,7 +51,7 @@
     var colSelect = function (cur, onChange, exclude) {
       var hide = exclude || [];
       var options = pickedColumns.filter(function (c) { return c === cur || hide.indexOf(c) === -1; });
-      return fieldSelect(cur, options, onChange, 'field…');
+      return fieldSelect(cur, options, onChange, t('common.fieldPlaceholder'));
     };
 
     // an entity row's "label · control"; block -- for a multi-line control
@@ -83,14 +84,14 @@
             }, usedByOthers),
             withWeight ? el('input', {
               type: 'number', class: 'ent-weight', step: '0.05', min: '0', max: '1',
-              value: inp.weight == null ? '' : String(inp.weight), placeholder: 'weight',
+              value: inp.weight == null ? '' : String(inp.weight), placeholder: t('entities.weightPlaceholder'),
               onchange: function (ev) {
                 d({ type: 'preset/updateEntityInput', index: i, inputIndex: ii,
                     patch: { weight: ev.target.value === '' ? 0 : Number(ev.target.value) } });
               }
             }) : null,
             moveRemoveButtons({
-              upTitle: 'up', downTitle: 'down',
+              upTitle: t('common.up'), downTitle: t('common.down'),
               upDisabled: ii === 0, downDisabled: ii === inputs.length - 1,
               onUp: function () { d({ type: 'preset/moveEntityInput', index: i, inputIndex: ii, dir: -1 }); },
               onDown: function () { d({ type: 'preset/moveEntityInput', index: i, inputIndex: ii, dir: 1 }); },
@@ -98,7 +99,7 @@
             })
           );
         }),
-        el('button', { class: 'link', onclick: function () { d({ type: 'preset/addEntityInput', index: i }); } }, '+ input')
+        el('button', { class: 'link', onclick: function () { d({ type: 'preset/addEntityInput', index: i }); } }, t('entities.addInput'))
       );
     };
 
@@ -116,27 +117,32 @@
               type: 'checkbox', checked: e.from.null_wins !== false,
               onchange: function (ev) { up({ from: { null_wins: ev.target.checked } }); }
             }),
-            'null (DELETE) from the higher-weight source wins'),
-          el('p', { class: 'muted', style: 'margin:.2rem 0 0' }, 'ties in weight resolve top-to-bottom')
+            t('entities.nullWins')),
+          el('p', { class: 'muted', style: 'margin:.2rem 0 0' }, t('entities.weightTieHint'))
         );
       } else if (kind === 'formula') {
         var letters = lettersForInputs(e.from.inputs || []);
         var formulaText = e.from.formula || '';
         var parsed = formulaText.trim() ? Formula.parse(formulaText, letters) : null;
+        // parsed.error -- a formula parse failure -- is {errorKey, errorParams, pos}, not
+        // a ready English string (see formula.js): translate the message itself, then
+        // append the position, in its own translated wrapper, only when pos is known
+        // (the empty-formula case has none).
+        var parsedError = parsed && !parsed.ok
+          ? t(parsed.errorKey, parsed.errorParams) + (parsed.pos != null ? t('formulaError.atPosition', { pos: parsed.pos }) : '')
+          : null;
         body = el('div', {},
           entityInputs(e, i, false, true),
-          el('label', { class: 'field small', style: 'display:block;margin-top:.5rem' }, 'Formula',
+          el('label', { class: 'field small', style: 'display:block;margin-top:.5rem' }, t('entities.formulaLabel'),
             el('input', {
               type: 'text', class: 'ent-formula', value: formulaText,
-              placeholder: letters.length ? letters.join(' + ') : 'add input(s) first',
+              placeholder: letters.length ? letters.join(' + ') : t('entities.formulaPlaceholderEmpty'),
               onchange: function (ev) { up({ from: { formula: ev.target.value } }); }
             })
           ),
-          parsed && !parsed.ok ? el('p', { class: 'error', style: 'margin:.2rem 0 0' }, parsed.error) : null,
+          parsedError ? el('p', { class: 'error', style: 'margin:.2rem 0 0' }, parsedError) : null,
           el('p', { class: 'muted', style: 'margin:.2rem 0 0' },
-            'letters A, B, ... follow the input order above; functions: '
-            + Object.keys(Formula.FUNCTIONS).concat(['IF']).join(', ')
-            + '; a direct reference to a raw field -- [Source.Field]')
+            t('entities.formulaHint', { functions: Object.keys(Formula.FUNCTIONS).concat(['IF']).join(', ') }))
         );
       } else {
         body = colSelect(e.from.column, function (v) { up({ from: { column: v } }); });
@@ -146,52 +152,49 @@
       if (e.type === 'date') {
         typeExtra = el('div', {},
           el('div', { class: 'entity-format' },
-            el('label', { class: 'field small' }, 'input format',
+            el('label', { class: 'field small' }, t('entities.dateInputFormatLabel'),
               el('input', { type: 'text', value: pp.date_in || 'auto',
-                placeholder: 'auto | excel | DD.MM.YYYY',
+                placeholder: t('entities.dateInputFormatPlaceholder'),
                 onchange: function (ev) { up({ parse: { date_in: ev.target.value } }); } })),
-            el('label', { class: 'field small' }, 'output format',
+            el('label', { class: 'field small' }, t('entities.dateOutputFormatLabel'),
               el('input', { type: 'text', value: pp.date_out || 'YYYY-MM-DD',
                 onchange: function (ev) { up({ parse: { date_out: ev.target.value } }); } }))),
-          el('p', { class: 'muted', style: 'margin:.2rem 0 0' },
-            '"auto" understands ISO, DD.MM.YYYY, unix time, and an Excel serial date '
-            + '(5-7 digits); "excel" means only a serial date; otherwise tokens '
-            + 'YYYY MM DD HH mm ss with any separators')
+          el('p', { class: 'muted', style: 'margin:.2rem 0 0' }, t('entities.dateFormatHint'))
         );
       } else if (e.type === 'bool') {
         typeExtra = el('div', { class: 'entity-format' },
-          el('label', { class: 'field small' }, 'true tokens (comma-separated)',
+          el('label', { class: 'field small' }, t('entities.trueTokensLabel'),
             el('input', { type: 'text', value: pp['true'] || 'true,1,yes,y,+',
               onchange: function (ev) { up({ parse: { 'true': ev.target.value } }); } })));
       } else if (e.type === 'number') {
         typeExtra = el('div', { class: 'entity-format' },
-          el('label', { class: 'field small' }, 'decimal separator',
+          el('label', { class: 'field small' }, t('entities.decimalSeparatorLabel'),
             el('select', { onchange: function (ev) { up({ parse: { decimal: ev.target.value } }); } },
-              [['auto', 'auto'], ['.', 'period'], [',', 'comma']].map(function (o) {
-                return el('option', { value: o[0], selected: o[0] === (pp.decimal || 'auto') }, o[1]);
+              [['auto', 'numberDecimal.auto'], ['.', 'numberDecimal.period'], [',', 'numberDecimal.comma']].map(function (o) {
+                return el('option', { value: o[0], selected: o[0] === (pp.decimal || 'auto') }, t(o[1]));
               }))));
       }
 
       var kindSelect = el('select', { onchange: function (ev) { up({ from: { kind: ev.target.value } }); } },
-        ENTITY_KINDS.map(function (o) { return el('option', { value: o[0], selected: o[0] === kind }, o[1]); }));
+        ENTITY_KINDS.map(function (o) { return el('option', { value: o[0], selected: o[0] === kind }, t('entityKind.' + o[0])); }));
       var typeSelect = el('select', { onchange: function (ev) { up({ type: ev.target.value }); } },
-        ENTITY_TYPES.map(function (o) { return el('option', { value: o[0], selected: o[0] === (e.type || 'text') }, o[1]); }));
+        ENTITY_TYPES.map(function (o) { return el('option', { value: o[0], selected: o[0] === (e.type || 'text') }, t('entityType.' + o[0])); }));
 
       return el('div', { class: 'entity' + (e.hidden ? ' hidden-ent' : '') },
         el('div', { class: 'entity-head' },
-          entField('Name', el('input', {
-            type: 'text', class: 'ent-alias', value: e.name || '', placeholder: 'column name',
+          entField(t('entities.nameLabel'), el('input', {
+            type: 'text', class: 'ent-alias', value: e.name || '', placeholder: t('entities.columnNamePlaceholder'),
             onchange: function (ev) { up({ name: ev.target.value }); }
           })),
           el('div', { class: 'entity-tools' },
-            el('label', { class: 'chk', title: 'computed and available to the conditions below, but not shown in the table/export' },
+            el('label', { class: 'chk', title: t('entities.hideInTableTitle') },
               el('input', {
                 type: 'checkbox', checked: !!e.hidden,
                 onchange: function (ev) { up({ hidden: ev.target.checked }); }
               }),
-              'hide in table'),
+              t('entities.hideInTable')),
             moveRemoveButtons({
-              upTitle: 'move up', downTitle: 'move down', removeTitle: 'remove field',
+              upTitle: t('entities.moveUp'), downTitle: t('entities.moveDown'), removeTitle: t('entities.removeField'),
               upDisabled: i === 0, downDisabled: i === preset.view.entities.length - 1,
               onUp: function () { d({ type: 'preset/moveEntity', index: i, dir: -1 }); },
               onDown: function () { d({ type: 'preset/moveEntity', index: i, dir: 1 }); },
@@ -200,9 +203,9 @@
           )
         ),
         el('div', { class: 'entity-rows' },
-          entField('Calculation method', kindSelect),
-          entField('Data type', typeSelect),
-          entField('Calculation source', body, kind !== 'field')
+          entField(t('entities.calculationMethod'), kindSelect),
+          entField(t('entities.dataType'), typeSelect),
+          entField(t('entities.calculationSource'), body, kind !== 'field')
         ),
         typeExtra
       );
@@ -214,7 +217,7 @@
     var addFieldRow = pickedColumns.length ? el('div', { class: 'row', style: 'gap:.3rem;flex-wrap:wrap' },
       pickedColumns.map(function (c) {
         return el('button', {
-          class: 'link', title: 'add "' + c + '" as-is',
+          class: 'link', title: t('entities.addSourceFieldTitle', { column: c }),
           onclick: function () { d({ type: 'preset/addFieldEntity', column: c }); }
         }, '+ ' + c);
       })
@@ -222,43 +225,38 @@
 
     var entityConditions = conditionsBlock({
       d: d,
-      title: 'Conditions on fields',
-      hint: 'the second pass, after fields are computed (the first is on Data, on raw fields): '
-        + 'applied in order (AND), narrows what reaches Table -- regardless of whether the field itself is hidden',
+      title: t('entities.conditionsTitle'),
+      hint: t('entities.conditionsHint'),
       fields: entityOutNames(preset.view.entities),
       conditions: preset.view.entityConditions,
       actions: { add: 'preset/addEntityCondition', update: 'preset/updateEntityCondition', remove: 'preset/removeEntityCondition' }
     });
 
     return el('section', { class: 'page entities' },
-      el('h1', {}, 'Fields'),
+      el('h1', {}, t('entities.pageTitle')),
 
       pickedColumns.length
         ? el('div', {},
             preset.view.entities.length
               ? el('div', { class: 'entities' }, preset.view.entities.map(entityRow))
-              : el('p', { class: 'muted' }, 'no fields yet -- the table will show the selected fields as-is'),
-            el('h2', { style: 'margin-top:.6rem' }, 'Source fields (as-is)'),
+              : el('p', { class: 'muted' }, t('entities.noFieldsYet')),
+            el('h2', { style: 'margin-top:.6rem' }, t('entities.sourceFieldsAsIs')),
             addFieldRow,
             el('div', { class: 'row', style: 'gap:.5rem;margin:.4rem 0 0' },
-              el('button', { class: 'link', onclick: function () { d({ type: 'preset/addEntity' }); } }, '+ field')
+              el('button', { class: 'link', onclick: function () { d({ type: 'preset/addEntity' }); } }, t('entities.addField'))
             ),
-            el('p', { class: 'muted', style: 'margin:.3rem 0 0' },
-              'a field is one column: a renamed/typed field, weight-based collision resolution, '
-              + 'or a formula. Row order = column order. Type drives parsing (dates/numbers); '
-              + 'unparseable values are highlighted. "Hide in table" means it\'s computed and '
-              + 'available to the conditions below, but not shown in the result.'),
+            el('p', { class: 'muted', style: 'margin:.3rem 0 0' }, t('entities.fieldsHint')),
             entityConditions
           )
-        : el('p', { class: 'muted' }, 'First choose sources and fields on the Data screen.'),
+        : el('p', { class: 'muted' }, t('entities.chooseSourcesFirst')),
 
-      state.buildError ? el('p', { class: 'error' }, state.buildError) : null,
+      state.buildError ? el('p', { class: 'error' }, t(state.buildError.key, state.buildError.params)) : null,
 
       el('div', { class: 'actions' },
         el('button', {
           class: 'primary', disabled: state.building || !chosen.length,
           onclick: function () { window.DS_APP.buildDataset(window.DS_APP.store); }
-        }, state.building ? 'Building…' : 'Apply and open table')
+        }, state.building ? t('common.building') : t('common.applyAndOpenTable'))
       )
     );
   };

@@ -217,6 +217,13 @@
       var saved = prefs.get('theme');
       return typeof saved === 'string' && saved ? saved : 'compose';
     })(),
+    // Same prefs-backed shape as theme, one line up -- see i18n.js for the registry
+    // and the t()/setLocale() pair the view layer reads through. "en" (not a browser-
+    // language guess) matches index.html's own initial lang="en".
+    lang: (function () {
+      var saved = prefs.get('lang');
+      return typeof saved === 'string' && saved ? saved : 'en';
+    })(),
     settingsOpen: false      // the settings panel (gear icon, top right) is expanded
   };
 
@@ -409,8 +416,11 @@
       case 'build/start':
         return Object.assign({}, state, { building: true, buildError: null });
 
+      // {key, params} instead of a baked-in English string -- translated only at the
+      // view layer (view-build.js/view-entities.js, via i18n.js::t), same convention
+      // as manifestError above.
       case 'build/error':
-        return Object.assign({}, state, { building: false, buildError: a.message });
+        return Object.assign({}, state, { building: false, buildError: { key: a.key, params: a.params || {} } });
 
       case 'build/success':
         return Object.assign({}, state, {
@@ -630,9 +640,11 @@
         return Object.assign({}, state, {
           manifest: a.manifest,
           dataDir: a.dataDir,
+          // {key, params} instead of a baked-in English string -- translated only at
+          // the view layer (view-build.js, via i18n.js::t), same convention as
+          // buildError below.
           manifestError: (a.conflicts && a.conflicts.length)
-            ? 'Source(s) with this name already exist in another manifest file: ' + a.conflicts.join(', ')
-              + ' -- rename the source, or make sure it is not described in two files at once.'
+            ? { key: 'error.manifestConflict', params: { names: a.conflicts.join(', ') } }
             : null
         });
 
@@ -679,6 +691,9 @@
       case 'settings/setTheme':
         return Object.assign({}, state, { theme: a.theme });
 
+      case 'settings/setLang':
+        return Object.assign({}, state, { lang: a.lang });
+
       default:
         break;
     }
@@ -712,7 +727,7 @@
       var raw = JSON.parse(text);
       d({ type: 'preset/set', preset: raw });
     }).catch(function () {
-      d({ type: 'build/error', message: 'Could not read the preset: ' + file.name });
+      d({ type: 'build/error', key: 'error.presetReadFailed', params: { name: file.name } });
     });
   };
 

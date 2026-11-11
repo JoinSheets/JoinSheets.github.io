@@ -5,20 +5,23 @@
 // from the clipboard), the nav header (main menu -- Data/Advanced filter/Export) and
 // the status-line wrapper at the bottom of the window. DOM-dependent code -- not
 // covered by node:test. Depends on util.js (el), effects.js (pasteFromClipboard),
-// dataset.js (OP_LIST/OP_NO_VALUE/OPERATORS/parseList).
+// dataset.js (OP_LIST/OP_NO_VALUE/OPERATORS/parseList), i18n.js (t).
 (function (root, factory) {
   if (typeof module !== 'undefined' && module.exports) {
-    module.exports = factory(require('./util.js'), require('./effects.js'), require('./dataset.js'));
+    module.exports = factory(
+      require('./util.js'), require('./effects.js'), require('./dataset.js'), require('./i18n.js')
+    );
   } else {
     root.DS_APP = root.DS_APP || {};
-    Object.assign(root.DS_APP, factory(root.DS_APP, root.DS_APP, root.DS_APP));
+    Object.assign(root.DS_APP, factory(root.DS_APP, root.DS_APP, root.DS_APP, root.DS_APP));
   }
-})(typeof window !== 'undefined' ? window : this, function (Util, Effects, Dataset) {
+})(typeof window !== 'undefined' ? window : this, function (Util, Effects, Dataset, I18N) {
 
   var el = Util.el, clear = Util.clear;
   var pasteFromClipboard = Effects.pasteFromClipboard;
   var OPERATORS = Dataset.OPERATORS, OP_LIST = Dataset.OP_LIST, OP_NO_VALUE = Dataset.OP_NO_VALUE,
       parseList = Dataset.parseList;
+  var t = I18N.t;
 
   // A <select> with a placeholder first option ("field…", "—", ...) -- the shared look
   // for every field/column select on Data, Fields, and the advanced filter
@@ -49,7 +52,7 @@
   var opSelect = function (curOp, onChange) {
     return el('select', { onchange: function (e) { onChange(e.target.value); } },
       OPERATORS.map(function (o) {
-        return el('option', { value: o[0], selected: o[0] === curOp }, o[1]);
+        return el('option', { value: o[0], selected: o[0] === curOp }, t('operator.' + o[0]));
       }));
   };
 
@@ -58,7 +61,7 @@
       return el('div', { class: 'cond-list-wrap' },
         el('textarea', {
           class: 'cond-list', rows: 3,
-          placeholder: 'values: one per line or comma-separated',
+          placeholder: t('common.valueListPlaceholder'),
           onchange: function (e) { onValue(e.target.value); }
         }, value || ''),
         el('div', { class: 'cond-list-tools' },
@@ -70,14 +73,14 @@
                 onValue(cur.trim() ? cur.replace(/\s+$/, '') + '\n' + text : text);
               });
             }
-          }, 'Paste from clipboard'),
-          el('span', { class: 'muted' }, parseList(value).length + ' value(s)')
+          }, t('common.pasteFromClipboard')),
+          el('span', { class: 'muted' }, parseList(value).length + t('common.valueCountSuffix'))
         )
       );
     }
     return el('input', {
       type: 'text', class: 'cond-value', value: value || '',
-      placeholder: OP_NO_VALUE[op] ? '—' : 'value',
+      placeholder: OP_NO_VALUE[op] ? t('common.dash') : t('common.valuePlaceholder'),
       disabled: !!OP_NO_VALUE[op],
       onchange: function (e) { onValue(e.target.value); }
     });
@@ -90,7 +93,7 @@
     var patch = function (p) { onPatch(p); };
     return el('div', { class: 'condition' + (OP_LIST[cond.op] ? ' has-list' : '') },
       leading || null,
-      fieldSelect(cond.field, fields, function (v) { patch({ field: v }); }, 'field…'),
+      fieldSelect(cond.field, fields, function (v) { patch({ field: v }); }, t('common.fieldPlaceholder')),
       opSelect(cond.op, function (v) { patch({ op: v }); }),
       valueControl(cond.op, cond.value, function (v) { patch({ value: v }); }),
       el('button', { class: 'link', onclick: onRemove }, '✕')
@@ -113,7 +116,7 @@
     return el('div', {},
       el('h2', {}, opts.title),
       el('div', { class: 'conditions' }, opts.conditions.map(row)),
-      el('button', { class: 'link', onclick: function () { d({ type: opts.actions.add }); } }, '+ condition'),
+      el('button', { class: 'link', onclick: function () { d({ type: opts.actions.add }); } }, t('common.addCondition')),
       el('p', { class: 'muted', style: 'margin:.3rem 0 0' }, opts.hint)
     );
   };
@@ -174,7 +177,7 @@
         }))
       : null;
     var limitRow = el('div', { class: 'quick-values-limit' },
-      'Show ',
+      t('table.quickShowLabel'),
       el('input', {
         type: 'number', min: '0', step: '1', class: 'quick-values-limit-input',
         value: String(opts.limit),
@@ -283,21 +286,21 @@
           el('button', {
             class: 'gear' + (state.exportOpen ? ' active' : ''), disabled: !state.dataset,
             onclick: function () { d({ type: 'export/toggle' }); }
-          }, 'Export'),
+          }, t('nav.export')),
           el('button', {
             class: 'gear' + (state.advOpen ? ' active' : ''), disabled: !state.dataset,
-            title: 'Advanced filter and sort: temporary, applied on top of the selection, not saved',
+            title: t('nav.filterTitle'),
             onclick: function () { d({ type: 'adv/toggle' }); }
-          }, 'Filter'),
+          }, t('nav.filter')),
           el('button', {
             class: 'gear',
-            title: 'Fields: which columns to show and how to compute them',
+            title: t('nav.fieldsTitle'),
             onclick: function () { d({ type: 'route/set', route: 'entities' }); }
-          }, 'Fields'),
+          }, t('nav.fields')),
           el('button', {
-            class: 'gear', title: 'Data: sources, joins, conditions',
+            class: 'gear', title: t('nav.dataTitle'),
             onclick: function () { d({ type: 'route/set', route: 'build' }); }
-          }, 'Data')
+          }, t('nav.data'))
         ]
       : state.route === 'build'
       // Data <-> Fields are adjacent builder pages (same level, it makes sense to
@@ -306,20 +309,20 @@
       ? [
           el('button', {
             class: 'gear', onclick: function () { d({ type: 'route/set', route: 'entities' }); }
-          }, '← To Fields'),
+          }, t('nav.toFields')),
           el('button', {
             class: 'gear', disabled: !state.dataset,
             onclick: function () { d({ type: 'route/set', route: 'table' }); }
-          }, 'To Table →')
+          }, t('nav.toTable'))
         ]
       : [
           el('button', {
             class: 'gear', disabled: !state.dataset,
             onclick: function () { d({ type: 'route/set', route: 'table' }); }
-          }, '← To Table'),
+          }, t('nav.toTableBack')),
           el('button', {
             class: 'gear', onclick: function () { d({ type: 'route/set', route: 'build' }); }
-          }, 'To Data →')
+          }, t('nav.toData'))
         ];
     // Two rows: logo + "JoinSheets" + the route buttons + Settings on top (the
     // app's own chrome), the current preset's description below it (what you're
@@ -336,7 +339,7 @@
         el('div', { class: 'nav-brand' },
           el('a', {
             class: 'org-logo', href: 'https://joinsheets.github.io/',
-            target: '_blank', rel: 'noopener', title: 'JoinSheets documentation & site'
+            target: '_blank', rel: 'noopener', title: t('nav.orgLogoTitle')
           }, el('span', { html: ORG_LOGO_SVG })),
           el('strong', {}, 'JoinSheets')
         ),
@@ -346,7 +349,7 @@
           // buttons above), always the rightmost item.
           el('button', {
             class: 'gear settings-toggle' + (state.settingsOpen ? ' active' : ''),
-            title: 'Settings', 'aria-label': 'Settings',
+            title: t('nav.settingsTitle'), 'aria-label': t('nav.settingsTitle'),
             onclick: function () { d({ type: 'settings/toggle' }); }
           }, el('span', { html: SETTINGS_SVG }))
         )
@@ -371,24 +374,37 @@
     if (!state.settingsOpen) return;
 
     var THEMES = (window.DS_APP && window.DS_APP.THEMES) || [];
+    var LOCALES = (window.DS_APP && window.DS_APP.LOCALES) || [];
     node.appendChild(el('div', { class: 'advfilter-panel' },
-      el('h2', {}, 'Theme'),
+      el('h2', {}, t('settings.theme.title')),
       el('div', { class: 'row' },
-        THEMES.map(function (t) {
+        THEMES.map(function (th) {
           return el('label', { class: 'chk' },
             el('input', {
-              type: 'radio', name: 'theme', checked: state.theme === t.id,
-              onchange: function () { d({ type: 'settings/setTheme', theme: t.id }); }
+              type: 'radio', name: 'theme', checked: state.theme === th.id,
+              onchange: function () { d({ type: 'settings/setTheme', theme: th.id }); }
             }),
-            t.name
+            th.name
           );
         })
       ),
-      el('h2', {}, 'Language'),
+      el('h2', {}, t('settings.language.title')),
       el('div', { class: 'row' },
-        el('span', { class: 'muted' }, 'English -- more languages coming in a future release')
+        // Same radio-list shape as Theme above, one language's own name, not
+        // translated (LOCALES.name is always written in that locale's own
+        // language, e.g. "Русский" stays "Русский" when the UI itself is in
+        // English).
+        LOCALES.map(function (loc) {
+          return el('label', { class: 'chk' },
+            el('input', {
+              type: 'radio', name: 'lang', checked: state.lang === loc.id,
+              onchange: function () { d({ type: 'settings/setLang', lang: loc.id }); }
+            }),
+            loc.name
+          );
+        })
       ),
-      el('h2', {}, 'About'),
+      el('h2', {}, t('settings.about.title')),
       el('div', { class: 'row' },
         // The version has exactly one source of truth: index.html's own
         // <meta name="version">, bumped by hand at every release -- read it
@@ -397,16 +413,16 @@
         el('a', {
           class: 'about-link', href: 'https://joinsheets.github.io/',
           target: '_blank', rel: 'noopener'
-        }, 'Documentation & site')
+        }, t('settings.about.link'))
       ),
       el('div', { class: 'actions' },
-        // The theme already applies as soon as it's picked above (and is saved/
-        // synced across tabs, see main.js) -- Apply's only real job is closing the
-        // panel, a second, explicit way to do what clicking the gear again also
-        // does.
+        // The theme/language already apply as soon as they're picked above (and
+        // are saved/synced across tabs, see main.js) -- Apply's only real job is
+        // closing the panel, a second, explicit way to do what clicking the gear
+        // again also does.
         el('button', {
           class: 'primary', onclick: function () { d({ type: 'settings/toggle' }); }
-        }, 'Apply')
+        }, t('settings.apply'))
       )
     ));
   };

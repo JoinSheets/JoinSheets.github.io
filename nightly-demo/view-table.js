@@ -8,32 +8,32 @@
 // renderGrid: they clear and rebuild their own persistent div on every render(),
 // regardless of whether the whole page shell was rebuilt. DOM-dependent code -- not
 // covered by node:test. Depends on util.js, dataset.js, entities.js (colWidthPx/
-// MIN_COL_W), view-common.js. References to main.js (store/exportXls/exportCsv)
-// resolve lazily through window.DS_APP at click time -- main.js loads last, but every
-// script has already run by the time a click is possible.
+// MIN_COL_W), view-common.js, i18n.js (t). References to main.js (store/exportXls/
+// exportCsv) resolve lazily through window.DS_APP at click time -- main.js loads
+// last, but every script has already run by the time a click is possible.
 (function (root, factory) {
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = factory(
       require('./util.js'), require('./dataset.js'), require('./entities.js'),
-      require('./view-common.js')
+      require('./view-common.js'), require('./i18n.js')
     );
   } else {
     root.DS_APP = root.DS_APP || {};
-    Object.assign(root.DS_APP, factory(root.DS_APP, root.DS_APP, root.DS_APP, root.DS_APP));
+    Object.assign(root.DS_APP, factory(root.DS_APP, root.DS_APP, root.DS_APP, root.DS_APP, root.DS_APP));
   }
-})(typeof window !== 'undefined' ? window : this, function (Util, Dataset, Entities, ViewCommon) {
+})(typeof window !== 'undefined' ? window : this, function (Util, Dataset, Entities, ViewCommon, I18N) {
 
   var el = Util.el, clear = Util.clear, groupBy = Util.groupBy;
   var visibleColumns = Dataset.visibleColumns, applyAdvanced = Dataset.applyAdvanced,
       applySort = Dataset.applySort, findNextMatch = Dataset.findNextMatch,
       uniqueValues = Dataset.uniqueValues;
   var colWidthPx = Entities.colWidthPx, MIN_COL_W = Entities.MIN_COL_W;
-  var AGG_FUNCS_BY_TYPE = Entities.AGG_FUNCS_BY_TYPE, AGG_FUNC_LABELS = Entities.AGG_FUNC_LABELS,
-      aggregateGroup = Entities.aggregateGroup;
+  var AGG_FUNCS_BY_TYPE = Entities.AGG_FUNCS_BY_TYPE, aggregateGroup = Entities.aggregateGroup;
   var quickValueInput = ViewCommon.quickValueInput, fieldSelect = ViewCommon.fieldSelect,
       moveRemoveButtons = ViewCommon.moveRemoveButtons, conditionRow = ViewCommon.conditionRow;
   var FUNNEL_SVG = ViewCommon.FUNNEL_SVG, SEARCH_SVG = ViewCommon.SEARCH_SVG, SORT_SVG = ViewCommon.SORT_SVG,
       SORT_ASC_SVG = ViewCommon.SORT_ASC_SVG, SORT_DESC_SVG = ViewCommon.SORT_DESC_SVG;
+  var t = I18N.t;
 
   var cellNode = function (v, entity, unparsed) {
     var st = '';
@@ -43,11 +43,11 @@
       if (fmt.font_size) st += 'font-size:' + Number(fmt.font_size) + 'px;';
     }
     var attrs = st ? { style: st } : {};
-    if (v === null) { attrs.class = 'del'; attrs.title = 'deleted (DELETE)'; return el('td', attrs, '∅'); }
+    if (v === null) { attrs.class = 'del'; attrs.title = t('table.cellDeletedTitle'); return el('td', attrs, '∅'); }
     if (v === undefined || v === '') { attrs.class = 'empty'; return el('td', attrs, ''); }
     if (unparsed) {
       attrs.class = 'unparsed';
-      attrs.title = 'not recognized as "' + ((entity && entity.type) || 'text') + '"';
+      attrs.title = t('table.cellUnparsedTitle', { type: t('entityType.' + ((entity && entity.type) || 'text')) });
     }
     if (!attrs.title) attrs.title = String(v);   // fixed-width columns -- the full value shows on hover
     return el('td', attrs, String(v));
@@ -82,8 +82,8 @@
             class: 'adv-conj',
             onchange: function (e) { d({ type: 'adv/update', index: i, patch: { conj: e.target.value } }); }
           },
-            el('option', { value: 'and', selected: row.conj !== 'or' }, 'AND'),
-            el('option', { value: 'or', selected: row.conj === 'or' }, 'OR'));
+            el('option', { value: 'and', selected: row.conj !== 'or' }, t('table.conjAnd')),
+            el('option', { value: 'or', selected: row.conj === 'or' }, t('table.conjOr')));
       return conditionRow(row, cols,
         function (p) { d({ type: 'adv/update', index: i, patch: p }); },
         function () { d({ type: 'adv/remove', index: i }); },
@@ -132,10 +132,10 @@
           var newType = (entMapForAgg[newCol] && entMapForAgg[newCol].type) || 'text';
           var newFns = AGG_FUNCS_BY_TYPE[newType] || [];
           patch({ column: newCol, fn: newFns.indexOf(agg.fn) !== -1 ? agg.fn : (newFns[0] || '') });
-        }, 'field…'),
+        }, t('common.fieldPlaceholder')),
         el('select', { disabled: !fns.length, onchange: function (e) { patch({ fn: e.target.value }); } },
           fns.map(function (f) {
-            return el('option', { value: f, selected: f === agg.fn }, AGG_FUNC_LABELS[f] || f);
+            return el('option', { value: f, selected: f === agg.fn }, t('agg.' + f));
           })),
         el('button', { class: 'link', onclick: function () { d({ type: 'groupAgg/remove', index: levelIdx, aggIndex: ai }); } }, '✕')
       );
@@ -148,9 +148,9 @@
       var addDisabled = !aggColumnOptions(i, -1, '').length;
       return el('div', { class: 'condition-block' },
         el('div', { class: 'condition' },
-          fieldSelect(g.column, colOptions, function (v) { d({ type: 'group/update', index: i, patch: { column: v } }); }, 'field…'),
+          fieldSelect(g.column, colOptions, function (v) { d({ type: 'group/update', index: i, patch: { column: v } }); }, t('common.fieldPlaceholder')),
           moveRemoveButtons({
-            upTitle: 'up', downTitle: 'down',
+            upTitle: t('common.up'), downTitle: t('common.down'),
             upDisabled: i === 0, downDisabled: i === state.groupBy.length - 1,
             onUp: function () { d({ type: 'group/move', index: i, dir: -1 }); },
             onDown: function () { d({ type: 'group/move', index: i, dir: 1 }); },
@@ -163,7 +163,7 @@
         el('div', { class: 'advfilter-foot agg-foot' },
           el('button', {
             class: 'link', disabled: addDisabled,
-            title: addDisabled ? 'no free number/date/boolean fields left to aggregate' : '',
+            title: addDisabled ? t('table.noFreeAggFields') : '',
             onclick: function () {
               var opts = aggColumnOptions(i, -1, '');
               if (!opts.length) return;
@@ -172,7 +172,7 @@
               var fns0 = AGG_FUNCS_BY_TYPE[t0] || [];
               d({ type: 'groupAgg/add', index: i, column: c0, fn: fns0[0] || '' });
             }
-          }, '+ aggregate in summary')
+          }, t('table.addAggregate'))
         )
       );
     };
@@ -183,13 +183,13 @@
     var sortRow = function (lvl, i) {
       var patch = function (p) { d({ type: 'sort/update', index: i, patch: p }); };
       return el('div', { class: 'condition' },
-        fieldSelect(lvl.col, cols, function (v) { patch({ col: v }); }, 'field…'),
+        fieldSelect(lvl.col, cols, function (v) { patch({ col: v }); }, t('common.fieldPlaceholder')),
         el('select', { onchange: function (e) { patch({ dir: e.target.value }); } },
-          el('option', { value: 'asc', selected: lvl.dir !== 'desc' }, 'ascending'),
-          el('option', { value: 'desc', selected: lvl.dir === 'desc' }, 'descending')
+          el('option', { value: 'asc', selected: lvl.dir !== 'desc' }, t('table.ascending')),
+          el('option', { value: 'desc', selected: lvl.dir === 'desc' }, t('table.descending'))
         ),
         moveRemoveButtons({
-          upTitle: 'up', downTitle: 'down',
+          upTitle: t('common.up'), downTitle: t('common.down'),
           upDisabled: i === 0, downDisabled: i === state.sortBy.length - 1,
           onUp: function () { d({ type: 'sort/move', index: i, dir: -1 }); },
           onDown: function () { d({ type: 'sort/move', index: i, dir: 1 }); },
@@ -199,26 +199,26 @@
     };
 
     node.appendChild(el('div', { class: 'advfilter-panel' },
-      el('h2', { style: 'margin-top:0' }, 'Set filter'),
+      el('h2', { style: 'margin-top:0' }, t('table.setFilter')),
       state.adv.length ? el('div', { class: 'conditions' }, state.adv.map(advRow)) : null,
       el('div', { class: 'advfilter-foot' },
-        el('button', { class: 'link', onclick: function () { d({ type: 'adv/add' }); } }, '+ condition')
+        el('button', { class: 'link', onclick: function () { d({ type: 'adv/add' }); } }, t('common.addCondition'))
       ),
 
       el('div', { class: 'divider' }),
 
-      el('h2', {}, 'Group By'),
+      el('h2', {}, t('table.groupBy')),
       state.groupBy.length ? el('div', { class: 'conditions' }, state.groupBy.map(groupRow)) : null,
       el('div', { class: 'advfilter-foot' },
-        el('button', { class: 'link', onclick: function () { d({ type: 'group/add' }); } }, '+ grouping level')
+        el('button', { class: 'link', onclick: function () { d({ type: 'group/add' }); } }, t('table.addGroupingLevel'))
       ),
 
       el('div', { class: 'divider' }),
 
-      el('h2', {}, 'Order By'),
+      el('h2', {}, t('table.orderBy')),
       state.sortBy.length ? el('div', { class: 'conditions' }, state.sortBy.map(sortRow)) : null,
       el('div', { class: 'advfilter-foot' },
-        el('button', { class: 'link', onclick: function () { d({ type: 'sort/add' }); } }, '+ sorting level')
+        el('button', { class: 'link', onclick: function () { d({ type: 'sort/add' }); } }, t('table.addSortingLevel'))
       ),
 
       el('div', { class: 'divider' }),
@@ -228,7 +228,7 @@
           type: 'checkbox', checked: state.hideEmpty,
           onchange: function () { d({ type: 'table/toggleHideEmpty' }); }
         }),
-        'hide empty columns'
+        t('table.hideEmptyColumns')
       ),
 
       el('div', { class: 'divider' }),
@@ -237,7 +237,7 @@
         el('button', {
           class: 'primary', disabled: !state.adv.length,
           onclick: function () { d({ type: 'adv/reset' }); }
-        }, 'Show all')
+        }, t('table.showAll'))
       )
     ));
   };
@@ -258,14 +258,14 @@
             type: 'radio', name: 'export-format', checked: state.exportFormat !== 'csv',
             onchange: function () { d({ type: 'ui/setExportFormat', value: 'xls' }); }
           }),
-          'Excel'
+          t('table.exportExcel')
         ),
         el('label', { class: 'chk' },
           el('input', {
             type: 'radio', name: 'export-format', checked: state.exportFormat === 'csv',
             onchange: function () { d({ type: 'ui/setExportFormat', value: 'csv' }); }
           }),
-          'CSV'
+          t('table.exportCsv')
         )
       ),
       el('div', { class: 'actions' },
@@ -274,7 +274,7 @@
             var st = window.DS_APP.store.getState();
             if (st.exportFormat === 'csv') window.DS_APP.exportCsv(st); else window.DS_APP.exportXls(st);
           }
-        }, 'Export')
+        }, t('table.export'))
       )
     ));
   };
@@ -331,7 +331,7 @@
     attachDocCloseListener();
 
     if (!state.dataset) {
-      node.appendChild(el('p', { class: 'muted' }, 'First build the table on the Data screen.'));
+      node.appendChild(el('p', { class: 'muted' }, t('table.buildFirst')));
       return;
     }
 
@@ -448,12 +448,10 @@
         value: draft,
         dirty: mode === 'filter' && draft !== appliedValue,
         autofocus: autofocus,
-        placeholder: mode === 'search' ? 'search…' : 'filter…',
-        title: mode === 'search'
-          ? 'Text + Enter -- jump to the next row below and close; Esc -- close without searching'
-          : 'Text + Enter (or the button on the right) -- apply and close; Esc -- cancel the input and close',
+        placeholder: mode === 'search' ? t('table.searchPlaceholder') : t('table.filterPlaceholder'),
+        title: mode === 'search' ? t('table.searchInputTitle') : t('table.filterInputTitle'),
         applyIcon: mode === 'search' ? SEARCH_SVG : FUNNEL_SVG,
-        applyTitle: mode === 'search' ? 'Find next' : 'Apply filter',
+        applyTitle: mode === 'search' ? t('table.findNext') : t('table.applyFilter'),
         values: uniqueValues(state.dataset.rows, c, state.quickValuesLimit),
         limit: state.quickValuesLimit,
         onInput: function (v) { quickDraft[draftKey] = v; },
@@ -483,17 +481,17 @@
       var icons = el('div', { class: 'col-icons' },
         el('button', {
           type: 'button', class: 'col-icon' + (state.quickOpen[c] === 'search' ? ' active' : ''),
-          title: 'Search this column', html: SEARCH_SVG,
+          title: t('table.searchColumnTitle'), html: SEARCH_SVG,
           onclick: function () { toggleQuick(c, 'search'); }
         }),
         el('button', {
           type: 'button', class: 'col-icon' + (state.quickOpen[c] === 'filter' ? ' active' : '') + (hasFilter ? ' set' : ''),
-          title: 'Quick filter (contains)', html: FUNNEL_SVG,
+          title: t('table.quickFilterTitle'), html: FUNNEL_SVG,
           onclick: function () { toggleQuick(c, 'filter'); }
         }),
         el('button', {
           type: 'button', class: 'col-icon' + (sortEntry ? ' set' : ''),
-          title: 'Sort: ascending / descending / none',
+          title: t('table.sortIconTitle'),
           html: !sortEntry ? SORT_SVG : (sortEntry.dir === 'asc' ? SORT_ASC_SVG : SORT_DESC_SVG),
           onclick: function () { d({ type: 'quick/sort', column: c }); }
         })
@@ -506,7 +504,7 @@
         quickPanel(c),
         el('div', {
           class: 'col-resizer',
-          title: 'Drag -- column width; double-click -- reset',
+          title: t('table.colResizerTitle'),
           onmousedown: function (ev) { startResize(ev, idx, c); },
           ondblclick: function (ev) {
             ev.preventDefault(); ev.stopPropagation();
@@ -585,8 +583,8 @@
       collectLevel(filtered.rows, []);
 
       node.appendChild(el('div', { class: 'grp-actions' },
-        el('button', { class: 'link', onclick: function () { d({ type: 'table/expandAll', keys: allKeys }); } }, 'expand all'),
-        el('button', { class: 'link', onclick: function () { d({ type: 'table/collapseAll' }); } }, 'collapse all')
+        el('button', { class: 'link', onclick: function () { d({ type: 'table/expandAll', keys: allKeys }); } }, t('table.expandAll')),
+        el('button', { class: 'link', onclick: function () { d({ type: 'table/collapseAll' }); } }, t('table.collapseAll'))
       ));
     } else {
       filtered.rows.forEach(function (r, i) {
@@ -623,7 +621,7 @@
         var a = aggByColumn[c];
         if (!a) return el('td', {}, '');
         var val = aggregateGroup(groupRows, c, entMap[c], a.fn);
-        return el('td', { class: 'agg-cell', title: AGG_FUNC_LABELS[a.fn] || a.fn }, val == null ? '' : val);
+        return el('td', { class: 'agg-cell', title: t('agg.' + a.fn) }, val == null ? '' : val);
       }));
     };
 
