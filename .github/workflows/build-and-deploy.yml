@@ -44,7 +44,7 @@ jobs:
           set -euo pipefail
           for sm in $DOC_SUBMODULES static/demo; do
             git -C "$sm" fetch origin main -q
-            git -C "$sm" checkout origin/main -q
+            git -C "$sm" checkout FETCH_HEAD -q
           done
 
       - name: Commit the bump, if anything moved
@@ -84,7 +84,7 @@ jobs:
           set -euo pipefail
           OFFICIAL_REF="$(git -C static/demo rev-parse HEAD)"
           git -C static/demo fetch origin develop -q
-          git -C static/demo checkout origin/develop -q
+          git -C static/demo checkout FETCH_HEAD -q
           rm -rf public-nightly
           hugo --minify --destination public-nightly
           mkdir -p public/nightly-demo
