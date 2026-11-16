@@ -1,0 +1,113 @@
+name: Build and deploy site
+
+# Manual only, by design -- this is not a push-triggered pipeline. Builds the
+# release site + the official demo (static/demo) + a nightly demo preview
+# (static/demo tracking develop), each content submodule bumped to its own
+# latest `main` first. Deploys via the Actions Pages mechanism
+# (upload-pages-artifact + deploy-pages), not the legacy branch-watching
+# builder -- see JoinSheetsDocs/releases.md for why.
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+env:
+  HUGO_VERSION: "0.148.0"
+  # path = the submodule's checkout path on main, same as .gitmodules
+  DOC_SUBMODULES: >-
+    content/docs/advanced-course
+    content/docs/quick-start
+    content/docs/user-guide
+    content/docs/cookbook
+    content/docs/developers
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main (with submodules)
+        uses: actions/checkout@v7.0.1
+        with:
+          submodules: recursive
+          persist-credentials: true
+
+      - name: Bump every doc submodule + the official demo to their latest main
+        id: bump
+        run: |
+          set -euo pipefail
+          for sm in $DOC_SUBMODULES static/demo; do
+            git -C "$sm" fetch origin main -q
+            git -C "$sm" checkout origin/main -q
+          done
+
+      - name: Commit the bump, if anything moved
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add $DOC_SUBMODULES static/demo
+          if git diff --cached --quiet; then
+            echo "No submodule updates -- nothing to commit."
+          else
+            git commit -m "Bump doc + demo submodules to latest main (automated build)"
+            git push origin HEAD:main
+          fi
+
+      - name: Overlay config/themes/layouts/static assets from the hugo branch
+        run: |
+          set -euo pipefail
+          git fetch origin hugo
+          git checkout origin/hugo -- config/ themes/ layouts/ static/css/ static/images/
+          git submodule update --init --recursive -- themes/compose
+
+      - name: Install Hugo ${{ env.HUGO_VERSION }} (extended)
+        uses: peaceiris/actions-hugo@v3.2.1
+        with:
+          hugo-version: ${{ env.HUGO_VERSION }}
+          extended: true
+
+      - name: Build the release site (site + official demo)
+        run: |
+          set -euo pipefail
+          rm -rf public
+          hugo --minify
+
+      - name: Build the nightly demo preview (official demo repo's develop branch)
+        run: |
+          set -euo pipefail
+          OFFICIAL_REF="$(git -C static/demo rev-parse HEAD)"
+          git -C static/demo fetch origin develop -q
+          git -C static/demo checkout origin/develop -q
+          rm -rf public-nightly
+          hugo --minify --destination public-nightly
+          mkdir -p public/nightly-demo
+          cp -r public-nightly/demo/. public/nightly-demo/
+          # static/demo is a real submodule gitlink on main -- leave it exactly
+          # as the bump step above committed it.
+          git -C static/demo checkout "$OFFICIAL_REF" -q
+
+      - name: .nojekyll
+        run: touch public/.nojekyll
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v5.0.0
+        with:
+          path: public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5.0.1
