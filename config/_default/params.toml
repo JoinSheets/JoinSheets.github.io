@@ -1,5 +1,7 @@
 # Single doc tree under content/docs/ -- each subsection (quick-start, user-guide,
-# cookbook, developers, advanced-course) is its own sidebar nav inside it.
+# cookbook, developers) is its own sidebar nav inside it. (advanced-course
+# used to live here too -- JoinSheetsRoast is now its own standalone site,
+# linked from developers/contributing, not mounted here.)
 docSections = ["docs"]
 
 uniqueHomePage = true   # homepage is a custom landing page, not a doc list

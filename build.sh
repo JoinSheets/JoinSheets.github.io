@@ -26,7 +26,7 @@ if [ "$hugo_version" != "$EXPECTED_HUGO_VERSION" ]; then
   echo "warning: this site was set up against hugo $EXPECTED_HUGO_VERSION, found $hugo_version -- continuing anyway." >&2
 fi
 
-echo "==> Pulling in submodules (content/docs/advanced-course, static/demo)"
+echo "==> Pulling in submodules (static/demo, content/docs/*)"
 git submodule update --init --recursive
 
 echo "==> Overlaying config/ + themes/ + layouts/ + static/css/ + static/images/ from the hugo branch"
