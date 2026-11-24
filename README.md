@@ -28,10 +28,14 @@ build (see below).
 - `content/docs/user-guide` — [JoinSheetsUserGuide](https://github.com/JoinSheets/JoinSheetsUserGuide)
 - `content/docs/cookbook` — [JoinSheetsCookbook](https://github.com/JoinSheets/JoinSheetsCookbook)
 - `content/docs/developers` — [JoinSheetsDocs](https://github.com/JoinSheets/JoinSheetsDocs)
-- `content/docs/advanced-course` — [JoinSheetsRoast](https://github.com/JoinSheets/JoinSheetsRoast),
-  the advanced developer course (Russian only, no English translation for
-  this section).
 - `themes/compose` (on the `hugo` branch) — the Compose theme.
+
+[JoinSheetsRoast](https://github.com/JoinSheets/JoinSheetsRoast), the
+advanced developer course, is **not** one of these submodules -- it builds
+and deploys as its own standalone site
+([joinsheets.github.io/JoinSheetsRoast/](https://joinsheets.github.io/JoinSheetsRoast/)),
+linked from the developer docs' Contributing page rather than mounted in
+this site's own navigation.
 
 Each doc section is its own repository so it can be cloned, edited, and
 versioned independently of the site itself — the site repo just points at a
@@ -100,12 +104,10 @@ same as `build.sh` does automatically).
 
 ## Known limitations (stub phase)
 
-- `content/docs/quick-start`/`user-guide`/`cookbook`/`developers` are plain
-  submodule mounts of their own stub Markdown files (no Hugo front matter) —
-  they render, but without their own `weight`-ordered index pages.
-  `content/docs/advanced-course` (JoinSheetsRoast) already has front matter
-  (`title`/`weight` on every chapter); the others are still stubs, to be
-  filled in as each section gets real content.
+- `content/docs/quick-start`/`user-guide`/`developers` now have real,
+  front-mattered (`title`/`weight`) content. `content/docs/cookbook` has
+  its index and one worked recipe so far — the rest of its planned recipes
+  are a separate, not-yet-started task in that repo.
 - After pulling new submodule commits, re-run `git submodule update --init`
   (or `--init --recursive` for a full build) before building — a bare
   `git pull`/`git checkout` on `main` does not update submodule content by

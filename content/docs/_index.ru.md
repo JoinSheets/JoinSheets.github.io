@@ -10,4 +10,3 @@ weight = 1
 {{< button "./user-guide/" "Руководство пользователя" >}}
 {{< button "./cookbook/" "Книга рецептов" >}}
 {{< button "./developers/" "Документация проекта" >}}
-{{< button "./advanced-course/" "Учебный курс: Прожарка JS-проекта с помощью Rust" >}}

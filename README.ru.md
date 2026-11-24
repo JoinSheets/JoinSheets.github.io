@@ -28,10 +28,14 @@
 - `content/docs/user-guide` — [JoinSheetsUserGuide](https://github.com/JoinSheets/JoinSheetsUserGuide)
 - `content/docs/cookbook` — [JoinSheetsCookbook](https://github.com/JoinSheets/JoinSheetsCookbook)
 - `content/docs/developers` — [JoinSheetsDocs](https://github.com/JoinSheets/JoinSheetsDocs)
-- `content/docs/advanced-course` — [JoinSheetsRoast](https://github.com/JoinSheets/JoinSheetsRoast),
-  продвинутый курс для разработчиков (только на русском, без перевода на
-  английский для этого раздела).
 - `themes/compose` (в ветке `hugo`) — тема Compose.
+
+[JoinSheetsRoast](https://github.com/JoinSheets/JoinSheetsRoast), продвинутый
+курс для разработчиков, **не** входит в число этих submodule'ей — он
+собирается и публикуется как отдельный самостоятельный сайт
+([joinsheets.github.io/JoinSheetsRoast/](https://joinsheets.github.io/JoinSheetsRoast/)),
+ссылка на который — со страницы «Как внести вклад» документации для
+разработчиков, а не из навигации самого сайта.
 
 Каждый раздел документации — отдельный репозиторий, чтобы его можно было
 клонировать, редактировать и версионировать независимо от самого сайта —
@@ -101,13 +105,10 @@ hugo server -D
 
 ## Известные ограничения (стадия заглушки)
 
-- `content/docs/quick-start`/`user-guide`/`cookbook`/`developers` — это просто
-  submodule-точки монтирования их собственных markdown-заглушек (без Hugo
-  front matter) — рендерятся, но без собственных отсортированных по `weight`
-  индексных страниц разделов. У `content/docs/advanced-course`
-  (JoinSheetsRoast) front matter уже есть (`title`/`weight` на каждой главе);
-  остальные разделы пока заглушки, будут наполняться по мере готовности
-  реального контента.
+- `content/docs/quick-start`/`user-guide`/`developers` уже содержат реальный
+  контент с Hugo front matter (`title`/`weight`). В `content/docs/cookbook`
+  готовы индекс и один разобранный рецепт — остальные запланированные
+  рецепты — отдельная, пока не начатая задача в этом репозитории.
 - После пулла новых коммитов submodules — перед сборкой заново выполнить
   `git submodule update --init` (или `--init --recursive` для полной
   сборки) — обычный `git pull`/`git checkout` на `main` сам по себе
