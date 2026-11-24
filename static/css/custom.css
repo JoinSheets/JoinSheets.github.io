@@ -17,6 +17,22 @@
   height: auto;
 }
 
+/* The text wordmark next to the logo (layouts/_partials/nav.html --
+   site.Title). .nav_brand has no flex of its own in the theme (just
+   position:relative), so lay it out explicitly to sit the logo and the
+   title side by side. */
+.nav_brand {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+}
+.nav_brand_title {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--text);
+  white-space: nowrap;
+}
+
 /* Language switcher (layouts/_partials/nav.html -- Compose has no built-in
    one). A couple of short links side by side; the current language is
    de-emphasized rather than hidden, so it's clear which one is active. No

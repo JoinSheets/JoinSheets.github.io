@@ -2,10 +2,13 @@
   Site override of Compose's own layouts/_partials/nav.html (Hugo resolves a
   site-level partial of the same name before falling back to the theme's --
   this file is NOT inside themes/compose, so theme updates won't touch it).
-  Only addition: a language switcher (.nav_lang) before the dark/light
-  toggle -- Compose ships with no built-in one. Uses .AllTranslations, so it
-  only ever links to a language a given page actually has; on an
-  untranslated page it just shows the current language.
+  Two additions beyond Compose's own: a language switcher (.nav_lang)
+  before the dark/light toggle -- Compose ships with no built-in one. Uses
+  .AllTranslations, so it only ever links to a language a given page
+  actually has; on an untranslated page it just shows the current
+  language. And a text wordmark (site.Title) next to the logo -- the bare
+  logo on its own read as unlabeled; JoinSheetsRoast (a separate site,
+  same theme) carries the identical pattern for the same reason.
 
   The brand/logo link points at the demo (not the homepage): the main menu
   carries no items now (see config/_default/menus/), so the logo is the
@@ -21,6 +24,7 @@
 		<picture data-lit="{{ $litPath }}" data-dark="{{ $darkPath }}">
 			<img src="{{ $litPath }}" alt="{{ site.Title }} Logo">
 		</picture>
+		<span class="nav_brand_title">{{ site.Title }}</span>
 		<div class="nav_toggle toggle" title='{{ T "site_menu" }}'>
 			{{- partial "sprite" (dict "icon" "harmburger") }}
 		</div>
