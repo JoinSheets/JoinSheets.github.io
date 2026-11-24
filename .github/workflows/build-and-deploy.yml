@@ -22,7 +22,6 @@ env:
   HUGO_VERSION: "0.148.0"
   # path = the submodule's checkout path on main, same as .gitmodules
   DOC_SUBMODULES: >-
-    content/docs/advanced-course
     content/docs/quick-start
     content/docs/user-guide
     content/docs/cookbook
