@@ -63,7 +63,7 @@ jobs:
         run: |
           set -euo pipefail
           git fetch origin hugo
-          git checkout origin/hugo -- config/ themes/ layouts/ static/css/ static/images/ .gitmodules
+          git checkout origin/hugo -- config/ themes/ layouts/ static/css/ static/images/ static/favicons/ .gitmodules
           git submodule update --init --recursive -- themes/compose
 
       - name: Install Hugo ${{ env.HUGO_VERSION }} (extended)
