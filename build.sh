@@ -29,14 +29,14 @@ fi
 echo "==> Pulling in submodules (static/demo, content/docs/*)"
 git submodule update --init --recursive
 
-echo "==> Overlaying config/ + themes/ + layouts/ + static/css/ + static/images/ from the hugo branch"
+echo "==> Overlaying config/ + themes/ + layouts/ + static/css/ + static/images/ + static/favicons/ from the hugo branch"
 # .gitmodules is restored from this exact snapshot at the end (not via `git
 # checkout`/`git reset`, which would discard any real, not-yet-committed edit
 # to it this working tree already had -- not just the overlay below).
 GITMODULES_SNAPSHOT="$(mktemp)"
 cp .gitmodules "$GITMODULES_SNAPSHOT"
 git fetch origin hugo
-git checkout "origin/hugo" -- config/ themes/ layouts/ static/css/ static/images/ .gitmodules
+git checkout "origin/hugo" -- config/ themes/ layouts/ static/css/ static/images/ static/favicons/ .gitmodules
 git submodule update --init --recursive -- themes/compose
 
 echo "==> Building the release site with hugo --minify (static/demo at its pinned release ref)"
@@ -85,14 +85,15 @@ cp -r public-nightly/demo/. "$WORKTREE_DIR/nightly-demo/"
 touch "$WORKTREE_DIR/.nojekyll"
 
 # Undo the hugo-branch overlay on main: unstage config/themes/layouts/
-# static/css/static/images (they don't belong in main's history) and put back
-# exactly what .gitmodules had before the overlay (the doc-section + demo
-# submodules, not the theme) -- from the snapshot above, not a git
-# checkout/reset, so an uncommitted edit to .gitmodules from before this
-# script ran survives it. static/demo (a submodule on main) is left alone --
-# only static/css/ and static/images/ came from hugo.
-git reset -q HEAD -- config themes layouts static/css static/images .gitmodules 2>/dev/null || true
-rm -rf config themes layouts static/css static/images public-nightly
+# static/css/static/images/static/favicons (they don't belong in main's
+# history) and put back exactly what .gitmodules had before the overlay
+# (the doc-section + demo submodules, not the theme) -- from the snapshot
+# above, not a git checkout/reset, so an uncommitted edit to .gitmodules
+# from before this script ran survives it. static/demo (a submodule on
+# main) is left alone -- only static/css/, static/images/, and
+# static/favicons/ came from hugo.
+git reset -q HEAD -- config themes layouts static/css static/images static/favicons .gitmodules 2>/dev/null || true
+rm -rf config themes layouts static/css static/images static/favicons public-nightly
 cp "$GITMODULES_SNAPSHOT" .gitmodules
 rm -f "$GITMODULES_SNAPSHOT"
 
