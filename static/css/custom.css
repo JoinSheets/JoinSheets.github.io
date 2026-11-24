@@ -14,7 +14,9 @@
    compact size instead. */
 .nav_brand img, .nav_brand picture {
   max-width: 4.5rem;
+  width: 4.5rem;
   height: auto;
+  flex-shrink: 0;
 }
 
 /* The text wordmark next to the logo (layouts/_partials/nav.html --
@@ -26,6 +28,13 @@
   align-items: center;
   gap: .6rem;
 }
+/* The logo rule above needs an explicit `width` (not just `max-width`)
+   and `flex-shrink: 0` now that .nav_brand is a flex container: logo.svg
+   carries only a viewBox, no width/height attributes, so as a flex item
+   with no explicit width it had no reliable intrinsic size to
+   shrink-to-fit from -- without these, some browsers collapsed it to
+   0x0 and the logo visually vanished. Also added width/height attributes
+   directly to logo.svg itself, belt-and-suspenders. */
 .nav_brand_title {
   font-weight: 700;
   font-size: 1.05rem;
