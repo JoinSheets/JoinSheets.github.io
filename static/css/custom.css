@@ -37,7 +37,10 @@
    directly to logo.svg itself, belt-and-suspenders. */
 .nav_brand_title {
   font-weight: 700;
-  font-size: 1.05rem;
+  /* Matches the JoinSheets app's own nav brand text exactly (.nav strong
+     in the app's styles.css) -- the project owner wants the two to read
+     as the same size, not just the same font-weight. */
+  font-size: 1.5rem;
   color: var(--text);
   white-space: nowrap;
 }
