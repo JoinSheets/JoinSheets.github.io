@@ -35,5 +35,12 @@ url = "https://github.com/A1eksMa"
 # same file; split lightMode/darkMode if the outline turns out too faint on
 # a dark background.
 [logo]
-lightMode = "/images/logo.svg"
-darkMode = "/images/logo.svg"
+# No leading slash: nav.html feeds these through absURL, which only
+# prepends baseURL's own path component for inputs that don't already
+# look server-root-absolute. Harmless here (this site's baseURL has no
+# subpath to lose), but JoinSheetsRoast hit exactly this bug with a
+# leading "/" once its own baseURL gained one -- kept the same
+# leading-slash-free form here for consistency, not because it was ever
+# broken on this site.
+lightMode = "images/logo.svg"
+darkMode = "images/logo.svg"
