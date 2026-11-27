@@ -57,11 +57,13 @@ export back to Excel or CSV.
 
 ## Where to go next
 
-New to JoinSheets? Start with the five-step walkthrough, or browse the full
-documentation.
+New to JoinSheets? Start with the five-step walkthrough, or jump straight
+to the section you need.
 
 {{< button "/docs/quick-start/" "Quick Start" >}}
-{{< button "/docs/" "Documentation" >}}
+{{< button "/docs/user-guide/" "User Guide" >}}
+{{< button "/docs/cookbook/" "Cookbook" >}}
+{{< button "/docs/developers/" "Developer Docs" >}}
 
 {{< tip >}}
 **Want to learn how JoinSheets works under the hood?** The
