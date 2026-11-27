@@ -28,39 +28,33 @@ no server, no install, nothing leaves your machine.
 
 {{< grid "3" >}}
 {{< column >}}
-**Join flat tables**
+<span class="feature-title">Join flat tables</span>
 
 Combine data sources by key, using set operations — union, subtraction,
 intersection, and more.
 {{< /column >}}
 {{< column >}}
-**Parse any data**
+<span class="feature-title">Parse any data</span>
 
 Text, dates, numbers, booleans, or empty values — typed and validated
 automatically.
 {{< /column >}}
 {{< column >}}
-**Compute fields**
+<span class="feature-title">Compute fields</span>
 
 Aggregation, formulas, and priority-based collision resolution when sources
 disagree.
 {{< /column >}}
 {{< column >}}
-**Work the table**
+<span class="feature-title">Work the table</span>
 
 Search, sort, group, and filter the joined result, live.
 {{< /column >}}
 {{< column >}}
-**Export anywhere**
+<span class="feature-title">End to end</span>
 
-Send the result straight to Excel or CSV.
-{{< /column >}}
-{{< column >}}
-**Import from Excel**
-
-Load source data directly with the optional
-[JoinSheetsImport](https://github.com/JoinSheets/JoinSheetsImport)
-submodule.
+Data comes in and goes out as tables — import from Excel, work the result,
+export back to Excel or CSV.
 {{< /column >}}
 {{< /grid >}}
 
