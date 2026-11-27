@@ -81,6 +81,24 @@
   padding-left: .75rem;
 }
 
+/* Homepage "What it does" feature cards (content/_index.md, content/_index.ru.md)
+   -- a <span class="feature-title"> wrapping each card's heading, instead of
+   plain markdown bold, so it can get its own green accent backing (var(--theme)
+   is the theme's own accent green, rgb(52,199,89)/rgb(48,209,88) in dark mode --
+   same color the first button in a row already gets) rather than just being
+   bold text indistinguishable from any other bold text on the page. display:
+   block (not inline-block) so the color reads as a backing behind the whole
+   title, not just a tight highlight hugging the letters. */
+.feature-title {
+  display: block;
+  background: var(--theme);
+  color: var(--light);
+  padding: .4rem .8rem;
+  border-radius: .3rem;
+  font-weight: 600;
+  margin-bottom: .6rem;
+}
+
 /* Footer source-code link (layouts/_partials/footer.html) -- outside
    .content, so it misses the theme's own ".content a:not(.button)
    {color:var(--theme)}" rule (what makes the homepage's links accent-
