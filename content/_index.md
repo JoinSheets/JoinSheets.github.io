@@ -46,30 +46,14 @@ export back to Excel or CSV.
 
 ## Why JoinSheets
 
-{{< grid "2" >}}
-{{< column >}}
-**No server**
-
-Download the repository and open `index.html` — that's the whole install.
-{{< /column >}}
-{{< column >}}
-**Your data stays local**
-
-JoinSheets only reads the files you point it at. Nothing is uploaded,
-nothing is tracked.
-{{< /column >}}
-{{< column >}}
-**Zero build**
-
-No bundler, no package manager, no build step — plain files, runs straight
-off `file://`.
-{{< /column >}}
-{{< column >}}
-**Open source**
-
-Apache-2.0 licensed, on GitHub for anyone to read, fork, or contribute to.
-{{< /column >}}
-{{< /grid >}}
+- **No server** — download the repository and open `index.html`; that's
+  the whole install.
+- **Your data stays local** — JoinSheets only reads the files you point
+  it at. Nothing is uploaded, nothing is tracked.
+- **Zero build** — no bundler, no package manager, no build step; plain
+  files, runs straight off `file://`.
+- **Open source** — Apache-2.0 licensed, on GitHub for anyone to read,
+  fork, or contribute to.
 
 ## Where to go next
 
