@@ -2,8 +2,6 @@
 title = "JoinSheets"
 +++
 
-{{< block "grid-2" >}}
-{{< column >}}
 # A browser-only table builder
 
 Join flat data sources on a key, compute fields, and export the result —
@@ -11,18 +9,6 @@ no server, no install, nothing leaves your machine.
 
 {{< button "/demo/" "Try the demo" >}}
 {{< button "/docs/quick-start/" "Quick Start" >}}
-{{< /column >}}
-
-{{< column >}}
-*Two sources, one key, one result:*
-
-| Customer  | Revenue | Region |
-|-----------|---------|--------|
-| Acme Corp | 48 000  | EMEA   |
-| Globex    | 71 500  | APAC   |
-| Initech   | 33 200  | AMER   |
-{{< /column >}}
-{{< /block >}}
 
 ## What it does
 
