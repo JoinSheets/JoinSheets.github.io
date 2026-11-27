@@ -71,6 +71,16 @@
   pointer-events: none;
 }
 
+/* Sidebar nav (layouts/_partials/sidebar.html): a section's own title is
+   <h2 class="section_title">, an individual page inside that section is
+   <h3 class="section_link"> -- the theme only tells them apart by font-size/
+   weight (1.25rem bold vs 1rem normal), with no indent at all, so a page
+   title sits flush against the section title above it and reads as part of
+   the same list rather than nested under it. */
+.section_link {
+  padding-left: .75rem;
+}
+
 /* Footer source-code link (layouts/_partials/footer.html) -- outside
    .content, so it misses the theme's own ".content a:not(.button)
    {color:var(--theme)}" rule (what makes the homepage's links accent-
