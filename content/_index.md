@@ -65,11 +65,35 @@ to the section you need.
 {{< button "/docs/cookbook/" "Cookbook" >}}
 {{< button "/docs/developers/" "Developer Docs" >}}
 
-{{< tip >}}
-**Want to learn how JoinSheets works under the hood?** The
-[advanced course](https://github.com/JoinSheets/JoinSheetsRoast) walks
-through this exact codebase — browser internals, DevTools, testing — and is
-also the fastest way to onboard onto the project itself if you're thinking
-of contributing. Its capstone ports one of the app's hot paths to Rust and
-WebAssembly for a measured performance win. Russian only, for now.
-{{< /tip >}}
+## Open Source
+
+JoinSheets is built entirely in the open: every line of code, every design
+decision, every release — all public, all Apache-2.0, from day one. If
+you're curious how it actually works under the hood, or thinking about
+contributing, there's a real path in.
+
+{{< block "grid-2" >}}
+{{< column >}}
+![JavaScript, a tour of language concepts, and a Rust bonus track](/images/homepage-banner.svg)
+{{< /column >}}
+
+{{< column >}}
+### Boosting JS Project Performance with Rust
+
+An advanced course for practicing web developers, built around this exact
+codebase. Suited to anyone who already has programming experience and
+wants to go deeper: get into the guts of the browser, understand how the
+browser works with memory, learn how to optimize at a low level, and build
+high-performance modules in Rust.
+
+By the end of the course you'll be able to read this code, understand how
+it works under the hood, find performance bottlenecks with DevTools, and
+speed up applications using Rust and WebAssembly — the fastest path to
+actually onboarding onto the project.
+
+The course is designed for 10 weeks of self-paced study, with no fixed
+schedule or deadlines. Russian only, for now.
+
+{{< button "https://joinsheets.github.io/JoinSheetsRoast/" "Start the course" >}}
+{{< /column >}}
+{{< /block >}}
